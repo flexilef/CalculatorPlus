@@ -8,10 +8,19 @@ class InfixToPostfixConverter : public InputConverter
     public:
         /** Default constructor */
         InfixToPostfixConverter();
+
         /** Default destructor */
         virtual ~InfixToPostfixConverter();
-    protected:
-    private:
+
+        void convert();
+
+    //protected:
+
+    //private:
+
+        int getPrecedence(char);
+
+        bool isVariable(char);
 };
 
 #endif // INFIXTOPOSTFIXCONVERTER_H
