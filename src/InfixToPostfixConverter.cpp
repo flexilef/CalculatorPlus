@@ -27,12 +27,12 @@ double InfixToPostfixConverter::evaluate(const std::string postfix)
 
     for(int i = 0; i < inputLength; i++)
     {
-        if(isOperand(postfix[i]))
+        if(isNumber(postfix.substr(i, 1)))
         {
             numberStr+=postfix[i];
         }
 
-        else if(postfix[i] == ' ' && !numberStr.empty())
+        else if(postfix.substr(i, 1) == " " && !numberStr.empty())
         {
             //operand is ready to be pushed
             double value = atof(numberStr.c_str());
@@ -42,7 +42,7 @@ double InfixToPostfixConverter::evaluate(const std::string postfix)
             numberStr = "";
         }
 
-        else if(isOperator(postfix[i]))
+        else if(isOperator(postfix.substr(i, 1)))
         {
             double operandTwo = valueStack.top();
             valueStack.pop();
@@ -69,37 +69,40 @@ std::string InfixToPostfixConverter::convertToPostfix(const std::string infix)
 void InfixToPostfixConverter::convert()
 {
     std::string postfix = "";
-    std::stack<char> operatorStack;
+    std::stack<std::string> operatorStack;
 
     int inputLength = input.length();
-    char topOperator;
+    std::string topOperator;
+
+    std::string functionStr;
 
     for(int i = 0; i < inputLength; i++)
     {
         bool done = false;
-        char nextCharacter = input[i];
+        std::string nextCharacter = input.substr(i, 1);
 
-        if(isOperand(nextCharacter))
+        if(isNumber(nextCharacter))
         {
             postfix+=nextCharacter;
         }
+        else if(isalpha(input[i]))
+        {
+            functionStr+=nextCharacter;
+            if(isFunction(functionStr))
+            {
+                operatorStack.push(functionStr);
+                functionStr = "";
+            }
+        }
         else
         {
-            //add a white space between operands and operators to handle
+            //add a white space between operands and operators to differentiate
             //multiple digit numbers and decimals
             postfix+=" ";
 
-            switch(nextCharacter)
-            {
-            case '^':
-            {
+            if(nextCharacter == "^")
                 operatorStack.push(nextCharacter);
-                break;
-            }
-            case '+':
-            case'-':
-            case '*':
-            case '/':
+            else if(isOperator(nextCharacter))
             {
                 while(!done && !operatorStack.empty())
                 {
@@ -114,32 +117,24 @@ void InfixToPostfixConverter::convert()
                         done = true;
                 }
                 operatorStack.push(nextCharacter);
-                break;
             }
-
-            case '(':
+            else if(nextCharacter == "(")
             {
                 operatorStack.push(nextCharacter);
-                break;
             }
-            case ')':
+            else if(nextCharacter == ")")
             {
                 topOperator = operatorStack.top();
                 operatorStack.pop();
 
-                while(topOperator != '(')
+                while(topOperator != "(")
                 {
                     postfix+=topOperator;
                     postfix+=" ";
                     topOperator = operatorStack.top();
                     operatorStack.pop();
                 }
-                break;
             }
-
-            default:
-                break;
-            }// end switch
         }// end if
     }//end for
 
@@ -154,25 +149,18 @@ void InfixToPostfixConverter::convert()
     output = postfix;
 }
 
-int InfixToPostfixConverter::getPrecedence(char op)
+int InfixToPostfixConverter::getPrecedence(std::string op)
 {
-    switch(op)
-    {
-    case '(':
+    if(op == "(" || op == ")")
         return 0;
-    case ')':
-        return 0;
-    case '+':
+    else if(op == "+" || op == "-")
         return 1;
-    case '-':
-        return 1;
-    case '*':
+    else if(op == "*" || op == "/")
         return 2;
-    case '/':
-        return 2;
-    case '^':
+    else if(op == "^")
         return 3;
-    }
+    else if(op == "sin" || op == "cos" || op == "tan")
+        return 4;
 
     return -1;
 }
@@ -182,21 +170,34 @@ int InfixToPostfixConverter::getPrecedence(char op)
 *@param character  the char we are checking
 *@return true  if character is a number, letter, or a period, otherwise false
 */
-bool InfixToPostfixConverter::isOperand(char character)
+bool InfixToPostfixConverter::isNumber(const std::string character)
 {
-    if(isalnum(character) || character == '.')
+    if(isdigit(character[0]) || character == ".")
         return true;
 
     return false;
 }
 
-bool InfixToPostfixConverter::isOperator(char character)
+bool InfixToPostfixConverter::isOperator(const std::string str)
 {
-    char operators[10] = {'+', '-', '*', '/', '^'};
+    std::string operators[10] = {"+", "-", "*", "/", "^", "sin", "cos", "tan"};
 
     for(int i = 0; i < 10; i++)
     {
-        if(character == operators[i])
+        if(str == operators[i])
+            return true;
+    }
+
+    return false;
+}
+
+bool InfixToPostfixConverter::isFunction(const std::string str)
+{
+    std::string functions[10] = {"sin", "cos", "tan"};
+
+    for(int i = 0; i < 10; i++)
+    {
+        if(functions[i] == str)
             return true;
     }
 

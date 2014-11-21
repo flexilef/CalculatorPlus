@@ -5,25 +5,27 @@
 
 class InfixToPostfixConverter : public InputConverter
 {
-    public:
-        /** Default constructor */
-        InfixToPostfixConverter();
+public:
+    /** Default constructor */
+    InfixToPostfixConverter();
 
-        /** Default destructor */
-        virtual ~InfixToPostfixConverter();
+    /** Default destructor */
+    virtual ~InfixToPostfixConverter();
 
-        std::string convertToPostfix(const std::string);
+    std::string convertToPostfix(const std::string);
 
-        double evaluate(const std::string);
+    double evaluate(const std::string);
 
-    private:
-        void convert();
+private:
+    void convert();
 
-        int getPrecedence(char);
+    int getPrecedence(const std::string);
 
-        bool isOperand(char);
+    bool isNumber(const std::string);
 
-        bool isOperator(char);
+    bool isOperator(const std::string);
+
+    bool isFunction(const std::string);
 };
 
 #endif // INFIXTOPOSTFIXCONVERTER_H
