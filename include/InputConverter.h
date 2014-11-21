@@ -23,8 +23,6 @@ class InputConverter
 
         std::string getOutput();
 
-        void setOutput(const std::string&);
-
     protected:
 
         std::string input;
@@ -32,6 +30,7 @@ class InputConverter
         std::string output;
 
     private:
+
 };
 
 #endif // INPUTCONVERTER_H

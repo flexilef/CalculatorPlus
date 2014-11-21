@@ -29,8 +29,3 @@ std::string InputConverter::getOutput()
 {
     return output;
 }
-
-void InputConverter::setOutput(const std::string& str)
-{
-    output = str;
-}

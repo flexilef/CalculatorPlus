@@ -2,6 +2,7 @@
 
 #include <cctype>
 #include <stack>
+#include <stdlib.h>
 
 InfixToPostfixConverter::InfixToPostfixConverter()
 {
@@ -14,21 +15,74 @@ InfixToPostfixConverter::~InfixToPostfixConverter()
     //dtor
 }
 
+double InfixToPostfixConverter::evaluate(const std::string postfix)
+{
+    std::stack<double> valueStack;
+
+    double result = 0;
+
+    int inputLength = postfix.length();
+
+    std::string numberStr;
+
+    for(int i = 0; i < inputLength; i++)
+    {
+        if(isOperand(postfix[i]))
+        {
+            numberStr+=postfix[i];
+        }
+
+        else if(postfix[i] == ' ' && !numberStr.empty())
+        {
+            //operand is ready to be pushed
+            double value = atof(numberStr.c_str());
+            valueStack.push(value);
+
+            //result number
+            numberStr = "";
+        }
+
+        else if(isOperator(postfix[i]))
+        {
+            double operandTwo = valueStack.top();
+            valueStack.pop();
+
+            double operandOne = valueStack.top();
+            valueStack.pop();
+
+            result = operandOne*operandTwo;
+            valueStack.push(result);
+        }
+    }
+
+    return result;
+}
+
+std::string InfixToPostfixConverter::convertToPostfix(const std::string infix)
+{
+    input = infix;
+    convert();
+
+    return output;
+}
+
 void InfixToPostfixConverter::convert()
 {
     std::string postfix = "";
     std::stack<char> operatorStack;
 
-    int characterCount = input.length();
+    int inputLength = input.length();
     char topOperator;
 
-    for(int i = 0; i < characterCount; i++)
+    for(int i = 0; i < inputLength; i++)
     {
         bool done = false;
         char nextCharacter = input[i];
 
-        if(isVariable(nextCharacter))
+        if(isOperand(nextCharacter))
+        {
             postfix+=nextCharacter;
+        }
         else
         {
             //add a white space between operands and operators to handle
@@ -45,7 +99,7 @@ void InfixToPostfixConverter::convert()
             case '+':
             case'-':
             case '*':
-            case '.':
+            case '/':
             {
                 while(!done && !operatorStack.empty())
                 {
@@ -53,6 +107,7 @@ void InfixToPostfixConverter::convert()
                     if(getPrecedence(nextCharacter) <= getPrecedence(topOperator))
                     {
                         postfix+=topOperator;
+                        postfix+=" ";
                         operatorStack.pop();
                     }
                     else
@@ -75,6 +130,7 @@ void InfixToPostfixConverter::convert()
                 while(topOperator != '(')
                 {
                     postfix+=topOperator;
+                    postfix+=" ";
                     topOperator = operatorStack.top();
                     operatorStack.pop();
                 }
@@ -91,7 +147,7 @@ void InfixToPostfixConverter::convert()
     {
         topOperator = operatorStack.top();
         operatorStack.pop();
-
+        postfix+=" ";
         postfix+=topOperator;
     }
 
@@ -121,10 +177,28 @@ int InfixToPostfixConverter::getPrecedence(char op)
     return -1;
 }
 
-bool InfixToPostfixConverter::isVariable(char character)
+/**
+*Task: Checks whether a character is considered a valid operand.
+*@param character  the char we are checking
+*@return true  if character is a number, letter, or a period, otherwise false
+*/
+bool InfixToPostfixConverter::isOperand(char character)
 {
     if(isalnum(character) || character == '.')
         return true;
+
+    return false;
+}
+
+bool InfixToPostfixConverter::isOperator(char character)
+{
+    char operators[10] = {'+', '-', '*', '/', '^'};
+
+    for(int i = 0; i < 10; i++)
+    {
+        if(character == operators[i])
+            return true;
+    }
 
     return false;
 }

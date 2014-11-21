@@ -12,15 +12,18 @@ class InfixToPostfixConverter : public InputConverter
         /** Default destructor */
         virtual ~InfixToPostfixConverter();
 
+        std::string convertToPostfix(const std::string);
+
+        double evaluate(const std::string);
+
+    private:
         void convert();
-
-    //protected:
-
-    //private:
 
         int getPrecedence(char);
 
-        bool isVariable(char);
+        bool isOperand(char);
+
+        bool isOperator(char);
 };
 
 #endif // INFIXTOPOSTFIXCONVERTER_H
