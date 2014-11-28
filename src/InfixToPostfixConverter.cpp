@@ -75,6 +75,7 @@ void InfixToPostfixConverter::convert()
     std::string functionStr;
     std::string variableStr;
 
+    bool isNegative = false;
     int inputLength = input.length();
 
     for(int i = 0; i < inputLength; i++)
@@ -82,12 +83,19 @@ void InfixToPostfixConverter::convert()
         bool done = false;
         std::string nextCharacter = input.substr(i, 1);
 
-        //is a number
+        std::string lastCharacter;
+
+        //lastCharacter can't be a whitespace or the first character
+        if(i > 0 && input.substr(i-1, 1) != " ")
+        {
+            lastCharacter = input.substr(i-1, 1);
+        }
+
         if(isNumber(nextCharacter))
         {
             postfix+=nextCharacter;
         }
-        //is a letter that can be part of a function or variable name
+        //is part of a function or variable name
         else if(isalpha(input[i]))
         {
             functionStr+=nextCharacter;
@@ -96,29 +104,28 @@ void InfixToPostfixConverter::convert()
             if(isFunction(functionStr))
             {
                 operatorStack.push(functionStr);
+
+                //reset them
                 functionStr = "";
                 variableStr = "";
             }
         }
-        //must be an operator or other character
+        //operator found
         else
         {
-            //add a white space between operands and operators to differentiate
-            //multiple digit numbers and decimals
+            //add a white space between each operand and each operator
             postfix+=" ";
 
-            //handle variables found here before we handle operators
+            //handle variable names found before we handle operators
             if(!variableStr.empty())
             {
                 //variable is ready to be added. (we are assuming that variableStr is a valid var here)
                 //when we evaluate, we'll know for sure if it's a syntax error or not
                 postfix+=variableStr;
                 postfix+=" ";
+
+                //reset them
                 variableStr = "";
-                //this is very important to avoid bug in test number 8.
-                //we can't forget that when we fill variableStr, functionStr is also getting filled
-                //and needs to be reset as well.
-                //TODO: consider using only one string like inputStr to handle BOTH vars and functions (although more confusing)
                 functionStr = "";
             }
 
@@ -127,9 +134,25 @@ void InfixToPostfixConverter::convert()
                 operatorStack.push(nextCharacter);
             else if(isOperator(nextCharacter))
             {
+                //unary negation check
+                if(i == 0)
+                    isNegative = true;
+                else if(isOperator(lastCharacter))
+                    isNegative = true;
+                else if(lastCharacter == "(")
+                    isNegative = true;
+
+                //internal representation of unary negation: ~
+                if(isNegative)
+                {
+                    nextCharacter = "~";
+                    isNegative = false;
+                }
+
                 while(!done && !operatorStack.empty())
                 {
                     topOperator = operatorStack.top();
+
                     if(getPrecedence(nextCharacter) <= getPrecedence(topOperator))
                     {
                         postfix+=topOperator;
@@ -161,10 +184,12 @@ void InfixToPostfixConverter::convert()
         }// end if
     }//end for
 
+    //unload the rest of the operators
     while(!operatorStack.empty())
     {
         topOperator = operatorStack.top();
         operatorStack.pop();
+
         postfix+=" ";
         postfix+=topOperator;
     }
@@ -182,8 +207,10 @@ int InfixToPostfixConverter::getPrecedence(std::string op)
         return 2;
     else if(op == "^")
         return 3;
-    else if(op == "sin" || op == "cos" || op == "tan" || op == "ln")
+    else if(op == "~")
         return 4;
+    else if(op == "sin" || op == "cos" || op == "tan" || op == "ln")
+        return 5;
 
     return -1;
 }
@@ -203,7 +230,7 @@ bool InfixToPostfixConverter::isNumber(const std::string character)
 
 bool InfixToPostfixConverter::isOperator(const std::string str)
 {
-    std::string operators[10] = {"+", "-", "*", "/", "^", "sin", "cos", "tan"};
+    std::string operators[10] = {"+", "-", "~", "*", "/", "^", "sin", "cos", "tan"};
 
     for(int i = 0; i < 10; i++)
     {
