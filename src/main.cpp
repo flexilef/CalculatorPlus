@@ -58,7 +58,8 @@ int main()
     cout << "output: " << ip.convertToPostfix("(3 * ln(e^2) + 8 * cos(60)) / (3 * 4^0.5 - 1)") << "\n";
     cout << endl;
 
-    cout << ip.convertToPostfix("2^3-9");
+    //TODO: this converts - to a ~ for some reason
+    cout << ip.convertToPostfix("-sin(-30*cos(-60))");
 
     //cout << ip.evaluate("1.5 2 *") << "\n";
 

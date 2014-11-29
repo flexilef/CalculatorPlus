@@ -75,12 +75,13 @@ void InfixToPostfixConverter::convert()
     std::string functionStr;
     std::string variableStr;
 
-    bool isNegative = false;
     int inputLength = input.length();
+    bool isNegative = false;
 
     for(int i = 0; i < inputLength; i++)
     {
         bool done = false;
+
         std::string nextCharacter = input.substr(i, 1);
 
         std::string lastCharacter;
@@ -91,94 +92,100 @@ void InfixToPostfixConverter::convert()
             lastCharacter = input.substr(i-1, 1);
         }
 
-        if(isNumber(nextCharacter))
+        if(nextCharacter != " ")
         {
-            postfix+=nextCharacter;
-        }
-        //is part of a function or variable name
-        else if(isalpha(input[i]))
-        {
-            functionStr+=nextCharacter;
-            variableStr+=nextCharacter;
-
-            if(isFunction(functionStr))
+            if(isNumber(nextCharacter))
             {
-                operatorStack.push(functionStr);
-
-                //reset them
-                functionStr = "";
-                variableStr = "";
+                postfix+=nextCharacter;
             }
-        }
-        //operator found
-        else
-        {
-            //add a white space between each operand and each operator
-            postfix+=" ";
-
-            //handle variable names found before we handle operators
-            if(!variableStr.empty())
+            //is part of a function or variable name
+            else if(isalpha(input[i]))
             {
-                //variable is ready to be added. (we are assuming that variableStr is a valid var here)
-                //when we evaluate, we'll know for sure if it's a syntax error or not
-                postfix+=variableStr;
+                functionStr+=nextCharacter;
+                variableStr+=nextCharacter;
+
+                if(isFunction(functionStr))
+                {
+                    operatorStack.push(functionStr);
+
+                    //reset them
+                    functionStr = "";
+                    variableStr = "";
+                }
+            }
+            //operator found
+            else
+            {
+                //add a white space between each operand and each operator
                 postfix+=" ";
 
-                //reset them
-                variableStr = "";
-                functionStr = "";
-            }
-
-            //handle operators
-            if(nextCharacter == "^")
-                operatorStack.push(nextCharacter);
-            else if(isOperator(nextCharacter))
-            {
-                //unary negation check
-                if(i == 0)
-                    isNegative = true;
-                else if(isOperator(lastCharacter))
-                    isNegative = true;
-                else if(lastCharacter == "(")
-                    isNegative = true;
-
-                //internal representation of unary negation: ~
-                if(isNegative)
+                //handle variable names found before we handle operators
+                if(!variableStr.empty())
                 {
-                    nextCharacter = "~";
-                    isNegative = false;
+                    //variable is ready to be added. (we are assuming that variableStr is a valid var here)
+                    //when we evaluate, we'll know for sure if it's a syntax error or not
+                    postfix+=variableStr;
+                    postfix+=" ";
+
+                    //reset them
+                    variableStr = "";
+                    functionStr = "";
                 }
 
-                while(!done && !operatorStack.empty())
+                //handle operators
+                if(nextCharacter == "^")
+                    operatorStack.push(nextCharacter);
+                else if(isOperator(nextCharacter))
+                {
+                    //unary negation check
+                    if(nextCharacter == "-")
+                    {
+                        if(i == 0)
+                            isNegative = true;
+                        else if(isOperator(lastCharacter))
+                            isNegative = true;
+                        else if(lastCharacter == "(")
+                            isNegative = true;
+
+                        //internal representation of unary negation: ~
+                        if(isNegative)
+                        {
+                            nextCharacter = "~";
+                            isNegative = false;
+                        }
+                    }
+
+                    while(!done && !operatorStack.empty())
+                    {
+                        topOperator = operatorStack.top();
+
+                        if(getPrecedence(nextCharacter) <= getPrecedence(topOperator))
+                        {
+                            postfix+=topOperator;
+                            postfix+=" ";
+                            operatorStack.pop();
+                        }
+                        else
+                            done = true;
+                    }
+                    operatorStack.push(nextCharacter);
+                }
+                else if(nextCharacter == "(")
+                {
+                    operatorStack.push(nextCharacter);
+                }
+                else if(nextCharacter == ")")
                 {
                     topOperator = operatorStack.top();
+                    operatorStack.pop();
 
-                    if(getPrecedence(nextCharacter) <= getPrecedence(topOperator))
+                    while(topOperator != "(")
                     {
                         postfix+=topOperator;
                         postfix+=" ";
+                        topOperator = operatorStack.top();
                         operatorStack.pop();
                     }
-                    else
-                        done = true;
-                }
-                operatorStack.push(nextCharacter);
-            }
-            else if(nextCharacter == "(")
-            {
-                operatorStack.push(nextCharacter);
-            }
-            else if(nextCharacter == ")")
-            {
-                topOperator = operatorStack.top();
-                operatorStack.pop();
-
-                while(topOperator != "(")
-                {
-                    postfix+=topOperator;
-                    postfix+=" ";
-                    topOperator = operatorStack.top();
-                    operatorStack.pop();
                 }
             }
         }// end if
@@ -232,10 +239,15 @@ bool InfixToPostfixConverter::isOperator(const std::string str)
 {
     std::string operators[10] = {"+", "-", "~", "*", "/", "^", "sin", "cos", "tan"};
 
-    for(int i = 0; i < 10; i++)
+    if(str.empty())
+        return false;
+    else
     {
-        if(str == operators[i])
-            return true;
+        for(int i = 0; i < 10; i++)
+        {
+            if(str == operators[i])
+                return true;
+        }
     }
 
     return false;
