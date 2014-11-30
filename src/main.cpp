@@ -9,7 +9,25 @@ int main()
 
     InfixToPostfixConverter ip;
 
+    cout << "1: Simple calculations with single digits \n";
+    cout << "infix: 1+2-3*4/5 \n";
+    cout << "postfix: 1 2 + 3 4 * 5 / - \n";
+    cout << "output: " << ip.convertToPostfix("1+2-3*4/5") << "\n";
+    cout << endl;
+
+    cout << "2: Simple calculations with multiple digits \n";
+    cout << "infix: 1+23-456*78/9 \n";
+    cout << "postfix: 1 23 + 456 78 * 9 / - \n";
+    cout << "output: " << ip.convertToPostfix("1+23-456*78/9") << "\n";
+    cout << endl;
+
+    cout << "3: Simple calculations with variables \n";
+    cout << "infix: a+23-b*78/c \n";
+    cout << "postfix: a 23 + b 78 * c / - \n";
+    cout << "output: " << ip.convertToPostfix("a+23-b*78/c") << "\n";
+    cout << endl;
     //test cases
+    /*
     cout << "1: \n";
     cout << "infix: ((a*b)+(c/d)) \n";
     cout << "postfix: a b * c d / +\n";
@@ -57,9 +75,9 @@ int main()
     cout << "postfix: 3 e 2 ^ ln * 8 60 cos * + 3 4 0.5 ^ * 1 - / \n";
     cout << "output: " << ip.convertToPostfix("(3 * ln(e^2) + 8 * cos(60)) / (3 * 4^0.5 - 1)") << "\n";
     cout << endl;
+    */
 
-    //TODO: this converts - to a ~ for some reason
-    cout << ip.convertToPostfix("-sin(-30*cos(-60))");
+    cout << ip.convertToPostfix("sin(20)");
 
     //cout << ip.evaluate("1.5 2 *") << "\n";
 

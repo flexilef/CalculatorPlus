@@ -68,27 +68,23 @@ std::string InfixToPostfixConverter::convertToPostfix(const std::string infix)
 
 void InfixToPostfixConverter::convert()
 {
-    std::string postfix = "";
     std::stack<std::string> operatorStack;
-
+    std::string postfix = "";
     std::string topOperator;
     std::string functionStr;
     std::string variableStr;
-
     int inputLength = input.length();
     bool isNegative = false;
 
     for(int i = 0; i < inputLength; i++)
     {
         bool done = false;
-
         std::string nextCharacter = input.substr(i, 1);
-
         std::string lastCharacter;
 
-        //lastCharacter can't be a whitespace or the first character
         if(i > 0 && input.substr(i-1, 1) != " ")
         {
+            //previous character found excludes white spaces
             lastCharacter = input.substr(i-1, 1);
         }
 
@@ -108,12 +104,12 @@ void InfixToPostfixConverter::convert()
                 {
                     operatorStack.push(functionStr);
 
-                    //reset them
+                    //reset them for future functions and variables
                     functionStr = "";
                     variableStr = "";
                 }
             }
-            //operator found
+            //operator or other characters found
             else
             {
                 //add a white space between each operand and each operator
@@ -122,8 +118,6 @@ void InfixToPostfixConverter::convert()
                 //handle variable names found before we handle operators
                 if(!variableStr.empty())
                 {
-                    //variable is ready to be added. (we are assuming that variableStr is a valid var here)
-                    //when we evaluate, we'll know for sure if it's a syntax error or not
                     postfix+=variableStr;
                     postfix+=" ";
 
@@ -137,7 +131,7 @@ void InfixToPostfixConverter::convert()
                     operatorStack.push(nextCharacter);
                 else if(isOperator(nextCharacter))
                 {
-                    //unary negation check
+                    //check for unary negation
                     if(nextCharacter == "-")
                     {
                         if(i == 0)
@@ -147,9 +141,9 @@ void InfixToPostfixConverter::convert()
                         else if(lastCharacter == "(")
                             isNegative = true;
 
-                        //internal representation of unary negation: ~
                         if(isNegative)
                         {
+                            //change to internal representation of unary negation: ~
                             nextCharacter = "~";
                             isNegative = false;
                         }
@@ -191,7 +185,16 @@ void InfixToPostfixConverter::convert()
         }// end if
     }//end for
 
-    //unload the rest of the operators
+    if(!variableStr.empty())
+    {
+        postfix+=variableStr;
+        postfix+=" ";
+
+        //reset them
+        variableStr = "";
+        functionStr = "";
+    }
+
     while(!operatorStack.empty())
     {
         topOperator = operatorStack.top();
@@ -227,9 +230,9 @@ int InfixToPostfixConverter::getPrecedence(std::string op)
 *@param character  the char we are checking
 *@return true  if character is a number, letter, or a period, otherwise false
 */
-bool InfixToPostfixConverter::isNumber(const std::string character)
+bool InfixToPostfixConverter::isNumber(const std::string str)
 {
-    if(isdigit(character[0]) || character == ".")
+    if(isdigit(str[0]) || str == ".")
         return true;
 
     return false;
@@ -239,9 +242,7 @@ bool InfixToPostfixConverter::isOperator(const std::string str)
 {
     std::string operators[10] = {"+", "-", "~", "*", "/", "^", "sin", "cos", "tan"};
 
-    if(str.empty())
-        return false;
-    else
+    if(!str.empty())
     {
         for(int i = 0; i < 10; i++)
         {
@@ -257,10 +258,13 @@ bool InfixToPostfixConverter::isFunction(const std::string str)
 {
     std::string functions[10] = {"sin", "cos", "tan", "ln"};
 
-    for(int i = 0; i < 10; i++)
+    if(!str.empty())
     {
-        if(functions[i] == str)
-            return true;
+        for(int i = 0; i < 10; i++)
+        {
+            if(functions[i] == str)
+                return true;
+        }
     }
 
     return false;
