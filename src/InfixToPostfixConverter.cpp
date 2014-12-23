@@ -69,7 +69,7 @@ std::string InfixToPostfixConverter::convertToPostfix(const std::string infix)
 void InfixToPostfixConverter::convert()
 {
     std::stack<std::string> operatorStack;
-    std::string postfix = "";
+    std::string postfix;
     std::string topOperator;
     std::string functionStr;
     std::string variableStr;
@@ -84,7 +84,6 @@ void InfixToPostfixConverter::convert()
 
         if(i > 0 && input.substr(i-1, 1) != " ")
         {
-            //previous character found excludes white spaces
             lastCharacter = input.substr(i-1, 1);
         }
 
@@ -94,7 +93,7 @@ void InfixToPostfixConverter::convert()
             {
                 postfix+=nextCharacter;
             }
-            //is part of a function or variable name
+            //checking to see if alpha is  part of a function or a variable name
             else if(isalpha(input[i]))
             {
                 functionStr+=nextCharacter;
@@ -112,10 +111,7 @@ void InfixToPostfixConverter::convert()
             //operator or other characters found
             else
             {
-                //add a white space between each operand and each operator
-                postfix+=" ";
-
-                //handle variable names found before we handle operators
+                //handle the variables (if any) that were found before the operator
                 if(!variableStr.empty())
                 {
                     postfix+=variableStr;
@@ -125,6 +121,9 @@ void InfixToPostfixConverter::convert()
                     variableStr = "";
                     functionStr = "";
                 }
+
+                //add a white space between each operand and each operator
+                postfix+=" ";
 
                 //handle operators
                 if(nextCharacter == "^")
@@ -185,6 +184,7 @@ void InfixToPostfixConverter::convert()
         }// end if
     }//end for
 
+    //takes care of remaindered variables
     if(!variableStr.empty())
     {
         postfix+=variableStr;
@@ -195,6 +195,7 @@ void InfixToPostfixConverter::convert()
         functionStr = "";
     }
 
+    //takes care of remaindered operators
     while(!operatorStack.empty())
     {
         topOperator = operatorStack.top();
@@ -212,15 +213,16 @@ int InfixToPostfixConverter::getPrecedence(std::string op)
     if(op == "(" || op == ")")
         return 0;
     else if(op == "+" || op == "-")
-        return 1;
+        return 10;
     else if(op == "*" || op == "/")
-        return 2;
+        return 20;
     else if(op == "^")
-        return 3;
+        return 30;
     else if(op == "~")
-        return 4;
-    else if(op == "sin" || op == "cos" || op == "tan" || op == "ln")
-        return 5;
+        return 40;
+    //else if(op == "sin" || op == "cos" || op == "tan" || op == "ln")
+    else if(isFunction(op))
+        return 50;
 
     return -1;
 }

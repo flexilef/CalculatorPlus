@@ -3,7 +3,6 @@
 
 #include <iostream>
 
-
 class InputConverter
 {
     public:

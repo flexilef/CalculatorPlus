@@ -1,30 +1,51 @@
 #include <iostream>
 #include "../include/InfixToPostfixConverter.h"
+#include "../include/MathTokenizer.h"
 
 using namespace std;
+
+std::string removeWhiteSpace(std::string);
 
 int main()
 {
     cout << "Hello world!" << endl << endl;
 
     InfixToPostfixConverter ip;
+    cout << "Testing InfixToPostfixConverter... \n\n";
 
     cout << "1: Simple calculations with single digits \n";
-    cout << "infix: 1+2-3*4/5 \n";
-    cout << "postfix: 1 2 + 3 4 * 5 / - \n";
-    cout << "output: " << ip.convertToPostfix("1+2-3*4/5") << "\n";
+    cout << "infix  : 1+2-3*4/5 \n";
+    cout << "postfix: 12+34*5/- \n";
+    cout << "output1: " << removeWhiteSpace(ip.convertToPostfix("1+2-3*4/5")) << "\n";
+    cout << "output2: " << ip.convertToPostfix("1+2-3*4/5") << "\n";
     cout << endl;
 
     cout << "2: Simple calculations with multiple digits \n";
-    cout << "infix: 1+23-456*78/9 \n";
-    cout << "postfix: 1 23 + 456 78 * 9 / - \n";
-    cout << "output: " << ip.convertToPostfix("1+23-456*78/9") << "\n";
+    cout << "infix  : 1+23-456*78/9 \n";
+    cout << "postfix: 123+45678*9/- \n";
+    cout << "output1: " << removeWhiteSpace(ip.convertToPostfix("1+23-456*78/9")) << "\n";
+    cout << "output2: " << ip.convertToPostfix("1+23-456*78/9") << "\n";
     cout << endl;
 
     cout << "3: Simple calculations with variables \n";
-    cout << "infix: a+23-b*78/c \n";
-    cout << "postfix: a 23 + b 78 * c / - \n";
-    cout << "output: " << ip.convertToPostfix("a+23-b*78/c") << "\n";
+    cout << "infix  : a+23-b*78/c \n";
+    cout << "postfix: a23+b78*c/- \n";
+    cout << "output1: " << removeWhiteSpace(ip.convertToPostfix("a+23-b*78/c")) << "\n";
+    cout << "output2: " << ip.convertToPostfix("a+23-b*78/c") << "\n";
+    cout << endl;
+
+    cout << "4: Trig functions with numbers\n";
+    cout << "infix  : sin(5)+cos(20.7)*tan(35) \n";
+    cout << "postfix: 5sin20.7cos35tan*+ \n";
+    cout << "output : " << removeWhiteSpace(ip.convertToPostfix("sin(5)+cos(20.7)*tan(35)")) << "\n";
+    cout << "output : " << ip.convertToPostfix("sin(5)+cos(20.7)*tan(35)") << "\n";
+    cout << endl;
+
+    cout << "5: Trig functions with variables\n";
+    cout << "infix  : sin(a)+cos(20.77)*tan(number) \n";
+    cout << "postfix: asin20.77cosnumbertan*+ \n";
+    cout << "output : " << removeWhiteSpace(ip.convertToPostfix("sin(a)+cos(20.77)*tan(number)")) << "\n";
+    cout << "output : " << ip.convertToPostfix("sin(a)+cos(20.77)*tan(number)") << "\n";
     cout << endl;
     //test cases
     /*
@@ -77,9 +98,28 @@ int main()
     cout << endl;
     */
 
-    cout << ip.convertToPostfix("sin(20)");
+    cout << ip.convertToPostfix("1+2") << "\n";
 
     //cout << ip.evaluate("1.5 2 *") << "\n";
 
+
+    MathTokenizer tokenizer("abc+5*66");
+    tokenizer.tokenize();
+    tokenizer.dumpTokens();
+
     return 0;
+}
+
+std::string removeWhiteSpace(std::string str)
+{
+    std::string output;
+    int length = str.length();
+
+    for(int i = 0; i < length; i++)
+    {
+        if(str.substr(i, 1) != " ")
+            output+=str.substr(i, 1);
+    }
+
+    return output;
 }
