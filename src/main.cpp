@@ -47,6 +47,7 @@ int main()
     cout << "output1: " << removeWhiteSpace(ip.convertToPostfix("sin(a)+cos(20.77)*tan(number)")) << "\n";
     cout << "output2: " << ip.convertToPostfix("sin(a)+cos(20.77)*tan(number)") << "\n";
     cout << endl;
+
     //test cases
 /*
     cout << "1: \n";

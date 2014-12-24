@@ -6,7 +6,6 @@
 class Token
 {
     public:
-
         enum Type
         {
             UNUSED,
@@ -20,9 +19,7 @@ class Token
 
         /** Default constructor */
         Token();
-
         Token(const std::string&, Type);
-
         /** Default destructor */
         virtual ~Token();
 

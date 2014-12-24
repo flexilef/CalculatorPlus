@@ -73,7 +73,6 @@ void InfixToPostfixConverter::convert()
     std::string topOperator;
     std::string lastToken;
     int tokenIndex = 0;
-    bool isNegative = false;
 
     tokenizer.setInput(input);
 
@@ -127,24 +126,6 @@ void InfixToPostfixConverter::convert()
             }
             else
             {
-                //check for unary negation
-                if(currentToken.getString() == "-")
-                {
-                    if(tokenIndex == 0)
-                        isNegative = true;
-                    else if(isOperator(lastToken))
-                        isNegative = true;
-                    else if(lastToken == "(")
-                        isNegative = true;
-
-                    if(isNegative)
-                    {
-                        //change to internal representation of unary negation: ~
-                        //nextCharacter = "~";
-                        isNegative = false;
-                    }
-                }
-
                 while(!done && !operatorStack.empty())
                 {
                     topOperator = operatorStack.top();
@@ -175,148 +156,8 @@ void InfixToPostfixConverter::convert()
     }
 
     output = postfix;
-    /*
-    std::stack<std::string> operatorStack;
-    std::string postfix;
-    std::string topOperator;
-    std::string functionStr;
-    std::string variableStr;
-    int inputLength = input.length();
-    bool isNegative = false;
-
-
-    for(int i = 0; i < inputLength; i++)
-    {
-        bool done = false;
-        std::string nextCharacter = input.substr(i, 1);
-        std::string lastCharacter;
-
-        if(i > 0 && input.substr(i-1, 1) != " ")
-        {
-            lastCharacter = input.substr(i-1, 1);
-        }
-
-        if(nextCharacter != " ")
-        {
-            if(isNumber(nextCharacter))
-            {
-                postfix+=nextCharacter;
-            }
-            //checking to see if alpha is  part of a function or a variable name
-            else if(isalpha(input[i]))
-            {
-                functionStr+=nextCharacter;
-                variableStr+=nextCharacter;
-
-                if(isFunction(functionStr))
-                {
-                    operatorStack.push(functionStr);
-
-                    //reset them for future functions and variables
-                    functionStr = "";
-                    variableStr = "";
-                }
-            }
-            //operator or other characters found
-            else
-            {
-                //handle the variables (if any) that were found before the operator
-                if(!variableStr.empty())
-                {
-                    postfix+=variableStr;
-                    postfix+=" ";
-
-                    //reset them
-                    variableStr = "";
-                    functionStr = "";
-                }
-
-                //add a white space between each operand and each operator
-                postfix+=" ";
-
-                //handle operators
-                if(nextCharacter == "^")
-                    operatorStack.push(nextCharacter);
-                else if(isOperator(nextCharacter))
-                {
-                    //check for unary negation
-                    if(nextCharacter == "-")
-                    {
-                        if(i == 0)
-                            isNegative = true;
-                        else if(isOperator(lastCharacter))
-                            isNegative = true;
-                        else if(lastCharacter == "(")
-                            isNegative = true;
-
-                        if(isNegative)
-                        {
-                            //change to internal representation of unary negation: ~
-                            nextCharacter = "~";
-                            isNegative = false;
-                        }
-                    }
-
-                    while(!done && !operatorStack.empty())
-                    {
-                        topOperator = operatorStack.top();
-
-                        if(getPrecedence(nextCharacter) <= getPrecedence(topOperator))
-                        {
-                            postfix+=topOperator;
-                            postfix+=" ";
-                            operatorStack.pop();
-                        }
-                        else
-                            done = true;
-                    }
-                    operatorStack.push(nextCharacter);
-                }
-                else if(nextCharacter == "(")
-                {
-                    operatorStack.push(nextCharacter);
-                }
-                else if(nextCharacter == ")")
-                {
-                    topOperator = operatorStack.top();
-                    operatorStack.pop();
-
-                    while(topOperator != "(")
-                    {
-                        postfix+=topOperator;
-                        postfix+=" ";
-                        topOperator = operatorStack.top();
-                        operatorStack.pop();
-                    }
-                }
-            }
-        }// end if
-    }//end for
-
-    //takes care of remaindered variables
-    if(!variableStr.empty())
-    {
-        postfix+=variableStr;
-        postfix+=" ";
-
-        //reset them
-        variableStr = "";
-        functionStr = "";
-    }
-
-    //takes care of remaindered operators
-    while(!operatorStack.empty())
-    {
-        topOperator = operatorStack.top();
-        operatorStack.pop();
-
-        postfix+=" ";
-        postfix+=topOperator;
-    }
-
-    output = postfix;
-    */
 }
+
 int InfixToPostfixConverter::getPrecedence(const std::string &op)
 {
     if(op == "(" || op == ")")
@@ -329,7 +170,6 @@ int InfixToPostfixConverter::getPrecedence(const std::string &op)
         return 30;
     else if(op == "~")
         return 40;
-    //else if(op == "sin" || op == "cos" || op == "tan" || op == "ln")
     else if(isFunction(op))
         return 50;
 
@@ -351,7 +191,7 @@ bool InfixToPostfixConverter::isNumber(const std::string &str)
 
 bool InfixToPostfixConverter::isOperator(const std::string &str)
 {
-    std::string operators[10] = {"+", "-", "~", "*", "/", "^", "sin", "cos", "tan"};
+    std::string operators[10] = {"+", "-", "~", "*", "/", "^"};
 
     if(!str.empty())
     {

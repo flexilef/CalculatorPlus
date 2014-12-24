@@ -30,11 +30,12 @@ Token MathTokenizer::getNextToken()
 {
     if(!tokens.empty() && tokenIndex < tokens.size())
     {
+        Token nextToken = tokens[tokenIndex];
+
         //update tokenIndex
         tokenIndex++;
 
-        //tokenIndex-1 because we updated it before returning
-        return tokens[tokenIndex-1];
+        return nextToken;
     }
 
     return Token("", Token::UNUSED);
@@ -47,6 +48,7 @@ void MathTokenizer::tokenize()
     std::string operatorStr;
     std::string functionStr;
     int length = input.length();
+    bool isNegative = false;
 
     for(int index = 0; index < length; index++)
     {
@@ -88,6 +90,14 @@ void MathTokenizer::tokenize()
             }
             else if(isFunction(functionStr))
             {
+                /**
+                *Note that later on, if you want to implement auto multiplication such as
+                *5cos(30) = 5*cos(30), just do...
+                *if(!numberStr.empty())
+                *{
+                *   tokens.push_back(Token("*", Token::OPERATOR));
+                *}
+                */
                 std::cout << "FUNC1 ";
                 tokens.push_back(Token(functionStr, Token::FUNCTION));
 
@@ -98,7 +108,17 @@ void MathTokenizer::tokenize()
         }
         else if(isOperator(currentCharacter))
         {
-            //TODO: for var with num check: if previous token is a variable containing both number and alpha
+            /**
+            *Note that later on, if you want to implement variable names that accept both
+            *alpha and numberical values, just check...
+            *if(!numberStr.empty() && !variableStr.empty())
+            *{
+            *   tokens.push_back(Token(variableStr, Token::VARIABLE));
+            *}
+            *take note however that the if statement that checks if currentChar is a number
+            *must also do...
+            *variableStr+=currentCharacter;
+            */
 
             //handle any tokens found before the single operator is found
             if(!variableStr.empty())
@@ -120,7 +140,26 @@ void MathTokenizer::tokenize()
             }
 
             std::cout << "OP2 ";
-            //now handle the single operator
+            //now handle the single operators
+
+            //handle special case of unary (this adds complexity to MathTokenizer,
+            //but until a less messy way is found, tokenizer will worry about converting unaries AND tokenizing
+            if(currentCharacter == "-")
+            {
+                if(index == 0)
+                    isNegative = true;
+                else if(isOperator(lastCharacter))
+                    isNegative = true;
+                else if(lastCharacter == "(")
+                    isNegative = true;
+
+                if(isNegative)
+                {
+                    //change to internal representation of unary negation: ~
+                    currentCharacter = "~";
+                    isNegative = false;
+                }
+            }
             tokens.push_back(Token(currentCharacter, Token::OPERATOR));
         }
     }
@@ -173,7 +212,6 @@ void MathTokenizer::dumpTokens()
         std::cout << tokens[i].tokenType << " ";
     }
 }
-
 
 bool MathTokenizer::isNumber(const std::string &str)
 {
