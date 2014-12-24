@@ -5,7 +5,7 @@ Token::Token()
     tokenString = "";
 }
 
-Token::Token(std::string str, Type type)
+Token::Token(const std::string &str, Type type)
 {
     tokenString = str;
     tokenType = type;

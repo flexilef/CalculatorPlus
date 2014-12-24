@@ -15,7 +15,7 @@ InfixToPostfixConverter::~InfixToPostfixConverter()
     //dtor
 }
 
-double InfixToPostfixConverter::evaluate(const std::string postfix)
+double InfixToPostfixConverter::evaluate(const std::string &postfix)
 {
     std::stack<double> valueStack;
 
@@ -58,7 +58,7 @@ double InfixToPostfixConverter::evaluate(const std::string postfix)
     return result;
 }
 
-std::string InfixToPostfixConverter::convertToPostfix(const std::string infix)
+std::string InfixToPostfixConverter::convertToPostfix(const std::string &infix)
 {
     input = infix;
     convert();
@@ -71,10 +71,119 @@ void InfixToPostfixConverter::convert()
     std::stack<std::string> operatorStack;
     std::string postfix;
     std::string topOperator;
+    std::string lastToken;
+    int tokenIndex = 0;
+    bool isNegative = false;
+
+    tokenizer.setInput(input);
+
+    while(tokenizer.hasNext())
+    {
+        bool done = false;
+        Token currentToken = tokenizer.getNextToken();
+
+        if(currentToken.tokenType == Token::NUMBER)
+        {
+            postfix+=currentToken.getString();
+            postfix+=" ";
+            lastToken = currentToken.getString();
+        }
+        else if(currentToken.tokenType == Token::FUNCTION)
+        {
+            operatorStack.push(currentToken.getString());
+            lastToken = currentToken.getString();
+
+        }
+        else if(currentToken.tokenType == Token::VARIABLE)
+        {
+            postfix+=currentToken.getString();
+            postfix+=" ";
+            lastToken = currentToken.getString();
+
+        }
+        else if(currentToken.tokenType == Token::OPERATOR)
+        {
+            if(currentToken.getString() == "^")
+            {
+                operatorStack.push(currentToken.getString());
+                lastToken = currentToken.getString();
+            }
+            else if(currentToken.getString() == "(")
+            {
+                operatorStack.push(currentToken.getString());
+            }
+            else if(currentToken.getString() == ")")
+            {
+                topOperator = operatorStack.top();
+                operatorStack.pop();
+
+                while(topOperator != "(")
+                {
+                    postfix+=topOperator;
+                    postfix+=" ";
+                    topOperator = operatorStack.top();
+                    operatorStack.pop();
+                }
+            }
+            else
+            {
+                //check for unary negation
+                if(currentToken.getString() == "-")
+                {
+                    if(tokenIndex == 0)
+                        isNegative = true;
+                    else if(isOperator(lastToken))
+                        isNegative = true;
+                    else if(lastToken == "(")
+                        isNegative = true;
+
+                    if(isNegative)
+                    {
+                        //change to internal representation of unary negation: ~
+                        //nextCharacter = "~";
+                        isNegative = false;
+                    }
+                }
+
+                while(!done && !operatorStack.empty())
+                {
+                    topOperator = operatorStack.top();
+
+                    if(getPrecedence(currentToken.getString()) <= getPrecedence(topOperator))
+                    {
+                        postfix+=topOperator;
+                        postfix+=" ";
+                        operatorStack.pop();
+                    }
+                    else
+                        done = true;
+                }
+
+                operatorStack.push(currentToken.getString());
+            }
+        }
+    }
+
+    //takes care of remaindered operators
+    while(!operatorStack.empty())
+    {
+        topOperator = operatorStack.top();
+        operatorStack.pop();
+
+        postfix+=" ";
+        postfix+=topOperator;
+    }
+
+    output = postfix;
+    /*
+    std::stack<std::string> operatorStack;
+    std::string postfix;
+    std::string topOperator;
     std::string functionStr;
     std::string variableStr;
     int inputLength = input.length();
     bool isNegative = false;
+
 
     for(int i = 0; i < inputLength; i++)
     {
@@ -206,9 +315,9 @@ void InfixToPostfixConverter::convert()
     }
 
     output = postfix;
+    */
 }
-
-int InfixToPostfixConverter::getPrecedence(std::string op)
+int InfixToPostfixConverter::getPrecedence(const std::string &op)
 {
     if(op == "(" || op == ")")
         return 0;
@@ -232,7 +341,7 @@ int InfixToPostfixConverter::getPrecedence(std::string op)
 *@param character  the char we are checking
 *@return true  if character is a number, letter, or a period, otherwise false
 */
-bool InfixToPostfixConverter::isNumber(const std::string str)
+bool InfixToPostfixConverter::isNumber(const std::string &str)
 {
     if(isdigit(str[0]) || str == ".")
         return true;
@@ -240,7 +349,7 @@ bool InfixToPostfixConverter::isNumber(const std::string str)
     return false;
 }
 
-bool InfixToPostfixConverter::isOperator(const std::string str)
+bool InfixToPostfixConverter::isOperator(const std::string &str)
 {
     std::string operators[10] = {"+", "-", "~", "*", "/", "^", "sin", "cos", "tan"};
 
@@ -256,7 +365,7 @@ bool InfixToPostfixConverter::isOperator(const std::string str)
     return false;
 }
 
-bool InfixToPostfixConverter::isFunction(const std::string str)
+bool InfixToPostfixConverter::isFunction(const std::string &str)
 {
     std::string functions[10] = {"sin", "cos", "tan", "ln"};
 

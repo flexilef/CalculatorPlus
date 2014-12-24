@@ -9,6 +9,7 @@ class Token
 
         enum Type
         {
+            UNUSED,
             NUMBER,
             VARIABLE,
             OPERATOR,
@@ -20,7 +21,7 @@ class Token
         /** Default constructor */
         Token();
 
-        Token(std::string, Type);
+        Token(const std::string&, Type);
 
         /** Default destructor */
         virtual ~Token();

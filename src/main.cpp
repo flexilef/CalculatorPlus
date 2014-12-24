@@ -37,18 +37,18 @@ int main()
     cout << "4: Trig functions with numbers\n";
     cout << "infix  : sin(5)+cos(20.7)*tan(35) \n";
     cout << "postfix: 5sin20.7cos35tan*+ \n";
-    cout << "output : " << removeWhiteSpace(ip.convertToPostfix("sin(5)+cos(20.7)*tan(35)")) << "\n";
-    cout << "output : " << ip.convertToPostfix("sin(5)+cos(20.7)*tan(35)") << "\n";
+    cout << "output1: " << removeWhiteSpace(ip.convertToPostfix("sin(5)+cos(20.7)*tan(35)")) << "\n";
+    cout << "output2: " << ip.convertToPostfix("sin(5)+cos(20.7)*tan(35)") << "\n";
     cout << endl;
 
     cout << "5: Trig functions with variables\n";
     cout << "infix  : sin(a)+cos(20.77)*tan(number) \n";
     cout << "postfix: asin20.77cosnumbertan*+ \n";
-    cout << "output : " << removeWhiteSpace(ip.convertToPostfix("sin(a)+cos(20.77)*tan(number)")) << "\n";
-    cout << "output : " << ip.convertToPostfix("sin(a)+cos(20.77)*tan(number)") << "\n";
+    cout << "output1: " << removeWhiteSpace(ip.convertToPostfix("sin(a)+cos(20.77)*tan(number)")) << "\n";
+    cout << "output2: " << ip.convertToPostfix("sin(a)+cos(20.77)*tan(number)") << "\n";
     cout << endl;
     //test cases
-    /*
+/*
     cout << "1: \n";
     cout << "infix: ((a*b)+(c/d)) \n";
     cout << "postfix: a b * c d / +\n";
@@ -96,16 +96,11 @@ int main()
     cout << "postfix: 3 e 2 ^ ln * 8 60 cos * + 3 4 0.5 ^ * 1 - / \n";
     cout << "output: " << ip.convertToPostfix("(3 * ln(e^2) + 8 * cos(60)) / (3 * 4^0.5 - 1)") << "\n";
     cout << endl;
-    */
+*/
 
     cout << ip.convertToPostfix("1+2") << "\n";
 
     //cout << ip.evaluate("1.5 2 *") << "\n";
-
-
-    MathTokenizer tokenizer("abc+5*66");
-    tokenizer.tokenize();
-    tokenizer.dumpTokens();
 
     return 0;
 }
