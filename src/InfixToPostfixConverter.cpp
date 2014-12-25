@@ -1,4 +1,5 @@
 #include "../include/InfixToPostfixConverter.h"
+#include "../include/CalculatorUtil.h"
 
 #include <cctype>
 #include <stack>
@@ -15,49 +16,6 @@ InfixToPostfixConverter::~InfixToPostfixConverter()
     //dtor
 }
 
-double InfixToPostfixConverter::evaluate(const std::string &postfix)
-{
-    std::stack<double> valueStack;
-
-    double result = 0;
-
-    int inputLength = postfix.length();
-
-    std::string numberStr;
-
-    for(int i = 0; i < inputLength; i++)
-    {
-        if(isNumber(postfix.substr(i, 1)))
-        {
-            numberStr+=postfix[i];
-        }
-
-        else if(postfix.substr(i, 1) == " " && !numberStr.empty())
-        {
-            //operand is ready to be pushed
-            double value = atof(numberStr.c_str());
-            valueStack.push(value);
-
-            //result number
-            numberStr = "";
-        }
-
-        else if(isOperator(postfix.substr(i, 1)))
-        {
-            double operandTwo = valueStack.top();
-            valueStack.pop();
-
-            double operandOne = valueStack.top();
-            valueStack.pop();
-
-            result = operandOne*operandTwo;
-            valueStack.push(result);
-        }
-    }
-
-    return result;
-}
-
 std::string InfixToPostfixConverter::convertToPostfix(const std::string &infix)
 {
     input = infix;
@@ -71,7 +29,8 @@ void InfixToPostfixConverter::convert()
     std::stack<std::string> operatorStack;
     std::string postfix;
     std::string topOperator;
-    std::string lastToken;
+    std::string lastTokenStr;
+    std::string currentTokenStr;
     int tokenIndex = 0;
 
     tokenizer.setInput(input);
@@ -80,38 +39,38 @@ void InfixToPostfixConverter::convert()
     {
         bool done = false;
         Token currentToken = tokenizer.getNextToken();
+        currentTokenStr = currentToken.getString();
 
         if(currentToken.tokenType == Token::NUMBER)
         {
-            postfix+=currentToken.getString();
+            postfix+=currentTokenStr;
             postfix+=" ";
-            lastToken = currentToken.getString();
+            lastTokenStr = currentTokenStr;
         }
         else if(currentToken.tokenType == Token::FUNCTION)
         {
-            operatorStack.push(currentToken.getString());
-            lastToken = currentToken.getString();
-
+            operatorStack.push(currentTokenStr);
+            lastTokenStr = currentTokenStr;
         }
         else if(currentToken.tokenType == Token::VARIABLE)
         {
-            postfix+=currentToken.getString();
+            postfix+=currentTokenStr;
             postfix+=" ";
-            lastToken = currentToken.getString();
+            lastTokenStr = currentTokenStr;
 
         }
         else if(currentToken.tokenType == Token::OPERATOR)
         {
-            if(currentToken.getString() == "^")
+            if(currentTokenStr == "^")
             {
-                operatorStack.push(currentToken.getString());
-                lastToken = currentToken.getString();
+                operatorStack.push(currentTokenStr);
+                lastTokenStr = currentTokenStr;
             }
-            else if(currentToken.getString() == "(")
+            else if(currentTokenStr == "(")
             {
-                operatorStack.push(currentToken.getString());
+                operatorStack.push(currentTokenStr);
             }
-            else if(currentToken.getString() == ")")
+            else if(currentTokenStr == ")")
             {
                 topOperator = operatorStack.top();
                 operatorStack.pop();
@@ -130,7 +89,7 @@ void InfixToPostfixConverter::convert()
                 {
                     topOperator = operatorStack.top();
 
-                    if(getPrecedence(currentToken.getString()) <= getPrecedence(topOperator))
+                    if(CalculatorUtil::getPrecedence(currentTokenStr) <= CalculatorUtil::getPrecedence(topOperator))
                     {
                         postfix+=topOperator;
                         postfix+=" ";
@@ -140,7 +99,7 @@ void InfixToPostfixConverter::convert()
                         done = true;
                 }
 
-                operatorStack.push(currentToken.getString());
+                operatorStack.push(currentTokenStr);
             }
         }
     }
@@ -156,67 +115,4 @@ void InfixToPostfixConverter::convert()
     }
 
     output = postfix;
-}
-
-int InfixToPostfixConverter::getPrecedence(const std::string &op)
-{
-    if(op == "(" || op == ")")
-        return 0;
-    else if(op == "+" || op == "-")
-        return 10;
-    else if(op == "*" || op == "/")
-        return 20;
-    else if(op == "^")
-        return 30;
-    else if(op == "~")
-        return 40;
-    else if(isFunction(op))
-        return 50;
-
-    return -1;
-}
-
-/**
-*Task: Checks whether a character is considered a valid operand.
-*@param character  the char we are checking
-*@return true  if character is a number, letter, or a period, otherwise false
-*/
-bool InfixToPostfixConverter::isNumber(const std::string &str)
-{
-    if(isdigit(str[0]) || str == ".")
-        return true;
-
-    return false;
-}
-
-bool InfixToPostfixConverter::isOperator(const std::string &str)
-{
-    std::string operators[10] = {"+", "-", "~", "*", "/", "^"};
-
-    if(!str.empty())
-    {
-        for(int i = 0; i < 10; i++)
-        {
-            if(str == operators[i])
-                return true;
-        }
-    }
-
-    return false;
-}
-
-bool InfixToPostfixConverter::isFunction(const std::string &str)
-{
-    std::string functions[10] = {"sin", "cos", "tan", "ln"};
-
-    if(!str.empty())
-    {
-        for(int i = 0; i < 10; i++)
-        {
-            if(functions[i] == str)
-                return true;
-        }
-    }
-
-    return false;
 }

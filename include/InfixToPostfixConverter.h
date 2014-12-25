@@ -13,16 +13,11 @@ public:
     virtual ~InfixToPostfixConverter();
 
     std::string convertToPostfix(const std::string&);
-    double evaluate(const std::string&);
 
 private:
     MathTokenizer tokenizer;
 
     void convert();
-    int getPrecedence(const std::string&);
-    bool isNumber(const std::string&);
-    bool isOperator(const std::string&);
-    bool isFunction(const std::string&);
 };
 
 #endif // INFIXTOPOSTFIXCONVERTER_H

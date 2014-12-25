@@ -1,4 +1,5 @@
 #include "../include/MathTokenizer.h"
+#include "CalculatorUtil.cpp"
 
 MathTokenizer::MathTokenizer()
 {
@@ -38,6 +39,7 @@ Token MathTokenizer::getNextToken()
         return nextToken;
     }
 
+    //might want to change this later
     return Token("", Token::UNUSED);
 }
 
@@ -60,19 +62,20 @@ void MathTokenizer::tokenize()
             lastCharacter = input.substr(index - 1, 1);
         }
 
-        if(isNumber(currentCharacter))
+        //begin tokenizing...
+        if(CalculatorUtil::isNumber(currentCharacter))
         {
             numberStr+=currentCharacter;
-
         }
         else if(isalpha(input[index]))
         {
+            //could be either one of these three
             variableStr+=currentCharacter;
             operatorStr+=currentCharacter;
             functionStr+=currentCharacter;
 
             //handle operators and functions before single operators are found
-            if(isOperator(operatorStr))
+            if(CalculatorUtil::isOperator(operatorStr))
             {
                 if(!numberStr.empty())
                 {
@@ -88,7 +91,7 @@ void MathTokenizer::tokenize()
                 operatorStr = "";
                 functionStr = "";
             }
-            else if(isFunction(functionStr))
+            else if(CalculatorUtil::isFunction(functionStr))
             {
                 /**
                 *Note that later on, if you want to implement auto multiplication such as
@@ -106,11 +109,11 @@ void MathTokenizer::tokenize()
                 functionStr = "";
             }
         }
-        else if(isOperator(currentCharacter))
+        else if(CalculatorUtil::isOperator(currentCharacter))
         {
             /**
             *Note that later on, if you want to implement variable names that accept both
-            *alpha and numberical values, just check...
+            *alpha and numerical values, just check...
             *if(!numberStr.empty() && !variableStr.empty())
             *{
             *   tokens.push_back(Token(variableStr, Token::VARIABLE));
@@ -148,7 +151,7 @@ void MathTokenizer::tokenize()
             {
                 if(index == 0)
                     isNegative = true;
-                else if(isOperator(lastCharacter))
+                else if(CalculatorUtil::isOperator(lastCharacter))
                     isNegative = true;
                 else if(lastCharacter == "(")
                     isNegative = true;
@@ -211,44 +214,4 @@ void MathTokenizer::dumpTokens()
         std::cout << tokens[i].getString() << ":";
         std::cout << tokens[i].tokenType << " ";
     }
-}
-
-bool MathTokenizer::isNumber(const std::string &str)
-{
-    if(isdigit(str[0]) || str == ".")
-        return true;
-
-    return false;
-}
-
-bool MathTokenizer::isOperator(const std::string &str)
-{
-    std::string operators[20] = {"+", "-", "~", "*", "/", "^", "(", ")"};
-
-    if(!str.empty())
-    {
-        for(int i = 0; i < 20; i++)
-        {
-            if(str == operators[i])
-                return true;
-        }
-    }
-
-    return false;
-}
-
-bool MathTokenizer::isFunction(const std::string &str)
-{
-    std::string functions[10] = {"sin", "cos", "tan", "ln"};
-
-    if(!str.empty())
-    {
-        for(int i = 0; i < 10; i++)
-        {
-            if(functions[i] == str)
-                return true;
-        }
-    }
-
-    return false;
 }

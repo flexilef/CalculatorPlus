@@ -28,9 +28,6 @@ private:
     int tokenIndex;
 
     void tokenize();
-    bool isNumber(const std::string&);
-    bool isOperator(const std::string&);
-    bool isFunction(const std::string&);
 };
 
 #endif // MATHTOKENIZER_H

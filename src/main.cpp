@@ -99,7 +99,7 @@ int main()
     cout << endl;
 */
 
-    cout << ip.convertToPostfix("1+2") << "\n";
+    cout << ip.convertToPostfix("1+2*3") << "\n";
 
     //cout << ip.evaluate("1.5 2 *") << "\n";
 
