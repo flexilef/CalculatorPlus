@@ -21,7 +21,7 @@ MathTokenizer::~MathTokenizer()
 
 bool MathTokenizer::hasNext()
 {
-    if(tokenIndex < tokens.size())
+    if(!tokens.empty() && tokenIndex < tokens.size())
         return true;
 
     return false;
@@ -29,11 +29,9 @@ bool MathTokenizer::hasNext()
 
 Token MathTokenizer::getNextToken()
 {
-    if(!tokens.empty() && tokenIndex < tokens.size())
+    if(hasNext())
     {
         Token nextToken = tokens[tokenIndex];
-
-        //update tokenIndex
         tokenIndex++;
 
         return nextToken;
@@ -151,7 +149,7 @@ void MathTokenizer::tokenize()
             {
                 if(index == 0)
                     isNegative = true;
-                else if(CalculatorUtil::isOperator(lastCharacter))
+                else if(CalculatorUtil::isOperator(lastCharacter) && lastCharacter != ")")
                     isNegative = true;
                 else if(lastCharacter == "(")
                     isNegative = true;
@@ -191,6 +189,7 @@ void MathTokenizer::tokenize()
 
 void MathTokenizer::setInput(const std::string &str)
 {
+    clear();    //don't forget to reset everything
     input = str;
     tokenize();
 }

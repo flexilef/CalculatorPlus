@@ -2,8 +2,8 @@
 #include "../include/InfixToPostfixConverter.h"
 #include "../include/MathTokenizer.h"
 
+#include <stdlib.h>
 using namespace std;
-
 std::string removeWhiteSpace(std::string);
 
 int main()
@@ -99,9 +99,15 @@ int main()
     cout << endl;
 */
 
-    cout << ip.convertToPostfix("1+2*3") << "\n";
+    cout << ip.convertToPostfix("52+(1+2)*4-3") << "\n";
+    cout << ip.convertToPostfix("52+((1+2)*4)-3") << "\n";
+    cout << ip.convertToPostfix("(52+1+2)*4-3") << "\n";
 
-    //cout << ip.evaluate("1.5 2 *") << "\n";
+    MathTokenizer tokenizer("52+(1+2)*4-3");
+    tokenizer.dumpTokens();
+    tokenizer.setInput("52+((1+2)*4)-3");
+    tokenizer.dumpTokens();
+
 
     return 0;
 }

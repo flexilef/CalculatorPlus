@@ -11,7 +11,7 @@ bool CalculatorUtil::isNumber(const std::string &str)
 bool CalculatorUtil::isOperator(const std::string &str)
 {
     const int LENGTH = 20;
-    std::string operators[LENGTH] = {"+", "-", "~", "*", "/", "^", "(", ")", "%", "!", "E"};
+    std::string operators[LENGTH] = {"+", "-", "~", "*", "/", "^", "(", ")", "!", "E", "="};
 
     if(!str.empty())
     {
@@ -52,7 +52,7 @@ int CalculatorUtil::getPrecedence(const std::string &op)
         return 20;
     else if(op == "^")
         return 30;
-    else if(op == "~")
+    else if(op == "~" || op == "E" || op == "!")
         return 40;
     else if(CalculatorUtil::isFunction(op))
         return 50;

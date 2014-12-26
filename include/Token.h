@@ -10,9 +10,9 @@ class Token
         {
             UNUSED,
             NUMBER,
-            VARIABLE,
-            OPERATOR,
-            FUNCTION,
+            VARIABLE,//is constant?
+            OPERATOR,//is unary, binary?
+            FUNCTION,//is argument: single, double, etc?
         };
 
         Type tokenType;

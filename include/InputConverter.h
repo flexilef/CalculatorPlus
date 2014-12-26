@@ -15,17 +15,13 @@ class InputConverter
         virtual ~InputConverter();
 
         virtual void convert() = 0;
-
         std::string getInput();
-
         void setInput(const std::string&);
-
         std::string getOutput();
 
     protected:
 
         std::string input;
-
         std::string output;
 
     private:
