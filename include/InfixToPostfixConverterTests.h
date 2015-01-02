@@ -12,14 +12,27 @@ class InfixToPostfixConverterTests
         /** Default destructor */
         virtual ~InfixToPostfixConverterTests();
 
-        void runTests();
+        void runTests();//prints out the totals for testsRun and failed
     protected:
     private:
-        InfixToPostfixConverter testConverter;
-        std::vector<std::string> testInputs;
+        InfixToPostfixConverter converter;
+        int totalTestsRun;
+        int totalTestsFailed;
 
-        std::string convertToPostfix_emptyStringInput_returnEmptyString();
-        std::string convertToPostfix_postfixValidity_returnPostfixExpression();
+        //all these tests will be testing literals/variables/radix char which can be either negative/positive
+        //test type -> type of inputs -> neg or pos
+
+        void convertToPostfix_constants_returnPostfixExpression();
+        void convertToPostfix_unaryOperators_returnPostfixExpression();
+        void convertToPostfix_binaryOperators_returnPostfixExpression();
+        void convertToPostfix_basicFunctions_returnPostfixExpression();
+        void convertToPostfix_trigFunctions_returnPostfixExpression();
+        void convertToPostfix_miscInputs_returnPostfixExpression();
+
+        //helpers
+        bool checkPostfix(const std::string, const std::string);
+        std::string removeExtraWhiteSpace(const std::string);
+
 };
 
 #endif // INFIXTOPOSTFIXCONVERTERTESTS_H

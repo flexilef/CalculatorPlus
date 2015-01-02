@@ -61,12 +61,7 @@ void InfixToPostfixConverter::convert()
         }
         else if(currentToken.tokenType == Token::OPERATOR)
         {
-            if(currentTokenStr == "^")
-            {
-                operatorStack.push(currentTokenStr);
-                lastTokenStr = currentTokenStr;
-            }
-            else if(currentTokenStr == "(")
+            if(currentTokenStr == "(")
             {
                 operatorStack.push(currentTokenStr);
             }
@@ -98,7 +93,6 @@ void InfixToPostfixConverter::convert()
                     else
                         done = true;
                 }
-
                 operatorStack.push(currentTokenStr);
             }
         }

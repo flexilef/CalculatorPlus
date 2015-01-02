@@ -11,7 +11,7 @@ bool CalculatorUtil::isNumber(const std::string &str)
 bool CalculatorUtil::isOperator(const std::string &str)
 {
     const int LENGTH = 20;
-    std::string operators[LENGTH] = {"+", "-", "~", "*", "/", "^", "(", ")", "!", "E", "="};
+    std::string operators[LENGTH] = {"(", ")", "+", "-", "*", "/", "^", "~", "E", "!", "="};
 
     if(!str.empty())
     {
@@ -28,7 +28,7 @@ bool CalculatorUtil::isOperator(const std::string &str)
 bool CalculatorUtil::isFunction(const std::string &str)
 {
     const int LENGTH = 20;
-    std::string functions[LENGTH] = {"sin", "cos", "tan", "ln", "log", "sqrt", "exp"};
+    std::string functions[LENGTH] = {"abs", "acos", "asin", "atan", "cbrt", "cos", "exp", "ln", "log", "sin", "sqrt", "tan"};
 
     if(!str.empty())
     {
@@ -50,7 +50,7 @@ int CalculatorUtil::getPrecedence(const std::string &op)
         return 10;
     else if(op == "*" || op == "/")
         return 20;
-    else if(op == "^")
+    else if(op == "^") //note: ^ has to be less than ~ or else expressions like "1^-2" will convert to 1 ^ 2 ~
         return 30;
     else if(op == "~" || op == "E" || op == "!")
         return 40;
