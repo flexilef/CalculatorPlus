@@ -12,6 +12,7 @@ int main()
     cout << "Hello world!" << endl << endl;
 
     InfixToPostfixConverter ip;
+    MathTokenizer t;
     cout << "Testing InfixToPostfixConverter... \n\n";
     /*
         cout << "1: Simple calculations with single digits \n";
@@ -110,8 +111,12 @@ int main()
 
     InfixToPostfixConverterTests testIP;
     testIP.runTests();
-    cout << ip.convertToPostfix("122") << "\n";
-    cout << removeExtraWhiteSpace(ip.convertToPostfix("122")) << "\n";
+    cout << removeExtraWhiteSpace(ip.convertToPostfix("(4 + 2 * 5) / -(1 + 3 * 2)")) << "\n";
+    cout << removeExtraWhiteSpace(ip.convertToPostfix("(4 + 2 * 5) /-(1 + 3 * 2)")) << "\n";
+    cout << removeExtraWhiteSpace(ip.convertToPostfix("abc  = (1+ 2)*3 ")) << "\n";
+
+    t.setInput("aE5");
+    t.dumpTokens();
 
     return 0;
 }

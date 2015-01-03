@@ -65,24 +65,24 @@ void MathTokenizer::tokenize()
         {
             numberStr+=currentCharacter;
         }
-        else if(isalpha(input[index]))
+        else if(isalpha(input[index]) && !CalculatorUtil::isOperator(currentCharacter))
         {
             //could be either one of these three
-            variableStr+=currentCharacter;
             operatorStr+=currentCharacter;
             functionStr+=currentCharacter;
+            variableStr+=currentCharacter;
 
             //handle operators and functions before single operators are found
             if(CalculatorUtil::isOperator(operatorStr))
             {
                 if(!numberStr.empty())
                 {
-                    std::cout << "NUM1 ";
+                    //std::cout << "NUM1 ";
                     tokens.push_back(Token(numberStr, Token::NUMBER));
                     numberStr = "";
                 }
 
-                std::cout << "OP1 ";
+                //std::cout << "OP1 ";
                 tokens.push_back(Token(operatorStr, Token::OPERATOR));
 
                 variableStr = "";
@@ -99,7 +99,7 @@ void MathTokenizer::tokenize()
                 *   tokens.push_back(Token("*", Token::OPERATOR));
                 *}
                 */
-                std::cout << "FUNC1 ";
+                //std::cout << "FUNC1 ";
                 tokens.push_back(Token(functionStr, Token::FUNCTION));
 
                 variableStr = "";
@@ -124,7 +124,7 @@ void MathTokenizer::tokenize()
             //handle any tokens found before the single operator is found
             if(!variableStr.empty())
             {
-                std::cout << "VAR1 ";
+                //std::cout << "VAR1 ";
                 //found variable token
                 tokens.push_back(Token(variableStr, Token::VARIABLE));
                 //reset them
@@ -135,12 +135,12 @@ void MathTokenizer::tokenize()
 
             if(!numberStr.empty())
             {
-                std::cout << "NUM2 ";
+                //std::cout << "NUM2 ";
                 tokens.push_back(Token(numberStr, Token::NUMBER));
                 numberStr = "";
             }
 
-            std::cout << "OP2 ";
+            //std::cout << "OP2 ";
             //now handle the single operators
 
             //handle special case of unary (this adds complexity to MathTokenizer,
@@ -168,7 +168,7 @@ void MathTokenizer::tokenize()
     //reached end of input. Handle the last token
     if(!variableStr.empty())
     {
-        std::cout << "VAR2 ";
+        //std::cout << "VAR2 ";
         //found variable token
         tokens.push_back(Token(variableStr, Token::VARIABLE));
         //reset them
@@ -179,7 +179,7 @@ void MathTokenizer::tokenize()
 
     if(!numberStr.empty())
     {
-        std::cout << "NUM3 ";
+        //std::cout << "NUM3 ";
         tokens.push_back(Token(numberStr, Token::NUMBER));
         numberStr = "";
     }

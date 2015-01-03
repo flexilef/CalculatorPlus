@@ -8,7 +8,7 @@ class Token
     public:
         enum Type
         {
-            UNUSED,
+            UNUSED = 0,
             NUMBER,
             VARIABLE,//is constant?
             OPERATOR,//is unary, binary?

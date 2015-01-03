@@ -28,10 +28,11 @@ class InfixToPostfixConverterTests
         void convertToPostfix_basicFunctions_returnPostfixExpression();
         void convertToPostfix_trigFunctions_returnPostfixExpression();
         void convertToPostfix_miscInputs_returnPostfixExpression();
+        void convertToPostfix_whiteSpace_returnPostfixExpression();
 
         //helpers
-        bool checkPostfix(const std::string, const std::string);
-        std::string removeExtraWhiteSpace(const std::string);
+        void checkPostfix(const std::string&, const std::string&, const std::string&);
+        std::string removeExtraWhiteSpace(const std::string&);
 
 };
 

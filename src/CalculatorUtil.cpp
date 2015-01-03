@@ -46,12 +46,14 @@ int CalculatorUtil::getPrecedence(const std::string &op)
 {
     if(op == "(" || op == ")")
         return 0;
+    else if(op == "=")
+        return 5;
     else if(op == "+" || op == "-")
         return 10;
     else if(op == "*" || op == "/")
         return 20;
-    else if(op == "^") //note: ^ has to be less than ~ or else expressions like "1^-2" will convert to 1 ^ 2 ~
-        return 30;
+    else if(op == "^")
+        return 60;
     else if(op == "~" || op == "E" || op == "!")
         return 40;
     else if(CalculatorUtil::isFunction(op))
