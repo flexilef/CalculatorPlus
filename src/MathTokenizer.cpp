@@ -65,7 +65,7 @@ void MathTokenizer::tokenize()
         {
             numberStr+=currentCharacter;
         }
-        else if(isalpha(input[index]) && !CalculatorUtil::isOperator(currentCharacter))
+        else if(isalpha(input[index]))// && !CalculatorUtil::isOperator(currentCharacter))
         {
             //could be either one of these three
             operatorStr+=currentCharacter;

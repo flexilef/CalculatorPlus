@@ -11,7 +11,7 @@ bool CalculatorUtil::isNumber(const std::string &str)
 bool CalculatorUtil::isOperator(const std::string &str)
 {
     const int LENGTH = 20;
-    std::string operators[LENGTH] = {"(", ")", "+", "-", "*", "/", "^", "~", "E", "!", "="};
+    std::string operators[LENGTH] = {"(", ")", "+", "-", "*", "/", "^", "~", "E", "!", "=", "mod"};
 
     if(!str.empty())
     {

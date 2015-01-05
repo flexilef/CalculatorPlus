@@ -70,6 +70,14 @@ void InfixToPostfixConverterTests::convertToPostfix_binaryOperators_returnPostfi
     checkPostfix("-a^-bc", "a bc ~ ^ ~", "binary operator: power: negative variable");
     checkPostfix("1^2^3", "1 2 ^ 3 ^", "binary operator: power: associativity");
 
+    //mod
+    checkPostfix("1mod2", "1 2 mod", "binary operator: mod: single digit");
+    checkPostfix("12mod34", "12 34 mod", "binary operator: mod: multiple digit");
+    checkPostfix("1.2mod34.56", "1.2 34.56 mod", "binary operator: mod: decimal point");
+    checkPostfix("(a)mod(bc)", "a bc mod", "binary operator: mod: variable");
+    checkPostfix("-1mod-2", "1 ~ 2 ~ mod", "binary operator: mod: negative: will be fixed when tokenizer is fixed.");
+    checkPostfix("(-a)mod(-bc)", "a ~ bc ~ mod", "binary operator: mod: negative variable");
+
     //assignment
     checkPostfix("a=1", "a 1 =", "binary operator: assignment: single digit");
     checkPostfix("a=12", "a 12 =", "binary operator: assignment: multiple digit");
@@ -87,10 +95,11 @@ void InfixToPostfixConverterTests::convertToPostfix_binaryOperators_returnPostfi
     checkPostfix("1.2E34.56", "1.2 34.56 E", "binary operator: E: decimal point");//no such thing remove?
     checkPostfix("-1E2", "1 ~ 2 E", "binary operator: E: negative coefficient");
     checkPostfix("1E-2", "1 2 ~ E", "binary operator: E: negative exponent");
-    checkPostfix("aE5", "a 5 E", "binary operator: E: coefficient variable");
-    checkPostfix("5Ea", "5 a E", "binary operator: E: exponent variable");
-    checkPostfix("-aE5", "a ~ 5 E", "binary operator: E: negative coefficient variable");
-    checkPostfix("5E-a", "5 a ~ E", "binary operator: E: negative exponent variable");
+    checkPostfix("(a)E5", "a 5 E", "binary operator: E: coefficient variable 2");
+    checkPostfix("5E(a)", "5 a E", "binary operator: E: exponent variable");
+    checkPostfix("(-a)E5", "a ~ 5 E", "binary operator: E: negative coefficient variable");
+    checkPostfix("5E(-a)", "5 a ~ E", "binary operator: E: negative exponent variable");
+    checkPostfix("(a)E(b)", "a b E", "binary operator: E: exponent and coefficient variable");
 
 }
 
@@ -114,15 +123,19 @@ void InfixToPostfixConverterTests::convertToPostfix_unaryOperators_returnPostfix
     checkPostfix("-1!", "1 ~ !","unary operator: factorial: negative");
     checkPostfix("1!!", "1 ! !","unary operator: factorial: double factorial");
     checkPostfix("abc!!", "abc ! !","unary operator: factorial: double negative variable");
- }
+}
 
 void InfixToPostfixConverterTests::convertToPostfix_constants_returnPostfixExpression()
 {
+    //numbers
     checkPostfix("1", "1 ", "constants: single digit");
     checkPostfix("12", "12 ", "constants: multiple digit");
     checkPostfix("1.23", "1.23 ", "constants: decimal point");
+
+    //variables
     checkPostfix("a", "a ", "constants: variable");
     checkPostfix("abc", "abc ", "constants: multiple variable");
+    checkPostfix("abcdEfg", "abcdEfg ","constants: variable name with operator name: E");
 }
 
 void InfixToPostfixConverterTests::convertToPostfix_basicFunctions_returnPostfixExpression()
@@ -227,7 +240,7 @@ void InfixToPostfixConverterTests::convertToPostfix_whiteSpace_returnPostfixExpr
 
     //unary
     checkPostfix("- 1", "1 ~", "white space: after negative");
-    checkPostfix(" -1", "1 ~", "white space: before negative");
+    checkPostfix(" -1", "1 ~", "white space: before negative: will be fixed when tokenizer is fixed");
 
     //functions
     checkPostfix("sin( 30 )", "30 sin", "white space: trig functions: in argument");
