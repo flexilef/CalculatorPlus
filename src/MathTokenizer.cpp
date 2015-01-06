@@ -91,14 +91,14 @@ void MathTokenizer::tokenize()
             }
             else if(CalculatorUtil::isFunction(functionStr))
             {
-                /**
-                *Note that later on, if you want to implement auto multiplication such as
-                *5cos(30) = 5*cos(30), just do...
-                *if(!numberStr.empty())
-                *{
-                *   tokens.push_back(Token("*", Token::OPERATOR));
-                *}
-                */
+
+                //Note that later on, if you want to implement auto multiplication such as
+                //5cos(30) = 5*cos(30), just do...
+                //if(!numberStr.empty())
+                //{
+                //   tokens.push_back(Token("*", Token::OPERATOR));
+                //}
+
                 //std::cout << "FUNC1 ";
                 tokens.push_back(Token(functionStr, Token::FUNCTION));
 
@@ -145,7 +145,7 @@ void MathTokenizer::tokenize()
 
             //handle special case of unary (this adds complexity to MathTokenizer,
             //but until a less messy way is found, tokenizer will worry about converting unaries AND tokenizing
-            if(currentCharacter == "-")
+            /*if(currentCharacter == "-")
             {
                 if(index == 0)
                     isNegative = true;
@@ -160,8 +160,28 @@ void MathTokenizer::tokenize()
                     currentCharacter = "~";
                     isNegative = false;
                 }
-            }
+            }*/
             tokens.push_back(Token(currentCharacter, Token::OPERATOR));
+        }
+        else if(currentCharacter == " ")
+        {
+            if(!numberStr.empty())
+            {
+                //std::cout << "NUM3 ";
+                tokens.push_back(Token(numberStr, Token::NUMBER));
+                numberStr = "";
+            }
+
+            if(!variableStr.empty())
+            {
+                //std::cout << "VAR2 ";
+                //found variable token
+                tokens.push_back(Token(variableStr, Token::VARIABLE));
+                //reset them
+                variableStr = "";
+                operatorStr = "";
+                functionStr = "";
+            }
         }
     }
 

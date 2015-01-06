@@ -113,9 +113,9 @@ int main()
     testIP.runTests();
     cout << removeExtraWhiteSpace(ip.convertToPostfix("(4 + 2 * 5) / -(1 + 3 * 2)")) << "\n";
     cout << removeExtraWhiteSpace(ip.convertToPostfix("(4 + 2 * 5) /-(1 + 3 * 2)")) << "\n";
-    cout << removeExtraWhiteSpace(ip.convertToPostfix("abc  = (1+ 2)*3 ")) << "\n";
+    cout << removeExtraWhiteSpace(ip.convertToPostfix("12.4^-3.7")) << "\n";
 
-    t.setInput("aE5");
+    t.setInput("ab cd +");
     t.dumpTokens();
 
     return 0;

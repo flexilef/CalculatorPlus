@@ -25,7 +25,6 @@ class InputConverter
         std::string output;
 
     private:
-
 };
 
 #endif // INPUTCONVERTER_H

@@ -29,8 +29,8 @@ void InfixToPostfixConverter::convert()
     std::stack<std::string> operatorStack;
     std::string postfix;
     std::string topOperator;
-    std::string lastTokenStr;
     std::string currentTokenStr;
+    std::string lastTokenStr;
     int tokenIndex = 0;
 
     tokenizer.setInput(input);
@@ -80,13 +80,23 @@ void InfixToPostfixConverter::convert()
             }
             else
             {
+                if(currentTokenStr == "-")
+                {
+                    if(tokenIndex == 0)
+                        currentTokenStr = "~";
+                    else if(CalculatorUtil::isOperator(lastTokenStr) && lastTokenStr != ")")
+                        currentTokenStr = "~";
+                    else if(lastTokenStr == "(")
+                        currentTokenStr = "~";
+                }
+
                 while(!done && !operatorStack.empty())
                 {
                     topOperator = operatorStack.top();
 
                     if(CalculatorUtil::getPrecedence(currentTokenStr) <= CalculatorUtil::getPrecedence(topOperator)
-                       && currentTokenStr != "~" /*&& currentTokenStr != "^"*/) //this condition handles right associativity of ~ and ^.
-                       //ie. --2 -> 2 ~ ~ and 1^2^3 -> 1 2 3 ^ ^ ^. But it's a bit confusing.
+                            && currentTokenStr != "~" /*&& currentTokenStr != "^"*/) //this condition handles right associativity of ~ and ^.
+                        //ie. --2 -> 2 ~ ~ and 1^2^3 -> 1 2 3 ^ ^ ^. But it's a bit confusing.
                     {
                         postfix+=topOperator;
                         postfix+=" ";
@@ -94,13 +104,15 @@ void InfixToPostfixConverter::convert()
                     }
                     else
                         done = true;
-                }
+                }//end while
                 operatorStack.push(currentTokenStr);
-            }
-        }
-    }
+            }//end else
+            lastTokenStr = currentTokenStr;
+        }//end else if
+        tokenIndex++;
+    }//end while
 
-    //takes care of remaindered operators
+    //takes care of remaining operators
     while(!operatorStack.empty())
     {
         topOperator = operatorStack.top();

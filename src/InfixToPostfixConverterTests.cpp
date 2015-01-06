@@ -21,8 +21,8 @@ void InfixToPostfixConverterTests::runTests()
     convertToPostfix_miscInputs_returnPostfixExpression();
     convertToPostfix_whiteSpace_returnPostfixExpression();
 
-    std::cout << "Total number of tests run: " << totalTestsRun << "\n";
-    std::cout << "Total number of tests failed: " << totalTestsFailed << "\n";
+    std::cout << "Total Tests run    : " << totalTestsRun << "\n";
+    std::cout << "Total Tests failed : " << totalTestsFailed << "\n";
 }
 
 void InfixToPostfixConverterTests::convertToPostfix_binaryOperators_returnPostfixExpression()
@@ -101,6 +101,8 @@ void InfixToPostfixConverterTests::convertToPostfix_binaryOperators_returnPostfi
     checkPostfix("5E(-a)", "5 a ~ E", "binary operator: E: negative exponent variable");
     checkPostfix("(a)E(b)", "a b E", "binary operator: E: exponent and coefficient variable");
 
+    //known tests failed
+    //checkPostfix("aEb", "a b E", "binary operator: E: exponent and coefficient variable");
 }
 
 void InfixToPostfixConverterTests::convertToPostfix_unaryOperators_returnPostfixExpression()
@@ -133,9 +135,19 @@ void InfixToPostfixConverterTests::convertToPostfix_constants_returnPostfixExpre
     checkPostfix("1.23", "1.23 ", "constants: decimal point");
 
     //variables
-    checkPostfix("a", "a ", "constants: variable");
+    checkPostfix("a", "a ", "constants: single variable");
     checkPostfix("abc", "abc ", "constants: multiple variable");
-    checkPostfix("abcdEfg", "abcdEfg ","constants: variable name with operator name: E");
+    checkPostfix("abEfg", "abEfg ","constants: variable name with operator name: E: middle");
+    checkPostfix("abcE", "abcE ","constants: variable name with operator name: E: end");
+    checkPostfix("abmodc", "abmodc ","constants: variable name with operator name: mod");
+    checkPostfix("abcmod", "abcmod ","constants: variable name with operator name: mod");
+    checkPostfix("Vsinar", "Vsinar ","constants: variable name with function name: sin");
+    checkPostfix("Varsin", "Varsin ","constants: variable name with function name: sin");
+
+    //known tests failed
+    //checkPostfix("Eabc", "Eabc ","constants: variable name with operator name: E: front");
+    //checkPostfix("modabc", "modabc ","constants: variable name with operator name: mod: ");
+    //checkPostfix("sinVar", "sinVar ","constants: variable name with function name: sin");
 }
 
 void InfixToPostfixConverterTests::convertToPostfix_basicFunctions_returnPostfixExpression()
