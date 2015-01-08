@@ -73,7 +73,18 @@ int CalculatorUtil::getPrecedence(const std::string &op)
     return -1;
 }
 
-///operator functions
+///Math functions
+
+double CalculatorUtil::unaryNegation(double operand)
+{
+    return -1*operand;
+}
+
+long long CalculatorUtil::factorial(int n)
+{
+  return (n == 1 || n == 0) ? 1 : factorial(n - 1) * n;
+}
+
 double CalculatorUtil::add(double left, double right)
 {
     return left + right;
@@ -99,9 +110,14 @@ double CalculatorUtil::power(double left, double right)
     return pow(left, right);
 }
 
-double CalculatorUtil::unaryNegation(double operand)
+double CalculatorUtil::scientificNotation(double mantissa, double exponent)
 {
-    return -1*operand;
+    return mantissa*(pow(10, exponent));
+}
+
+double CalculatorUtil::mod(double left, double right)
+{
+    return fmod(left, right);
 }
 
 /*
@@ -178,11 +194,6 @@ double CalculatorUtil::UnaryNegation(double value)
 double CalculatorUtil::percent(double value)
 {
     return value * .01;
-}
-
-double CalculatorUtil::scientificNotation(double mantissa, double exponent)
-{
-    return mantissa*(pow(10, exponent));
 }
 
 //Max is 20! possible to modify input if ! found to include ie.

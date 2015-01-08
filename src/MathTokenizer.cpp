@@ -183,8 +183,6 @@ void MathTokenizer::tokenize()
         tokens.push_back(Token(numberStr, Token::NUMBER));
         numberStr = "";
     }
-
-    std::cout << "\n";
 }
 
 void MathTokenizer::setInput(const std::string &str)

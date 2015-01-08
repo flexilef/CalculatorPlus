@@ -9,12 +9,15 @@ namespace CalculatorUtil
 
     //math functions
 
-    double add(double,double);
-    double subtract(double,double);
-    double multiply(double,double);
-    double divide(double,double);
-    double power(double,double);
     double unaryNegation(double);
+    double add(double, double);
+    double subtract(double, double);
+    double multiply(double, double);
+    double divide(double, double);
+    double power(double, double);
+    double scientificNotation(double, double);
+    double mod(double, double);
+    long long factorial(int);
 
     /*double sine(short,double);
     double cosine(short,double);
@@ -26,8 +29,6 @@ namespace CalculatorUtil
     double ln(short,double);
     double exponent(short,double);
     double squareRoot(short, double);
-    double scientificNotation(double,double);
-    long long factorial(int);
     double percent(double);
     void assignment(double, int);
     */

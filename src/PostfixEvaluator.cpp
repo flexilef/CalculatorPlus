@@ -14,17 +14,24 @@ PostfixEvaluator::~PostfixEvaluator()
     //dtor
 }
 
+double PostfixEvaluator::evaluatePostfix(const std::string& postfix)
+{
+    return evaluate(postfix);
+}
+
+//helpers
+
 double PostfixEvaluator::evaluate(const std::string& postfix)
 {
     std::stack<double> operandStack;
-    std::stack<std::string> operatorStack;
     std::string currentTokenStr;
+    Token currentToken;
 
     tokenizer.setInput(postfix);
 
     while(tokenizer.hasNext())
     {
-        Token currentToken = tokenizer.getNextToken();
+        currentToken = tokenizer.getNextToken();
         currentTokenStr = currentToken.getString();
 
         if(currentToken.tokenType == Token::NUMBER)
@@ -46,13 +53,15 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
                 operandStack.pop();
 
                 if(currentTokenStr == "~")
-                {
                     result = CalculatorUtil::unaryNegation(operand);
-                    operandStack.push(result);
-                }
+                else if(currentTokenStr == "!")
+                    result = CalculatorUtil::factorial(operand);
+
+                operandStack.push(result);
             }
             else if(arity == 2)
             {
+                //operand2 needs to be popped before operand1 for order to be right
                 double operand2 = operandStack.top();
                 operandStack.pop();
                 double operand1 = operandStack.top();
@@ -60,20 +69,27 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
                 double result = 0;
 
                 if(currentTokenStr == "+")
-                {
                     result = CalculatorUtil::add(operand1, operand2);
-                    operandStack.push(result);
-                }
                 else if(currentTokenStr == "-")
-                {
                     result = CalculatorUtil::subtract(operand1, operand2);
-                    operandStack.push(result);
-                }
+                else if(currentTokenStr == "*")
+                    result = CalculatorUtil::multiply(operand1, operand2);
+                else if(currentTokenStr == "/")
+                    result = CalculatorUtil::divide(operand1, operand2);
+                else if(currentTokenStr == "^")
+                    result = CalculatorUtil::power(operand1, operand2);
+                else if(currentTokenStr == "E")
+                    result = CalculatorUtil::scientificNotation(operand1, operand2);
+                else if(currentTokenStr == "mod")
+                    result = CalculatorUtil::mod(operand1, operand2);
+                    //missing assignment operator
+
+                operandStack.push(result);
             }
         }
     }
 
-    result =operandStack.top();
+    result = operandStack.top();
 
     return result;
 }

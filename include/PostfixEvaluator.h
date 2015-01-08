@@ -12,13 +12,16 @@ class PostfixEvaluator
         /** Default destructor */
         virtual ~PostfixEvaluator();
 
-        double evaluate(const std::string&);
+        double evaluatePostfix(const std::string&);
 
     protected:
 
     private:
         MathTokenizer tokenizer;
         double result;
+
+        double evaluate(const std::string&);
+
 };
 
 #endif // POSTFIXEVALUATOR_H
