@@ -125,6 +125,16 @@ void InfixToPostfixConverterTests::convertToPostfix_unaryOperators_returnPostfix
     checkPostfix("-1!", "1 ~ !","unary operator: factorial: negative");
     checkPostfix("1!!", "1 ! !","unary operator: factorial: double factorial");
     checkPostfix("abc!!", "abc ! !","unary operator: factorial: double negative variable");
+
+    //percent
+    checkPostfix("1%", "1 %","unary operator: percent: single digit");
+    checkPostfix("12%", "12 %","unary operator: percent: multiple digit");
+    checkPostfix("1.2%", "1.2 %","unary operator: percent: decimal point");
+    checkPostfix("a%", "a %","unary operator: percent: variable");
+    checkPostfix("abc%", "abc %","unary operator: percent: multiple variable");
+    checkPostfix("-1%", "1 ~ %","unary operator: percent: negative");
+    checkPostfix("1%%", "1 % %","unary operator: percent: double factorial");
+    checkPostfix("abc%%", "abc % %","unary operator: percent: double negative variable");
 }
 
 void InfixToPostfixConverterTests::convertToPostfix_constants_returnPostfixExpression()
@@ -273,6 +283,7 @@ void InfixToPostfixConverterTests::checkPostfix(const std::string &infix, const 
         std::cout << "Infix  : " << infix << "\n";
         std::cout << "Output : " << output << "\n";
         std::cout << "Postfix: " << postfix << "\n";
+        std::cout << "\n";
     }
 }
 

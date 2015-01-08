@@ -12,7 +12,7 @@ bool CalculatorUtil::isNumber(const std::string &str)
 bool CalculatorUtil::isOperator(const std::string &str)
 {
     const int LENGTH = 20;
-    std::string operators[LENGTH] = {"(", ")", "+", "-", "*", "/", "^", "~", "E", "!", "=", "mod"};
+    std::string operators[LENGTH] = {"(", ")", "+", "-", "*", "/", "^", "~", "E", "!", "%", "mod", "="};
 
     if(!str.empty())
     {
@@ -47,7 +47,7 @@ int CalculatorUtil::getArity(const std::string &op)
 {
     if(op == "+" || op == "-" || op == "*" || op == "/" || op == "^" || op == "E" || op == "=" || op == "mod")
         return 2;
-    else if(op == "~" || op == "!")
+    else if(op == "~" || op == "!" || op == "%" || isFunction(op))   //note that the arity of a function is at least 1
         return 1;
 
     return -1;
@@ -75,6 +75,7 @@ int CalculatorUtil::getPrecedence(const std::string &op)
 
 ///Math functions
 
+//unary operators
 double CalculatorUtil::unaryNegation(double operand)
 {
     return -1*operand;
@@ -85,6 +86,12 @@ long long CalculatorUtil::factorial(int n)
   return (n == 1 || n == 0) ? 1 : factorial(n - 1) * n;
 }
 
+double CalculatorUtil::percent(double value)
+{
+    return value * .01;
+}
+
+//binary operators
 double CalculatorUtil::add(double left, double right)
 {
     return left + right;
@@ -120,82 +127,76 @@ double CalculatorUtil::mod(double left, double right)
     return fmod(left, right);
 }
 
+//trig functions
+double CalculatorUtil::sine(double radianValue)
+{
+    double radianResult = sin(radianValue);
+
+    return radianResult;
+}
+
+double CalculatorUtil::cosine(double radianValue)
+{
+    double radianResult = cos(radianValue);
+
+    return radianResult;
+}
+
+double CalculatorUtil::tangent(double radianValue)
+{
+    double radianResult = tan(radianValue);
+
+    return radianResult;
+}
+
+double CalculatorUtil::asine(double radianValue)
+{
+    double radianResult =  asin(radianValue);
+
+    return radianResult;
+}
+
+double CalculatorUtil::acosine(double radianValue)
+{
+    double radianResult =  acos(radianValue);
+
+    return radianResult;
+}
+
+double CalculatorUtil::atangent(double radianValue)
+{
+    double radianResult =  atan(radianValue);
+
+    return radianResult;
+}
+
+//basic functions
+double CalculatorUtil::log(double value)
+{
+    return log10(value);
+}
+
+double CalculatorUtil::ln(double value)
+{
+    return std::log(value);
+}
+
+double CalculatorUtil::squareRoot(double value)
+{
+    return sqrt(value);
+}
+
+double CalculatorUtil::exponent(double value)
+{
+    return exp(value);
+}
+
+double CalculatorUtil::abs(double value)
+{
+    return std::abs(value);
+}
+
 /*
-double CalculatorUtil::squareRoot(short sign, double value)
-{
-    return sign*sqrt(value);
-}
-
-//Returns the result of a sin()
-double CalculatorUtil::sine(short sign, double value)
-{
-    double radianResult = sign*sin(value);
-
-    return radianResult;
-}
-
-//Returns the result of a cos()
-double CalculatorUtil::cosine(short sign, double value)
-{
-    double radianResult = sign*cos(value);
-
-    return radianResult;
-}
-
-//Returns the result of a cos()
-double CalculatorUtil::tangent(short sign, double value)
-{
-    double radianResult = sign*tan(value);
-
-    return radianResult;
-}
-
-double CalculatorUtil::atangent(short sign, double value)
-{
-    double result = sign*atan(value);
-
-    return result;
-}
-
-double CalculatorUtil::acosine(short sign, double value)
-{
-    double result =  sign*acos(value);
-
-    return result;
-}
-
-double CalculatorUtil::asine(short sign, double value)
-{
-    double result =  sign*asin(value);
-
-    return result;
-}
-
-double CalculatorUtil::log(short sign, double value)
-{
-    return sign*log10(value);
-}
-
-double CalculatorUtil::ln(short sign, double value)
-{
-    return 0;
-}
-
-double CalculatorUtil::exponent(short sign, double value)
-{
-    return sign*exp(value);
-}
-
-double CalculatorUtil::UnaryNegation(double value)
-{
-    return value * -1;
-}
-
-double CalculatorUtil::percent(double value)
-{
-    return value * .01;
-}
-
 //Max is 20! possible to modify input if ! found to include ie.
 //3! = 3*2*1
 long long CalculatorUtil::factorial(int value)

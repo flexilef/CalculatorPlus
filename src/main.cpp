@@ -6,6 +6,7 @@
 #include "../include/PostfixEvaluatorTests.h"
 
 #include <cstdlib>
+#include <cmath>
 using namespace std;
 std::string removeExtraWhiteSpace(std::string);
 
@@ -21,13 +22,18 @@ int main()
     InfixToPostfixConverterTests testIP;
     testIP.runTests();
 
+    cout << "\n";
+
     PostfixEvaluatorTests testPE;
     testPE.runTests();
 
+    cout << "\n";
+
     //cout << removeExtraWhiteSpace(ip.convertToPostfix("12.4^-3.7")) << "\n";
 
-    t.setInput("1 ~ !");
+    t.setInput("1 %");
     t.dumpTokens();
+
     return 0;
 }
 

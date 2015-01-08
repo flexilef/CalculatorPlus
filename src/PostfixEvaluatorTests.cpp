@@ -48,6 +48,9 @@ void PostfixEvaluatorTests::evaluate_unaryOperators_returnResult()
     //checkResult("abc!", "abc !","unary operator: factorial: multiple variable");
     //checkResult("abc!!", "abc ! !","unary operator: factorial: double negative variable");
     //checkResult("1 ~ !", -1, "unary operator: factorial: negative");  //error
+
+    //percent
+    checkResult("1 %", .01, "unary operator: percent: single digit");
 }
 
 void PostfixEvaluatorTests::evaluate_binaryOperators_returnResult()
@@ -106,7 +109,7 @@ void PostfixEvaluatorTests::evaluate_binaryOperators_returnResult()
     //E - Scientific Notation
     checkResult("1 2 E", 100, "binary operator: E: single digit");
     checkResult("12 34 E", 1.2e35, "binary operator: E: multiple digit");
-    checkResult("1.2 34.56 E", 0, "binary operator: E: decimal point");//no such thing remove?
+    checkResult("1.2 34.56 E", 0, "binary operator: E: decimal point");//make it return 1.2E35 floor(the value)
     checkResult("1 ~ 2 E", -100, "binary operator: E: negative coefficient");
     checkResult("1 2 ~ E", .01, "binary operator: E: negative exponent: small");
     checkResult("1 200 ~ E", 1e-200, "binary operator: E: negative exponent: large");
@@ -126,12 +129,21 @@ void PostfixEvaluatorTests::evaluate_binaryOperators_returnResult()
 
 void PostfixEvaluatorTests::evaluate_basicFunctions_returnResult()
 {
-
+    checkResult("12 log", 1.07918124604762482772, "basic functions: log");
+    checkResult("12 ln", 2.48490664978800031023, "basic functions: ln");
+    checkResult("81 sqrt", 9, "basic functions: sqrt");
+    checkResult("2 exp", 7.38905609893065022723, "basic functions: exp");
+    checkResult("5 ~ abs", 5, "basic functions: abs");
 }
 
 void PostfixEvaluatorTests::evaluate_trigFunctions_returnResult()
 {
-
+    checkResult("30 sin", -0.98803162409286178999, "basic functions: sin");
+    checkResult("30 cos", 0.15425144988758405072, "basic functions: cos");
+    checkResult("30 tan", -6.4053311966462757849, "basic functions: tan");
+    checkResult(".5 asin", 0.52359877559829887308, "basic functions: asin");
+    checkResult(".5 acos", 1.04719755119659774615, "basic functions: acos");
+    checkResult("30 atan", 1.53747533091664942208, "basic functions: atan");
 }
 
 void PostfixEvaluatorTests::evaluate_assignmentOperator_checkAsignment()
@@ -161,6 +173,7 @@ void PostfixEvaluatorTests::checkResult(const std::string &postfix, double answe
         std::cout << "postfix    : " << postfix << "\n";
         std::cout << "result     : " << result << "\n";
         std::cout << "answer     : " << answer << "\n";
+        std::cout << "\n";
     }
 }
 

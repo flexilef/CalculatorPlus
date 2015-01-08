@@ -18,7 +18,7 @@ class PostfixEvaluator
 
     private:
         MathTokenizer tokenizer;
-        double result;
+        double answer;
 
         double evaluate(const std::string&);
 
