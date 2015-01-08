@@ -2,6 +2,7 @@
 #define POSTFIXEVALUATOR_H
 
 #include <iostream>
+#include "../include/MathTokenizer.h"
 
 class PostfixEvaluator
 {
@@ -12,8 +13,11 @@ class PostfixEvaluator
         virtual ~PostfixEvaluator();
 
         double evaluate(const std::string&);
+
     protected:
+
     private:
+        MathTokenizer tokenizer;
         double result;
 };
 

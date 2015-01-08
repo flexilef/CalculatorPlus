@@ -141,26 +141,6 @@ void MathTokenizer::tokenize()
             }
 
             //std::cout << "OP2 ";
-            //now handle the single operators
-
-            //handle special case of unary (this adds complexity to MathTokenizer,
-            //but until a less messy way is found, tokenizer will worry about converting unaries AND tokenizing
-            /*if(currentCharacter == "-")
-            {
-                if(index == 0)
-                    isNegative = true;
-                else if(CalculatorUtil::isOperator(lastCharacter) && lastCharacter != ")")
-                    isNegative = true;
-                else if(lastCharacter == "(")
-                    isNegative = true;
-
-                if(isNegative)
-                {
-                    //change to internal representation of unary negation: ~
-                    currentCharacter = "~";
-                    isNegative = false;
-                }
-            }*/
             tokens.push_back(Token(currentCharacter, Token::OPERATOR));
         }
         else if(currentCharacter == " ")

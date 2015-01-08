@@ -3,7 +3,7 @@
 
 #include <cctype>
 #include <stack>
-#include <stdlib.h>
+#include <cstdlib>
 
 InfixToPostfixConverter::InfixToPostfixConverter()
 {

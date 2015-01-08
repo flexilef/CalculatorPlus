@@ -21,8 +21,8 @@ void InfixToPostfixConverterTests::runTests()
     convertToPostfix_miscInputs_returnPostfixExpression();
     convertToPostfix_whiteSpace_returnPostfixExpression();
 
-    std::cout << "Total Tests run    : " << totalTestsRun << "\n";
-    std::cout << "Total Tests failed : " << totalTestsFailed << "\n";
+    std::cout << "InfixToPostfixConverterTests: Tests run    : " << totalTestsRun << "\n";
+    std::cout << "InfixToPostfixConverterTests: Tests failed : " << totalTestsFailed << "\n";
 }
 
 void InfixToPostfixConverterTests::convertToPostfix_binaryOperators_returnPostfixExpression()
