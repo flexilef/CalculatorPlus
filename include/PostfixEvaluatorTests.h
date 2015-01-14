@@ -14,6 +14,7 @@ class PostfixEvaluatorTests
         void runTests();
     protected:
     private:
+        MemoryBank theBank;
         PostfixEvaluator evaluator;
         int totalTestsRun;
         int totalTestsFailed;

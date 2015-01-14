@@ -1,7 +1,7 @@
 #ifndef INPUTCONVERTER_H
 #define INPUTCONVERTER_H
 
-#include <iostream>
+#include <string>
 
 class InputConverter
 {

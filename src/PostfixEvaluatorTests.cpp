@@ -1,10 +1,14 @@
 #include "../include/PostfixEvaluatorTests.h"
-#include <cassert>
+#include "../include/CalculatorUtil.h"
 #include <cmath>
-#include <limits>
+#include <iostream>
 
-PostfixEvaluatorTests::PostfixEvaluatorTests()
+PostfixEvaluatorTests::PostfixEvaluatorTests() : evaluator(theBank)
 {
+    theBank.storeValueIntoVar("a", 1);
+    theBank.storeValueIntoVar("b", 2);
+    theBank.storeValueIntoVar("cd", 3);
+    theBank.storeValueIntoVar("abc", 123);
     totalTestsRun = 0;
     totalTestsFailed = 0;
 }
@@ -35,27 +39,26 @@ void PostfixEvaluatorTests::evaluate_unaryOperators_returnResult()
     checkResult("12 ~", -12, "unary operator: negation: multiple digit");
     checkResult("1.2 ~", -1.2, "unary operator: negation: decimal point");
     checkResult("1 ~ ~", 1, "unary operator: negation: double negative");
-    //checkResult("a ~","unary operator: negation: variable");
-    //checkResult("-abc", "abc ~","unary operator: negation: multiple variable");
-    //checkResult("--abc", "abc ~ ~","unary operator: negation: double negative variable");
+    checkResult("a ~", -1,"unary operator: negation: variable");
+    checkResult("abc ~", -123, "unary operator: negation: multiple variable");
+    checkResult("abc ~ ~", 123, "unary operator: negation: double negative variable");
 
     //factorial
     checkResult("1 !", 1, "unary operator: factorial: single digit");
     checkResult("12 !", 4.790016e8, "unary operator: factorial: multiple digit");
     checkResult("1 ! ~", -1, "unary operator: factorial: negative");
     checkResult("1 ! !", 1, "unary operator: factorial: double factorial");
-    //checkResult("a !","unary operator: factorial: variable");
-    //checkResult("abc!", "abc !","unary operator: factorial: multiple variable");
-    //checkResult("abc!!", "abc ! !","unary operator: factorial: double negative variable");
-    //checkResult("1 ~ !", -1, "unary operator: factorial: negative");  //error
+    checkResult("a !", 1, "unary operator: factorial: variable");
+    checkResult("cd !", 6, "unary operator: factorial: multiple variable");
+    checkResult("cd ! !", 720,"unary operator: factorial: double negative variable");
 
     //percent
     checkResult("1 %", .01, "unary operator: percent: single digit");
+    checkResult("a %", .01, "unary operator: percent: variable");
 }
 
 void PostfixEvaluatorTests::evaluate_binaryOperators_returnResult()
 {
-
     //addition
     checkResult("0 0 +", 0, "binary operator: addition: zero");
     checkResult("1 0 +", 1, "binary operator: addition: identity");
@@ -64,8 +67,8 @@ void PostfixEvaluatorTests::evaluate_binaryOperators_returnResult()
     checkResult("12 34 +", 46, "binary operator: addition: multiple digit");
     checkResult("1.2 34.56 +", 35.76, "binary operator: addition: decimal point");
     checkResult("1 ~ 2 ~ +", -3, "binary operator: addition: negative");
-    //checkResult("a bc +", 666, "binary operator: addition: variable");
-    //checkResult("a ~ bc ~ +", 666, "binary operator: addition: negative variable");
+    checkResult("a b +", 3, "binary operator: addition: variable");
+    checkResult("a ~ b ~ +", -3, "binary operator: addition: negative variable");
 
     //subtraction
     checkResult("2 1 -", 1, "binary operator: subtraction: single digit: positive result");
@@ -76,8 +79,8 @@ void PostfixEvaluatorTests::evaluate_binaryOperators_returnResult()
     checkResult("34.56 1.2 -", 33.36, "binary operator: subtraction: decimal point: positive result");
     checkResult("1 ~ 2 ~ -", 1, "binary operator: subtraction: negative: positive result");
     checkResult("1 ~ 2 -", -3, "binary operator: subtraction: negative: positive result");
-    //checkResult("a-bc", "a bc -", "binary operator: subtraction: variable");
-    //checkResult("-a--bc", "a ~ bc ~ -", "binary operator: subtraction: negative variable");
+    checkResult("a b -", -1, "binary operator: subtraction: variable");
+    checkResult("a ~ b ~ -", 1, "binary operator: subtraction: negative variable");
 
     //multiplication
     checkResult("1 2 *", 2, "binary operator: multiplication: single digit");
@@ -103,8 +106,8 @@ void PostfixEvaluatorTests::evaluate_binaryOperators_returnResult()
     checkResult("2 3 ~ ^",  0.125,"binary operator: power: negative exponent");
     checkResult("2 3 ~ ^ ~", -0.125,"binary operator: power: negative exponent and base");
     checkResult("2 3 ^ 4 ^", 4096,"binary operator: power: associativity");
-    //checkResult("a bc ^", "binary operator: power: variable");
-    //checkResult("a bc ~ ^ ~", "binary operator: power: negative variable");
+    checkResult("a b ^", 1, "binary operator: power: variable");
+    checkResult("a b ~ ^ ~", -1, "binary operator: power: negative variable");
 
     //E - Scientific Notation
     checkResult("1 2 E", 100, "binary operator: E: single digit");
@@ -113,11 +116,11 @@ void PostfixEvaluatorTests::evaluate_binaryOperators_returnResult()
     checkResult("1 ~ 2 E", -100, "binary operator: E: negative coefficient");
     checkResult("1 2 ~ E", .01, "binary operator: E: negative exponent: small");
     checkResult("1 200 ~ E", 1e-200, "binary operator: E: negative exponent: large");
-    //checkResult("a 5 E", , "binary operator: E: coefficient variable 2");
-    //checkResult("5 a E", , "binary operator: E: exponent variable");
-    //checkResult("a ~ 5 E", , "binary operator: E: negative coefficient variable");
-    //checkResult("5 a ~ E", , "binary operator: E: negative exponent variable");
-    //checkResult("a b E", , "binary operator: E: exponent and coefficient variable");
+    checkResult("a 3 E", 1000, "binary operator: E: coefficient variable 2");
+    checkResult("5 b E", 500, "binary operator: E: exponent variable");
+    checkResult("a ~ 3 E", -1000, "binary operator: E: negative coefficient variable");
+    checkResult("5 b ~ E", .05, "binary operator: E: negative exponent variable");
+    checkResult("a b E", 100, "binary operator: E: exponent and coefficient variable");
 
     //mod
     checkResult("1 2 mod", 1, "binary operator: mod: single digit");
@@ -153,12 +156,14 @@ void PostfixEvaluatorTests::evaluate_assignmentOperator_checkAsignment()
 
 void PostfixEvaluatorTests::evaluate_constants_returnResult()
 {
-
+    checkResult("1", 1, "constants: single digit");
+    checkResult("123", 123, "constants: multiple digit");
+    checkResult("b", 2, "constants: single variable");
+    checkResult("abc", 123, "constants: multiple variable");
 }
 
 void PostfixEvaluatorTests::evaluate_errors_returnError()
 {
-
 }
 
 void PostfixEvaluatorTests::checkResult(const std::string &postfix, double answer, const std::string &error)
@@ -166,7 +171,7 @@ void PostfixEvaluatorTests::checkResult(const std::string &postfix, double answe
     totalTestsRun++;
     double result = evaluator.evaluatePostfix(postfix);
 
-    if(!almostEqual(result, answer, 9)) //4 works for most cases. 9 for mod operator decimal...
+    if(!CalculatorUtil::almostEqual(result, answer, 9)) //4 works for most cases. 9 for mod operator decimal...
     {
         totalTestsFailed++;
         std::cout << "Error found: " << error << "\n";
@@ -175,10 +180,4 @@ void PostfixEvaluatorTests::checkResult(const std::string &postfix, double answe
         std::cout << "answer     : " << answer << "\n";
         std::cout << "\n";
     }
-}
-
-bool PostfixEvaluatorTests::almostEqual(double a, double b, int ulp)
-{
-    return std::abs(a - b) < std::numeric_limits<double>::epsilon()*std::abs(a + b)*ulp ||
-           std::abs(a - b) < std::numeric_limits<double>::min();
 }

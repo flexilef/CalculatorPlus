@@ -1,14 +1,15 @@
 #ifndef POSTFIXEVALUATOR_H
 #define POSTFIXEVALUATOR_H
 
-#include <iostream>
 #include "../include/MathTokenizer.h"
+#include "../include/MemoryBank.h"
 
 class PostfixEvaluator
 {
     public:
         /** Default constructor */
         PostfixEvaluator();
+        PostfixEvaluator(MemoryBank&);
         /** Default destructor */
         virtual ~PostfixEvaluator();
 
@@ -18,8 +19,7 @@ class PostfixEvaluator
 
     private:
         MathTokenizer tokenizer;
-        double answer;
-
+        MemoryBank& theBank;
         double evaluate(const std::string&);
 
 };

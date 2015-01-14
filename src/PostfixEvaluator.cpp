@@ -2,11 +2,11 @@
 #include "../include/CalculatorUtil.h"
 
 #include <cstdlib>
+#include <iostream>
 #include <stack>
 
-PostfixEvaluator::PostfixEvaluator()
+PostfixEvaluator::PostfixEvaluator(MemoryBank& mb) : theBank(mb)
 {
-    answer = 0;
 }
 
 PostfixEvaluator::~PostfixEvaluator()
@@ -24,8 +24,8 @@ double PostfixEvaluator::evaluatePostfix(const std::string& postfix)
 double PostfixEvaluator::evaluate(const std::string& postfix)
 {
     std::stack<double> operandStack;
-    std::string currentTokenStr;
     Token currentToken;
+    std::string currentTokenStr;
     int arity = -1;
     double result = 0;
 
@@ -40,6 +40,11 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
         {
             double number = atof(currentTokenStr.c_str());
             operandStack.push(number);
+        }
+        else if(currentToken.tokenType == Token::VARIABLE)
+        {
+            double variableValue = theBank.getValueFromVar(currentTokenStr);
+            operandStack.push(variableValue);
         }
         else if(currentToken.tokenType == Token::OPERATOR)
         {

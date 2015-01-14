@@ -1,5 +1,6 @@
 #include "../include/MathTokenizer.h"
 #include "CalculatorUtil.cpp"
+#include <iostream>
 
 MathTokenizer::MathTokenizer()
 {

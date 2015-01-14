@@ -1,5 +1,6 @@
 #include "../include/CalculatorUtil.h"
 #include <cmath>
+#include <limits>
 
 bool CalculatorUtil::isNumber(const std::string &str)
 {
@@ -71,6 +72,12 @@ int CalculatorUtil::getPrecedence(const std::string &op)
         return 50;
 
     return -1;
+}
+
+bool CalculatorUtil::almostEqual(double a, double b, int ulp)
+{
+    return std::abs(a - b) < std::numeric_limits<double>::epsilon()*std::abs(a + b)*ulp ||
+           std::abs(a - b) < std::numeric_limits<double>::min();
 }
 
 ///Math functions

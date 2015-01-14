@@ -4,6 +4,7 @@
 #include "../include/MathTokenizer.h"
 #include "../include/InfixToPostfixConverterTests.h"
 #include "../include/PostfixEvaluatorTests.h"
+#include "../include/MemoryBankTests.h"
 
 #include <cstdlib>
 #include <cmath>
@@ -14,11 +15,11 @@ int main()
 {
     cout << "Hello world!" << endl << endl;
 
+    MemoryBank mb;
     InfixToPostfixConverter ip;
-    PostfixEvaluator pe;
+    PostfixEvaluator pe(mb);
     MathTokenizer t;
 
-    //testing
     InfixToPostfixConverterTests testIP;
     testIP.runTests();
 
@@ -29,10 +30,13 @@ int main()
 
     cout << "\n";
 
-    //cout << removeExtraWhiteSpace(ip.convertToPostfix("12.4^-3.7")) << "\n";
+    MemoryBankTests testMB;
+    testMB.runTests();
 
-    t.setInput("1 %");
-    t.dumpTokens();
+    //t.setInput("-1--2");
+    //t.dumpTokens();
+    //cout << ip.convertToPostfix("-a--b") << endl;
+    //cout << pe.evaluatePostfix("1 ~ 2 ~ -");
 
     return 0;
 }

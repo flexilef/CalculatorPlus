@@ -1,4 +1,5 @@
 #include "../include/InfixToPostfixConverterTests.h"
+#include <iostream>
 
 InfixToPostfixConverterTests::InfixToPostfixConverterTests()
 {
