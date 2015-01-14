@@ -3,6 +3,7 @@
 
 #include "../include/MemoryBank.h"
 #include "../include/PostfixEvaluator.h"
+#include "../include/MathUtil.h"
 
 class Calculator
 {
@@ -11,9 +12,11 @@ class Calculator
         Calculator();
         /** Default destructor */
         virtual ~Calculator();
+
     protected:
     private:
         double answer;
+        std::string errorMessage;
         MemoryBank memory;
 };
 

@@ -1,5 +1,6 @@
 #include "../include/PostfixEvaluator.h"
 #include "../include/CalculatorUtil.h"
+#include "../include/MathUtil.h"
 
 #include <cstdlib>
 #include <iostream>
@@ -52,7 +53,7 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
 
             if(arity < 0)
             {
-                std::cout << "Error....\n";
+                std::cout << "Error: operator arity < 0\n";
             }
             else if(arity == 1)
             {
@@ -60,11 +61,11 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
                 operandStack.pop();
 
                 if(currentTokenStr == "~")
-                    result = CalculatorUtil::unaryNegation(operand);
+                    result = MathUtil::unaryNegation(operand);
                 else if(currentTokenStr == "!")
-                    result = CalculatorUtil::factorial(operand);
+                    result = MathUtil::factorial(operand);
                 else if(currentTokenStr == "%")
-                    result = CalculatorUtil::percent(operand);
+                    result = MathUtil::percent(operand);
                 else
                     std::cout << "Error: no unary operator: " << currentTokenStr << " found.\n\n";
 
@@ -79,19 +80,19 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
                 operandStack.pop();
 
                 if(currentTokenStr == "+")
-                    result = CalculatorUtil::add(operand1, operand2);
+                    result = MathUtil::add(operand1, operand2);
                 else if(currentTokenStr == "-")
-                    result = CalculatorUtil::subtract(operand1, operand2);
+                    result = MathUtil::subtract(operand1, operand2);
                 else if(currentTokenStr == "*")
-                    result = CalculatorUtil::multiply(operand1, operand2);
+                    result = MathUtil::multiply(operand1, operand2);
                 else if(currentTokenStr == "/")
-                    result = CalculatorUtil::divide(operand1, operand2);
+                    result = MathUtil::divide(operand1, operand2);
                 else if(currentTokenStr == "^")
-                    result = CalculatorUtil::power(operand1, operand2);
+                    result = MathUtil::power(operand1, operand2);
                 else if(currentTokenStr == "E")
-                    result = CalculatorUtil::scientificNotation(operand1, operand2);
+                    result = MathUtil::scientificNotation(operand1, operand2);
                 else if(currentTokenStr == "mod")
-                    result = CalculatorUtil::mod(operand1, operand2);
+                    result = MathUtil::mod(operand1, operand2);
                 //missing assignment operator
                 else
                     std::cout << "Error: no binary operator: " << currentTokenStr << " found.\n\n";
@@ -105,7 +106,7 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
 
             if(arity < 0)
             {
-                std::cout << "Error....\n";
+                std::cout << "Error: function arity < 0\n";
             }
             if(arity == 1)
             {
@@ -113,27 +114,27 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
                 operandStack.pop();
 
                 if(currentTokenStr == "sin")
-                    result = CalculatorUtil::sine(operand);
+                    result = MathUtil::sine(operand);
                 else if(currentTokenStr == "cos")
-                    result = CalculatorUtil::cosine(operand);
+                    result = MathUtil::cosine(operand);
                 else if(currentTokenStr == "tan")
-                    result = CalculatorUtil::tangent(operand);
+                    result = MathUtil::tangent(operand);
                 else if(currentTokenStr == "asin")
-                    result = CalculatorUtil::asine(operand);
+                    result = MathUtil::asine(operand);
                 else if(currentTokenStr == "acos")
-                    result = CalculatorUtil::acosine(operand);
+                    result = MathUtil::acosine(operand);
                 else if(currentTokenStr == "atan")
-                    result = CalculatorUtil::atangent(operand);
+                    result = MathUtil::atangent(operand);
                 else if(currentTokenStr == "log")
-                    result = CalculatorUtil::log(operand);
+                    result = MathUtil::log(operand);
                 else if(currentTokenStr == "ln")
-                    result = CalculatorUtil::ln(operand);
+                    result = MathUtil::ln(operand);
                 else if(currentTokenStr == "sqrt")
-                    result = CalculatorUtil::squareRoot(operand);
+                    result = MathUtil::squareRoot(operand);
                 else if(currentTokenStr == "exp")
-                    result = CalculatorUtil::exponent(operand);
+                    result = MathUtil::exponent(operand);
                 else if(currentTokenStr == "abs")
-                    result = CalculatorUtil::abs(operand);
+                    result = MathUtil::abs(operand);
                 else
                     std::cout << "Error: no function: " << currentTokenStr << " : found.\n\n";
             }
