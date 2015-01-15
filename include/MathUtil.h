@@ -1,7 +1,16 @@
-#include <string>
+#ifndef MATHUTIL_H
+#define MATHUTIL_H
 
-namespace MathUtil
+#include <string>
+#include "../include/MemoryBank.h"
+
+class MathUtil
 {
+public:
+
+    MathUtil();
+    ~MathUtil();
+
     //unary operators
     double unaryNegation(double);
     long long factorial(int);
@@ -15,7 +24,6 @@ namespace MathUtil
     double power(double, double);
     double scientificNotation(double, double);
     double mod(double, double);
-    void assignment(double, int);
 
     //trig functions
     double sine(double);
@@ -31,4 +39,6 @@ namespace MathUtil
     double exponent(double);
     double squareRoot(double);
     double abs(double);
-}
+};
+
+#endif // MATHUTIL_H

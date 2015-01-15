@@ -5,6 +5,8 @@
 #include "../include/InfixToPostfixConverterTests.h"
 #include "../include/PostfixEvaluatorTests.h"
 #include "../include/MemoryBankTests.h"
+#include "../include/Calculator.h"
+#include "../include/MathUtil.h"
 
 #include <cstdlib>
 #include <cmath>
@@ -33,10 +35,18 @@ int main()
     MemoryBankTests testMB;
     testMB.runTests();
 
-    //t.setInput("-1--2");
+    //cout << ip.convertToPostfix("a=5");
+    //cout << pe.evaluatePostfix("a 5 =");
+    //t.setInput("a=5");
     //t.dumpTokens();
-    //cout << ip.convertToPostfix("-a--b") << endl;
-    //cout << pe.evaluatePostfix("1 ~ 2 ~ -");
+
+    Calculator calc;
+
+    while(true)
+    {
+        calc.getUserInput();
+        cout << "answer: " << calc.calculate() << "\n";
+    }
 
     return 0;
 }

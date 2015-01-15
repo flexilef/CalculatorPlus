@@ -46,10 +46,12 @@ bool CalculatorUtil::isFunction(const std::string &str)
 
 int CalculatorUtil::getArity(const std::string &op)
 {
-    if(op == "+" || op == "-" || op == "*" || op == "/" || op == "^" || op == "E" || op == "=" || op == "mod")
+    if(op == "+" || op == "-" || op == "*" || op == "/" || op == "^" || op == "E" || op == "mod")
         return 2;
     else if(op == "~" || op == "!" || op == "%" || isFunction(op))   //note that the arity of a function is at least 1
         return 1;
+    else if(op == "=")//special operators
+        return 0;
 
     return -1;
 }

@@ -3,25 +3,27 @@
 
 #include "../include/MathTokenizer.h"
 #include "../include/MemoryBank.h"
+#include "../include/MathUtil.h"
 
 class PostfixEvaluator
 {
-    public:
-        /** Default constructor */
-        PostfixEvaluator();
-        PostfixEvaluator(MemoryBank&);
-        /** Default destructor */
-        virtual ~PostfixEvaluator();
+public:
+    /** Default constructor */
+    PostfixEvaluator();
+    PostfixEvaluator(MemoryBank&);
+    /** Default destructor */
+    virtual ~PostfixEvaluator();
 
-        double evaluatePostfix(const std::string&);
+    double evaluatePostfix(const std::string&);
 
-    protected:
+protected:
 
-    private:
-        MathTokenizer tokenizer;
-        MemoryBank& theBank;
-        double evaluate(const std::string&);
-
+private:
+    MathTokenizer tokenizer;
+    MemoryBank& mBank;
+    MathUtil mUtil;
+    double evaluate(const std::string&);
+    void assignment(std::string, double);
 };
 
 #endif // POSTFIXEVALUATOR_H

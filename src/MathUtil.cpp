@@ -1,6 +1,15 @@
 #include "../include/MathUtil.h"
 #include <cmath>
 
+MathUtil::MathUtil()
+{
+}
+
+MathUtil::~MathUtil()
+{
+
+}
+
 //unary operators
 double MathUtil::unaryNegation(double operand)
 {
@@ -121,24 +130,3 @@ double MathUtil::abs(double value)
 {
     return std::abs(value);
 }
-
-/*
-//Max is 20! possible to modify input if ! found to include ie.
-//3! = 3*2*1
-long long CalculatorUtil::factorial(int value)
-{
-    unsigned long long answer = 1;
-
-    if(value < 0)
-    {
-        return -1;
-    }
-
-    for(int i=1; i<=value; i++)
-    {
-        answer *= i;
-    }
-
-    return answer;
-}
-*/

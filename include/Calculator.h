@@ -3,6 +3,7 @@
 
 #include "../include/MemoryBank.h"
 #include "../include/PostfixEvaluator.h"
+#include "../include/InfixToPostfixConverter.h"
 #include "../include/MathUtil.h"
 
 class Calculator
@@ -13,11 +14,17 @@ class Calculator
         /** Default destructor */
         virtual ~Calculator();
 
+        void getUserInput();
+        double calculate();
+
     protected:
     private:
         double answer;
-        std::string errorMessage;
-        MemoryBank memory;
+        std::string input;
+
+        MemoryBank mBank;
+        InfixToPostfixConverter ipConverter;
+        PostfixEvaluator pEvaluator;
 };
 
 #endif // CALCULATOR_H

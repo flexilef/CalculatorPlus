@@ -6,7 +6,7 @@
 #include <iostream>
 #include <stack>
 
-PostfixEvaluator::PostfixEvaluator(MemoryBank& mb) : theBank(mb)
+PostfixEvaluator::PostfixEvaluator(MemoryBank& mbref) : mBank(mbref)
 {
 }
 
@@ -27,6 +27,8 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
     std::stack<double> operandStack;
     Token currentToken;
     std::string currentTokenStr;
+    std::string newVariable;
+    std::string existingVariable;
     int arity = -1;
     double result = 0;
 
@@ -44,16 +46,53 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
         }
         else if(currentToken.tokenType == Token::VARIABLE)
         {
-            double variableValue = theBank.getValueFromVar(currentTokenStr);
-            operandStack.push(variableValue);
+            if(mBank.hasVariable(currentTokenStr))
+            {
+                double variableValue = mBank.getValueFromVar(currentTokenStr);
+                operandStack.push(variableValue);
+                existingVariable = currentTokenStr;
+            }
+            else
+                newVariable = currentTokenStr;
         }
         else if(currentToken.tokenType == Token::OPERATOR)
         {
             arity = CalculatorUtil::getArity(currentTokenStr);
 
-            if(arity < 0)
+            if(arity == 0)
             {
-                std::cout << "Error: operator arity < 0\n";
+                if(currentTokenStr == "=")
+                {
+                    //case 1: new var and number. ie. a=1
+                    if(newVariable != "" && existingVariable == "")
+                    {
+                        double operand = operandStack.top();
+                        operandStack.pop();
+                        result = operand;
+                        assignment(newVariable, operand);
+                        operandStack.push(result);
+                    }
+                    //case 2: existing var and new num. ie. a=1... a=2
+                    else if(newVariable == "" && existingVariable != "")
+                    {
+                        double operand = operandStack.top();
+                        operandStack.pop();
+                        operandStack.pop();
+                        result = operand;
+                        assignment(existingVariable, operand);
+                        operandStack.push(result);
+                    }
+                    //case 3: existing var and new var. ie. b=a where a=1 and b = new
+                    else if(newVariable != "" && existingVariable != "")
+                    {
+                        double operand = operandStack.top();
+                        operandStack.pop();
+                        result = operand;
+                        assignment(newVariable, operand);
+                        operandStack.push(result);
+                    }
+                    //case 4: existing var and existing var. ie. a=b. *WIll NOT BE HANDLED*
+                }
             }
             else if(arity == 1)
             {
@@ -61,11 +100,11 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
                 operandStack.pop();
 
                 if(currentTokenStr == "~")
-                    result = MathUtil::unaryNegation(operand);
+                    result = mUtil.unaryNegation(operand);
                 else if(currentTokenStr == "!")
-                    result = MathUtil::factorial(operand);
+                    result = mUtil.factorial(operand);
                 else if(currentTokenStr == "%")
-                    result = MathUtil::percent(operand);
+                    result = mUtil.percent(operand);
                 else
                     std::cout << "Error: no unary operator: " << currentTokenStr << " found.\n\n";
 
@@ -80,20 +119,19 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
                 operandStack.pop();
 
                 if(currentTokenStr == "+")
-                    result = MathUtil::add(operand1, operand2);
+                    result = mUtil.add(operand1, operand2);
                 else if(currentTokenStr == "-")
-                    result = MathUtil::subtract(operand1, operand2);
+                    result = mUtil.subtract(operand1, operand2);
                 else if(currentTokenStr == "*")
-                    result = MathUtil::multiply(operand1, operand2);
+                    result = mUtil.multiply(operand1, operand2);
                 else if(currentTokenStr == "/")
-                    result = MathUtil::divide(operand1, operand2);
+                    result = mUtil.divide(operand1, operand2);
                 else if(currentTokenStr == "^")
-                    result = MathUtil::power(operand1, operand2);
+                    result = mUtil.power(operand1, operand2);
                 else if(currentTokenStr == "E")
-                    result = MathUtil::scientificNotation(operand1, operand2);
+                    result = mUtil.scientificNotation(operand1, operand2);
                 else if(currentTokenStr == "mod")
-                    result = MathUtil::mod(operand1, operand2);
-                //missing assignment operator
+                    result = mUtil.mod(operand1, operand2);
                 else
                     std::cout << "Error: no binary operator: " << currentTokenStr << " found.\n\n";
 
@@ -114,36 +152,53 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
                 operandStack.pop();
 
                 if(currentTokenStr == "sin")
-                    result = MathUtil::sine(operand);
+                    result = mUtil.sine(operand);
                 else if(currentTokenStr == "cos")
-                    result = MathUtil::cosine(operand);
+                    result = mUtil.cosine(operand);
                 else if(currentTokenStr == "tan")
-                    result = MathUtil::tangent(operand);
+                    result = mUtil.tangent(operand);
                 else if(currentTokenStr == "asin")
-                    result = MathUtil::asine(operand);
+                    result = mUtil.asine(operand);
                 else if(currentTokenStr == "acos")
-                    result = MathUtil::acosine(operand);
+                    result = mUtil.acosine(operand);
                 else if(currentTokenStr == "atan")
-                    result = MathUtil::atangent(operand);
+                    result = mUtil.atangent(operand);
                 else if(currentTokenStr == "log")
-                    result = MathUtil::log(operand);
+                    result = mUtil.log(operand);
                 else if(currentTokenStr == "ln")
-                    result = MathUtil::ln(operand);
+                    result = mUtil.ln(operand);
                 else if(currentTokenStr == "sqrt")
-                    result = MathUtil::squareRoot(operand);
+                    result = mUtil.squareRoot(operand);
                 else if(currentTokenStr == "exp")
-                    result = MathUtil::exponent(operand);
+                    result = mUtil.exponent(operand);
                 else if(currentTokenStr == "abs")
-                    result = MathUtil::abs(operand);
+                    result = mUtil.abs(operand);
                 else
                     std::cout << "Error: no function: " << currentTokenStr << " : found.\n\n";
             }
-
             operandStack.push(result);
         }
     }
 
-    result = operandStack.top();
+    if(operandStack.size() == 1)
+    {
+        result = operandStack.top();
+    }
+    else if(operandStack.size() < 1)
+    {
+        result = 0;
+        std::cout << "ERROR: empty stack : \n";
+    }
+    else
+    {
+        result = 0;
+        std::cout << "ERROR: stack size: " << operandStack.size() << "\n";
+    }
 
     return result;
+}
+
+void PostfixEvaluator::assignment(std::string variable, double value)
+{
+    mBank.storeValueIntoVar(variable, value);
 }

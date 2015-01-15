@@ -15,6 +15,7 @@ class PostfixEvaluatorTests
     protected:
     private:
         MemoryBank theBank;
+        MathUtil mUtil;
         PostfixEvaluator evaluator;
         int totalTestsRun;
         int totalTestsFailed;

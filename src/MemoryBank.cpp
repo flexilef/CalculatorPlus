@@ -1,5 +1,6 @@
 #include "../include/MemoryBank.h"
 #include <iostream>
+#include <cassert>
 
 MemoryBank::MemoryBank()
 {
@@ -32,12 +33,22 @@ bool MemoryBank::storeValueIntoVar(std::string variable, double value)
     }
 
     if(!isBadVarName)
+    {
         variableToNumberMap[variable] = value;
+    }
     else
         return false;
 
     return true;
-        //std::cout << "error: MemoryBank: illegal variable name: \"" << variable << "\" \n";
+    //std::cout << "error: MemoryBank: illegal variable name: \"" << variable << "\" \n";
+}
+
+bool MemoryBank::hasVariable(std::string variable)
+{
+    if(variableToNumberMap.count(variable) != 0)
+        return true;
+
+    return false;
 }
 
 void MemoryBank::clearMemory()

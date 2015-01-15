@@ -14,6 +14,7 @@ class MemoryBank
 
         double getValueFromVar(std::string);
         bool storeValueIntoVar(std::string, double);
+        bool hasVariable(std::string);
         void clearMemory();
     protected:
     private:
