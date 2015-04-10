@@ -9,8 +9,6 @@ PostfixEvaluatorTests::PostfixEvaluatorTests() : evaluator(theBank)
     theBank.storeValueIntoVar("b", 2);
     theBank.storeValueIntoVar("cd", 3);
     theBank.storeValueIntoVar("abc", 123);
-    totalTestsRun = 0;
-    totalTestsFailed = 0;
 }
 
 PostfixEvaluatorTests::~PostfixEvaluatorTests()

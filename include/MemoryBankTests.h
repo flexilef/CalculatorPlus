@@ -2,8 +2,9 @@
 #define MEMORYBANKTESTS_H
 
 #include "../include/MemoryBank.h"
+#include "../include/UnitTest.h"
 
-class MemoryBankTests
+class MemoryBankTests : public UnitTest
 {
     public:
         /** Default constructor */
@@ -12,10 +13,10 @@ class MemoryBankTests
         virtual ~MemoryBankTests();
 
         void runTests();
+
     protected:
+
     private:
-        int totalTestsRun;
-        int totalTestsFailed;
         MemoryBank theBank;
 
         void MemoryBank_functions_canStoreAndRetrieveVariables();

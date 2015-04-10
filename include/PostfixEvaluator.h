@@ -1,7 +1,6 @@
 #ifndef POSTFIXEVALUATOR_H
 #define POSTFIXEVALUATOR_H
 
-#include "../include/MathTokenizer.h"
 #include "../include/MemoryBank.h"
 #include "../include/MathUtil.h"
 
@@ -19,7 +18,6 @@ public:
 protected:
 
 private:
-    MathTokenizer tokenizer;
     MemoryBank& mBank;
     MathUtil mUtil;
     double evaluate(const std::string&);

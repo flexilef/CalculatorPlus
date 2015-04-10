@@ -3,23 +3,21 @@
 
 #include <vector>
 #include "../include/InfixToPostfixConverter.h"
+#include "../include/UnitTest.h"
 
-class InfixToPostfixConverterTests
+class InfixToPostfixConverterTests : public UnitTest
 {
     public:
         /** Default constructor */
         InfixToPostfixConverterTests();
         /** Default destructor */
         virtual ~InfixToPostfixConverterTests();
-
         void runTests();
 
     protected:
 
     private:
         InfixToPostfixConverter converter;
-        int totalTestsRun;
-        int totalTestsFailed;
 
         //tests
         void convertToPostfix_constants_returnPostfixExpression();

@@ -4,8 +4,6 @@
 
 MemoryBankTests::MemoryBankTests()
 {
-    totalTestsRun = 0;
-    totalTestsFailed = 0;
 }
 
 MemoryBankTests::~MemoryBankTests()

@@ -2,7 +2,6 @@
 #define INFIXTOPOSTFIXCONVERTER_H
 
 #include "InputConverter.h"
-#include "MathTokenizer.h"
 
 class InfixToPostfixConverter : public InputConverter
 {
@@ -15,8 +14,6 @@ public:
     std::string convertToPostfix(const std::string&);
 
 private:
-    MathTokenizer tokenizer;
-
     void convert();
 };
 

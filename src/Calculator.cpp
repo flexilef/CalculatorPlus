@@ -3,7 +3,7 @@
 
 Calculator::Calculator() : pEvaluator(mBank)
 {
-    answer = 0;
+    output = 0;
 }
 
 Calculator::~Calculator()

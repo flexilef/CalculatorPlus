@@ -1,5 +1,6 @@
 #include "../include/InfixToPostfixConverter.h"
 #include "../include/CalculatorUtil.h"
+#include "../include/MathTokenizer.h"
 
 #include <cctype>
 #include <stack>
@@ -26,6 +27,7 @@ std::string InfixToPostfixConverter::convertToPostfix(const std::string &infix)
 
 void InfixToPostfixConverter::convert()
 {
+    MathTokenizer tokenizer;
     std::stack<std::string> operatorStack;
     std::string postfix;
     std::string topOperator;

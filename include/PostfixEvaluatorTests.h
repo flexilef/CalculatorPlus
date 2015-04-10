@@ -2,23 +2,23 @@
 #define POSTFIXEVALUATORTESTS_H
 
 #include "../include/PostfixEvaluator.h"
+#include "../include/UnitTest.h"
 
-class PostfixEvaluatorTests
+class PostfixEvaluatorTests : public UnitTest
 {
     public:
         /** Default constructor */
         PostfixEvaluatorTests();
         /** Default destructor */
         virtual ~PostfixEvaluatorTests();
-
         void runTests();
+
     protected:
+
     private:
         MemoryBank theBank;
         MathUtil mUtil;
         PostfixEvaluator evaluator;
-        int totalTestsRun;
-        int totalTestsFailed;
 
         //tests
         void evaluate_unaryOperators_returnResult();

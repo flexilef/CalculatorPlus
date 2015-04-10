@@ -7,6 +7,7 @@
 #include "../include/MemoryBankTests.h"
 #include "../include/Calculator.h"
 #include "../include/MathUtil.h"
+#include "../include/UnitTest.h"
 
 #include <cstdlib>
 #include <cmath>
@@ -23,17 +24,19 @@ int main()
     MathTokenizer t;
 
     InfixToPostfixConverterTests testIP;
-    testIP.runTests();
-
-    cout << "\n";
-
     PostfixEvaluatorTests testPE;
-    testPE.runTests();
-
-    cout << "\n";
-
     MemoryBankTests testMB;
-    testMB.runTests();
+
+    UnitTest* tests[3];
+    tests[0] = &testIP;
+    tests[1] = &testPE;
+    tests[2] = &testMB;
+
+    for(int i = 0; i < 3; i++)
+    {
+        tests[i]->runTests();
+        cout << "\n";
+    }
 
     //cout << ip.convertToPostfix("a=5");
     //cout << pe.evaluatePostfix("a 5 =");

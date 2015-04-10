@@ -3,8 +3,6 @@
 
 InfixToPostfixConverterTests::InfixToPostfixConverterTests()
 {
-    totalTestsRun = 0;
-    totalTestsFailed = 0;
 }
 
 InfixToPostfixConverterTests::~InfixToPostfixConverterTests()

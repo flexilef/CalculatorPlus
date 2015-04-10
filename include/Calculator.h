@@ -4,7 +4,6 @@
 #include "../include/MemoryBank.h"
 #include "../include/PostfixEvaluator.h"
 #include "../include/InfixToPostfixConverter.h"
-#include "../include/MathUtil.h"
 
 class Calculator
 {
@@ -19,7 +18,7 @@ class Calculator
 
     protected:
     private:
-        double answer;
+        double output;
         std::string input;
 
         MemoryBank mBank;

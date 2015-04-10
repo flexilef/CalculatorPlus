@@ -1,6 +1,6 @@
 #include "../include/PostfixEvaluator.h"
 #include "../include/CalculatorUtil.h"
-#include "../include/MathUtil.h"
+#include "../include/MathTokenizer.h"
 
 #include <cstdlib>
 #include <iostream>
@@ -24,15 +24,18 @@ double PostfixEvaluator::evaluatePostfix(const std::string& postfix)
 
 double PostfixEvaluator::evaluate(const std::string& postfix)
 {
+    MathTokenizer tokenizer;
+    tokenizer.setInput(postfix);
+
     std::stack<double> operandStack;
     Token currentToken;
     std::string currentTokenStr;
-    std::string newVariable;
-    std::string existingVariable;
+
     int arity = -1;
     double result = 0;
 
-    tokenizer.setInput(postfix);
+    std::string newVariable;
+    std::string existingVariable;
 
     while(tokenizer.hasNext())
     {
