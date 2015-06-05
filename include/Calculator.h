@@ -13,7 +13,10 @@ class Calculator
         /** Default destructor */
         virtual ~Calculator();
 
+        void setInput(const std::string&);
+        std::string getInput();
         void getUserInput();
+        double getOutput();
         double calculate();
 
     protected:

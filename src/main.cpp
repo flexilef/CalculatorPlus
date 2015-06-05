@@ -18,10 +18,10 @@ int main()
 {
     cout << "Hello world!" << endl << endl;
 
-    MemoryBank mb;
-    InfixToPostfixConverter ip;
-    PostfixEvaluator pe(mb);
-    MathTokenizer t;
+    //MemoryBank mb;
+    //InfixToPostfixConverter ip;
+    //PostfixEvaluator pe(mb);
+    //MathTokenizer t;
 
     InfixToPostfixConverterTests testIP;
     PostfixEvaluatorTests testPE;
@@ -48,7 +48,8 @@ int main()
     while(true)
     {
         calc.getUserInput();
-        cout << "answer: " << calc.calculate() << "\n";
+        calc.calculate();
+        cout << "answer: " << calc.getOutput() << "\n";
     }
 
     return 0;

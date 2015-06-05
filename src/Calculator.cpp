@@ -13,8 +13,26 @@ Calculator::~Calculator()
 
 void Calculator::getUserInput()
 {
+    std::string str;
     std::cout << "Enter: ";
-    std::getline(std::cin, input);
+    std::getline(std::cin, str);
+    setInput(str);
+}
+
+std::string Calculator::getInput()
+{
+    return input;
+}
+
+
+void Calculator::setInput(const std::string& str)
+{
+    input = str;
+}
+
+double Calculator::getOutput()
+{
+    return output;
 }
 
 double Calculator::calculate()
@@ -22,5 +40,5 @@ double Calculator::calculate()
     std::string postfix = ipConverter.convertToPostfix(input);
     double result = pEvaluator.evaluatePostfix(postfix);
 
-    return result;
+    output = result;
 }
