@@ -5,6 +5,7 @@
 Calculator::Calculator() : pEvaluator(mBank)
 {
     output = 0;
+    errorState = false;
 }
 
 Calculator::~Calculator()
@@ -45,10 +46,25 @@ double Calculator::calculate()
     {
         result = pEvaluator.evaluatePostfix(postfix);
     }
-    catch (std::runtime_error e)
+    catch (CalculatorException e)
     {
-        std::cout << e.what();
+        errorState = true;
+        errorMessage = e.what();
     }
 
     output = result;
+}
+
+void Calculator::setErrorState(bool error)
+{
+    errorState = error;
+}
+bool Calculator::getErrorState()
+{
+    return errorState;
+}
+
+std::string Calculator::getErrorMessage()
+{
+    return errorMessage;
 }

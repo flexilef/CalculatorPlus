@@ -91,7 +91,7 @@ void InfixToPostfixConverterTests::convertToPostfix_binaryOperators_returnPostfi
     //E - scientific notation
     checkPostfix("1E2", "1 2 E", "binary operator: E: single digit");
     checkPostfix("12E34", "12 34 E", "binary operator: E: multiple digit");
-    checkPostfix("1.2E34.56", "1.2 34.56 E", "binary operator: E: decimal point");//no such thing remove?
+    //checkPostfix("1.2E34.56", "1.2 34.56 E", "binary operator: E: decimal point");//no such thing remove?
     checkPostfix("-1E2", "1 ~ 2 E", "binary operator: E: negative coefficient");
     checkPostfix("1E-2", "1 2 ~ E", "binary operator: E: negative exponent");
     checkPostfix("(a)E5", "a 5 E", "binary operator: E: coefficient variable 2");

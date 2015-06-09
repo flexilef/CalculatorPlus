@@ -22,34 +22,39 @@ int main()
     //InfixToPostfixConverter ip;
     //PostfixEvaluator pe(mb);
     //MathTokenizer t;
+    /*
+        InfixToPostfixConverterTests testIP;
+        PostfixEvaluatorTests testPE;
+        MemoryBankTests testMB;
 
-    InfixToPostfixConverterTests testIP;
-    PostfixEvaluatorTests testPE;
-    MemoryBankTests testMB;
+        UnitTest* tests[3];
+        tests[0] = &testIP;
+        tests[1] = &testPE;
+        tests[2] = &testMB;
 
-    UnitTest* tests[3];
-    tests[0] = &testIP;
-    tests[1] = &testPE;
-    tests[2] = &testMB;
+        for(int i = 0; i < 3; i++)
+        {
+            tests[i]->runTests();
+            cout << "\n";
+        }
 
-    for(int i = 0; i < 3; i++)
-    {
-        tests[i]->runTests();
-        cout << "\n";
-    }
-
-    //cout << ip.convertToPostfix("a=5");
-    //cout << pe.evaluatePostfix("a 5 =");
-    //t.setInput("a=5");
-    //t.dumpTokens();
-
+        //cout << ip.convertToPostfix("a=5");
+        //cout << pe.evaluatePostfix("a 5 =");
+        //t.setInput("a=5");
+        //t.dumpTokens();
+    */
     Calculator calc;
 
     while(true)
     {
         calc.getUserInput();
         calc.calculate();
-        cout << "answer: " << calc.getOutput() << "\n";
+        if(calc.getErrorState() == true)
+        {
+            cout << calc.getErrorMessage() << "\n";
+        }
+        else
+            cout << "answer: " << calc.getOutput() << "\n";
     }
 
     return 0;

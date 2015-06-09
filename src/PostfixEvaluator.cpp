@@ -2,6 +2,9 @@
 #include "../include/CalculatorUtil.h"
 #include "../include/MathTokenizer.h"
 #include "../include/CalculatorException.h"
+#include "../include/DomainException.h"
+#include "../include/SyntaxException.h"
+#include "../include/DivideByZeroException.h"
 
 #include <cstdlib>
 #include <iostream>
@@ -106,7 +109,14 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
                 if(currentTokenStr == "~")
                     result = mUtil.unaryNegation(operand);
                 else if(currentTokenStr == "!")
-                    result = mUtil.factorial(operand);
+                    try
+                    {
+                        result = mUtil.factorial(operand);
+                    }
+                    catch(DomainException& e)
+                    {
+                        throw CalculatorException(e.what());
+                    }
                 else if(currentTokenStr == "%")
                     result = mUtil.percent(operand);
                 else
@@ -134,15 +144,30 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
                     {
                         result = mUtil.divide(operand1, operand2);
                     }
-                    catch(std::domain_error e)
+                    catch(DivideByZeroException& e)
                     {
-                        throw CalculatorException("Calculator Error: " + std::string(e.what()));
+                        throw CalculatorException(e.what());
                     }
                 }
                 else if(currentTokenStr == "^")
-                    result = mUtil.power(operand1, operand2);
+                    try
+                    {
+                        result = mUtil.power(operand1, operand2);
+                    }
+                    catch(DomainException& e)
+                    {
+                        throw CalculatorException(e.what());
+                    }
+
                 else if(currentTokenStr == "E")
-                    result = mUtil.scientificNotation(operand1, operand2);
+                    try
+                    {
+                        result = mUtil.scientificNotation(operand1, operand2);
+                    }
+                    catch(SyntaxException& e)
+                    {
+                        throw CalculatorException(e.what());
+                    }
                 else if(currentTokenStr == "mod")
                     result = mUtil.mod(operand1, operand2);
                 else
@@ -157,7 +182,7 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
 
             if(arity < 0)
             {
-                std::cout << "Error: function arity < 0\n";
+                throw CalculatorException("Calculator Error: function arity < 0");
             }
             if(arity == 1)
             {
@@ -177,17 +202,42 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
                 else if(currentTokenStr == "atan")
                     result = mUtil.atangent(operand);
                 else if(currentTokenStr == "log")
-                    result = mUtil.log(operand);
+                {
+                    try
+                    {
+                        result = mUtil.log(operand);
+                    }
+                    catch(DomainException& e)
+                    {
+                        throw CalculatorException(e.what());
+                    }
+                }
                 else if(currentTokenStr == "ln")
-                    result = mUtil.ln(operand);
+                    try
+                    {
+                        result = mUtil.ln(operand);
+                    }
+                    catch(DomainException& e)
+                    {
+                        throw CalculatorException(e.what());
+                    }
                 else if(currentTokenStr == "sqrt")
-                    result = mUtil.squareRoot(operand);
+                {
+                    try
+                    {
+                        result = mUtil.squareRoot(operand);
+                    }
+                    catch(DomainException& e)
+                    {
+                        throw CalculatorException(e.what());
+                    }
+                }
                 else if(currentTokenStr == "exp")
                     result = mUtil.exponent(operand);
                 else if(currentTokenStr == "abs")
                     result = mUtil.abs(operand);
                 else
-                    std::cout << "Error: no function: " << currentTokenStr << " : found.\n\n";
+                    throw CalculatorException("Calculator Error: invalid function: " + std::string(currentTokenStr));
             }
             operandStack.push(result);
         }
@@ -199,8 +249,8 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
     }
     else if(operandStack.size() < 1)
     {
-        result = 0;
-        std::cout << "ERROR: empty stack : \n";
+        //result = 0;
+        throw(CalculatorException("Syntax Error: missing operand(s)"));
     }
     else
     {
