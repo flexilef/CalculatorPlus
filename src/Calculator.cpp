@@ -1,4 +1,5 @@
 #include "../include/Calculator.h"
+#include "../include/CalculatorException.h"
 #include <iostream>
 
 Calculator::Calculator() : pEvaluator(mBank)
@@ -38,7 +39,16 @@ double Calculator::getOutput()
 double Calculator::calculate()
 {
     std::string postfix = ipConverter.convertToPostfix(input);
-    double result = pEvaluator.evaluatePostfix(postfix);
+    double result = 0;
+
+    try
+    {
+        result = pEvaluator.evaluatePostfix(postfix);
+    }
+    catch (std::runtime_error e)
+    {
+        std::cout << e.what();
+    }
 
     output = result;
 }

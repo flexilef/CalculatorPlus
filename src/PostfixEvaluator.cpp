@@ -1,6 +1,7 @@
 #include "../include/PostfixEvaluator.h"
 #include "../include/CalculatorUtil.h"
 #include "../include/MathTokenizer.h"
+#include "../include/CalculatorException.h"
 
 #include <cstdlib>
 #include <iostream>
@@ -128,7 +129,16 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
                 else if(currentTokenStr == "*")
                     result = mUtil.multiply(operand1, operand2);
                 else if(currentTokenStr == "/")
-                    result = mUtil.divide(operand1, operand2);
+                {
+                    try
+                    {
+                        result = mUtil.divide(operand1, operand2);
+                    }
+                    catch(std::domain_error e)
+                    {
+                        throw CalculatorException("Calculator Error: " + std::string(e.what()));
+                    }
+                }
                 else if(currentTokenStr == "^")
                     result = mUtil.power(operand1, operand2);
                 else if(currentTokenStr == "E")

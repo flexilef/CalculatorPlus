@@ -3,6 +3,7 @@
 
 #include <string>
 #include "../include/MemoryBank.h"
+#include "../include/DivideByZeroException.h"
 
 class MathUtil
 {

@@ -44,6 +44,8 @@ double MathUtil::multiply(double left, double right)
 
 double MathUtil::divide(double left, double right)
 {
+    if(right == 0)
+        throw DivideByZeroException("Divide By 0 Error");
     return left / right;
 }
 
