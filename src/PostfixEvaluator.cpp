@@ -1,6 +1,7 @@
 #include "../include/PostfixEvaluator.h"
 #include "../include/CalculatorUtil.h"
 #include "../include/MathTokenizer.h"
+
 #include "../include/CalculatorException.h"
 #include "../include/DomainException.h"
 #include "../include/SyntaxException.h"
@@ -12,6 +13,7 @@
 
 PostfixEvaluator::PostfixEvaluator(MemoryBank& mbref) : mBank(mbref)
 {
+    setAngleMode(MathUtil::DEGREES);
 }
 
 PostfixEvaluator::~PostfixEvaluator()
@@ -189,12 +191,18 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
                 double operand = operandStack.top();
                 operandStack.pop();
 
-                if(currentTokenStr == "sin")
-                    result = mUtil.sine(operand);
-                else if(currentTokenStr == "cos")
-                    result = mUtil.cosine(operand);
-                else if(currentTokenStr == "tan")
-                    result = mUtil.tangent(operand);
+                if(currentTokenStr == "sin" && angleMode == MathUtil::RADIANS)
+                    result = mUtil.sineInRadians(operand);
+                else if(currentTokenStr == "cos" && angleMode == MathUtil::RADIANS)
+                    result = mUtil.cosineInRadians(operand);
+                else if(currentTokenStr == "tan" && angleMode == MathUtil::RADIANS)
+                    result = mUtil.tangentInRadians(operand);
+                else if(currentTokenStr == "sin" && angleMode == MathUtil::DEGREES)
+                    result = mUtil.sineInDegrees(operand);
+                else if(currentTokenStr == "cos" && angleMode == MathUtil::DEGREES)
+                    result = mUtil.cosineInDegrees(operand);
+                else if(currentTokenStr == "tan" && angleMode == MathUtil::DEGREES)
+                    result = mUtil.tangentInDegrees(operand);
                 else if(currentTokenStr == "asin")
                     result = mUtil.asine(operand);
                 else if(currentTokenStr == "acos")
@@ -264,4 +272,9 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
 void PostfixEvaluator::assignment(std::string variable, double value)
 {
     mBank.storeValueIntoVar(variable, value);
+}
+
+void PostfixEvaluator::setAngleMode(MathUtil::AngleMode mode)
+{
+    angleMode = mode;
 }

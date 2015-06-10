@@ -3,35 +3,46 @@
 
 #include "../include/MemoryBank.h"
 #include "../include/PostfixEvaluator.h"
+#include "../include/MathUtil.h"
 #include "../include/InfixToPostfixConverter.h"
 
 class Calculator
 {
-    public:
-        /** Default constructor */
-        Calculator();
-        /** Default destructor */
-        virtual ~Calculator();
+public:
 
-        double calculate();
-        std::string getErrorMessage();
-        void setErrorState(bool);
-        bool getErrorState();
-        std::string getInput();
-        void setInput(const std::string&);
-        void getUserInput();
-        double getOutput();
+    enum CalculatorState
+    {
+        RUNNINGSTATE = 0,
+        ERRORSTATE,
+    };
 
-    protected:
-    private:
-        double output;
-        std::string input;
-        std::string errorMessage;
-        bool errorState;
+    /** Default constructor */
+    Calculator();
+    /** Default destructor */
+    virtual ~Calculator();
 
-        MemoryBank mBank;
-        InfixToPostfixConverter ipConverter;
-        PostfixEvaluator pEvaluator;
+    double calculate();
+    void getUserInput();
+    std::string getInput();
+    void setInput(const std::string&);
+    double getOutput();
+    std::string getErrorMessage();
+    void setCalculatorState(CalculatorState);
+    CalculatorState getCalculatorState();
+    void setAngleMode(MathUtil::AngleMode);
+
+protected:
+private:
+    std::string input;
+    double output;
+
+    std::string errorMessage;
+    CalculatorState calcState;
+    MathUtil::AngleMode angleMode;
+
+    MemoryBank mBank;
+    InfixToPostfixConverter ipConverter;
+    PostfixEvaluator pEvaluator;
 };
 
 #endif // CALCULATOR_H

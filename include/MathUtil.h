@@ -8,6 +8,12 @@ class MathUtil
 {
 public:
 
+    enum AngleMode
+    {
+        DEGREES = 0,
+        RADIANS,
+    };
+
     MathUtil();
     ~MathUtil();
 
@@ -26,9 +32,12 @@ public:
     double mod(double, double);
 
     //trig functions
-    double sine(double);
-    double cosine(double);
-    double tangent(double);
+    double sineInRadians(double);
+    double cosineInRadians(double);
+    double tangentInRadians(double);
+    double sineInDegrees(double);
+    double cosineInDegrees(double);
+    double tangentInDegrees(double);
     double asine(double);
     double acosine(double);
     double atangent(double);

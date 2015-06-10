@@ -87,21 +87,42 @@ double MathUtil::mod(double left, double right)
 }
 
 //trig functions
-double MathUtil::sine(double radianValue)
+double MathUtil::sineInDegrees(double degrees)
+{
+    double degreesResult = sin(degrees*M_PI/180);
+
+    return degreesResult;
+}
+
+double MathUtil::cosineInDegrees(double degrees)
+{
+    double degreesResult = cos(degrees*M_PI/180);
+
+    return degreesResult;
+}
+
+double MathUtil::tangentInDegrees(double degrees)
+{
+    double degreesResult = tan(degrees*M_PI/180);
+
+    return degreesResult;
+}
+
+double MathUtil::sineInRadians(double radianValue)
 {
     double radianResult = sin(radianValue);
 
     return radianResult;
 }
 
-double MathUtil::cosine(double radianValue)
+double MathUtil::cosineInRadians(double radianValue)
 {
     double radianResult = cos(radianValue);
 
     return radianResult;
 }
 
-double MathUtil::tangent(double radianValue)
+double MathUtil::tangentInRadians(double radianValue)
 {
     double radianResult = tan(radianValue);
 

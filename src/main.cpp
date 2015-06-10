@@ -18,40 +18,31 @@ int main()
 {
     cout << "Hello world!" << endl << endl;
 
-    //MemoryBank mb;
-    //InfixToPostfixConverter ip;
-    //PostfixEvaluator pe(mb);
-    //MathTokenizer t;
-    /*
-        InfixToPostfixConverterTests testIP;
-        PostfixEvaluatorTests testPE;
-        MemoryBankTests testMB;
+    InfixToPostfixConverterTests testIP;
+    PostfixEvaluatorTests testPE;
+    MemoryBankTests testMB;
 
-        UnitTest* tests[3];
-        tests[0] = &testIP;
-        tests[1] = &testPE;
-        tests[2] = &testMB;
+    UnitTest* tests[3];
+    tests[0] = &testIP;
+    tests[1] = &testPE;
+    tests[2] = &testMB;
 
-        for(int i = 0; i < 3; i++)
-        {
-            tests[i]->runTests();
-            cout << "\n";
-        }
+    for(int i = 0; i < 3; i++)
+    {
+        tests[i]->runTests();
+        cout << "\n";
+    }
 
-        //cout << ip.convertToPostfix("a=5");
-        //cout << pe.evaluatePostfix("a 5 =");
-        //t.setInput("a=5");
-        //t.dumpTokens();
-    */
     Calculator calc;
 
     while(true)
     {
         calc.getUserInput();
         calc.calculate();
-        if(calc.getErrorState() == true)
+        if(calc.getCalculatorState() == Calculator::ERRORSTATE)
         {
             cout << calc.getErrorMessage() << "\n";
+            calc.setCalculatorState(Calculator::RUNNINGSTATE);
         }
         else
             cout << "answer: " << calc.getOutput() << "\n";

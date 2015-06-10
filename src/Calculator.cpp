@@ -5,7 +5,9 @@
 Calculator::Calculator() : pEvaluator(mBank)
 {
     output = 0;
-    errorState = false;
+    calcState = RUNNINGSTATE;
+    angleMode = MathUtil::DEGREES;
+    pEvaluator.setAngleMode(angleMode);
 }
 
 Calculator::~Calculator()
@@ -48,23 +50,29 @@ double Calculator::calculate()
     }
     catch (CalculatorException e)
     {
-        errorState = true;
+        calcState = ERRORSTATE;
         errorMessage = e.what();
     }
 
     output = result;
 }
 
-void Calculator::setErrorState(bool error)
+void Calculator::setCalculatorState(CalculatorState state)
 {
-    errorState = error;
+    calcState = state;
 }
-bool Calculator::getErrorState()
+Calculator::CalculatorState Calculator::getCalculatorState()
 {
-    return errorState;
+    return calcState;
 }
 
 std::string Calculator::getErrorMessage()
 {
     return errorMessage;
+}
+
+void Calculator::setAngleMode(MathUtil::AngleMode mode)
+{
+    angleMode = mode;
+    pEvaluator.setAngleMode(mode);
 }
