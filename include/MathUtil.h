@@ -1,9 +1,6 @@
 #ifndef MATHUTIL_H
 #define MATHUTIL_H
 
-#include <string>
-#include "../include/MemoryBank.h"
-
 class MathUtil
 {
 public:
@@ -48,6 +45,10 @@ public:
     double exponent(double);
     double squareRoot(double);
     double abs(double);
+
+    //helper functions
+    double wrapDegrees0To360(double);
+    double wrapRadians0To2PI(double);
 };
 
 #endif // MATHUTIL_H

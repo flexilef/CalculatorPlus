@@ -38,7 +38,7 @@ Token MathTokenizer::getNextToken()
         return nextToken;
     }
 
-    //might want to change this later
+    //might want to change this later to throw an exception
     return Token("", Token::UNUSED);
 }
 
@@ -48,20 +48,13 @@ void MathTokenizer::tokenize()
     std::string variableStr;
     std::string operatorStr;
     std::string functionStr;
+    std::string currentCharacter;
     int length = input.length();
-    bool isNegative = false;
 
     for(int index = 0; index < length; index++)
     {
-        std::string currentCharacter = input.substr(index, 1);
-        std::string lastCharacter;
+        currentCharacter = input.substr(index, 1);
 
-        if(index > 0 && input.substr(index - 1, 1) != " ")
-        {
-            lastCharacter = input.substr(index - 1, 1);
-        }
-
-        //begin tokenizing...
         if(CalculatorUtil::isNumber(currentCharacter))
         {
             numberStr+=currentCharacter;
@@ -73,7 +66,7 @@ void MathTokenizer::tokenize()
             functionStr+=currentCharacter;
             variableStr+=currentCharacter;
 
-            //handle operators and functions before single operators are found
+            //handle multiple-charactered operators and functions
             if(CalculatorUtil::isOperator(operatorStr))
             {
                 if(!numberStr.empty())
@@ -86,6 +79,7 @@ void MathTokenizer::tokenize()
                 //std::cout << "OP1 ";
                 tokens.push_back(Token(operatorStr, Token::OPERATOR));
 
+                //reset them
                 variableStr = "";
                 operatorStr = "";
                 functionStr = "";
@@ -126,9 +120,8 @@ void MathTokenizer::tokenize()
             if(!variableStr.empty())
             {
                 //std::cout << "VAR1 ";
-                //found variable token
                 tokens.push_back(Token(variableStr, Token::VARIABLE));
-                //reset them
+
                 variableStr = "";
                 operatorStr = "";
                 functionStr = "";
@@ -144,6 +137,7 @@ void MathTokenizer::tokenize()
             //std::cout << "OP2 ";
             tokens.push_back(Token(currentCharacter, Token::OPERATOR));
         }
+        //handle white spaces between operands
         else if(currentCharacter == " ")
         {
             if(!numberStr.empty())
@@ -156,9 +150,8 @@ void MathTokenizer::tokenize()
             if(!variableStr.empty())
             {
                 //std::cout << "VAR2 ";
-                //found variable token
                 tokens.push_back(Token(variableStr, Token::VARIABLE));
-                //reset them
+
                 variableStr = "";
                 operatorStr = "";
                 functionStr = "";
@@ -170,9 +163,8 @@ void MathTokenizer::tokenize()
     if(!variableStr.empty())
     {
         //std::cout << "VAR2 ";
-        //found variable token
         tokens.push_back(Token(variableStr, Token::VARIABLE));
-        //reset them
+
         variableStr = "";
         operatorStr = "";
         functionStr = "";
@@ -180,7 +172,7 @@ void MathTokenizer::tokenize()
 
     if(!numberStr.empty())
     {
-        //std::cout << "NUM3 ";
+        //std::cout << "NUM4 ";
         tokens.push_back(Token(numberStr, Token::NUMBER));
         numberStr = "";
     }

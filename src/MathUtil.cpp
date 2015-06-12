@@ -87,37 +87,129 @@ double MathUtil::mod(double left, double right)
 }
 
 //trig functions
-double MathUtil::sineInDegrees(double degrees)
+double MathUtil::sineInDegrees(double angle)
 {
-    double degreesResult = sin(degrees*M_PI/180);
+    double degreesResult = 0;
+    double degrees = angle;
+
+    if(degrees < 0 || degrees > 360)
+        degrees = wrapDegrees0To360(degrees);
+
+    if(degrees == 0)
+        degreesResult = 0;
+    else if(degrees == 90)
+        degreesResult = 1;
+    else if(degrees == 180)
+        degreesResult = 0;
+    else if(degrees == 270)
+        degreesResult = -1;
+    else if(degrees == 360)
+        degreesResult = 0;
+    else
+        degreesResult = sin(degrees*M_PI/180.0);
 
     return degreesResult;
 }
 
-double MathUtil::cosineInDegrees(double degrees)
+double MathUtil::cosineInDegrees(double angle)
 {
-    double degreesResult = cos(degrees*M_PI/180);
+    double degreesResult = 0;
+    double degrees = angle;
+
+    if(degrees < 0 || degrees > 360)
+        degrees = wrapDegrees0To360(degrees);
+
+    if(degrees == 0)
+        degreesResult = 1;
+    else if(degrees == 90)
+        degreesResult = 0;
+    else if(degrees == 180)
+        degreesResult = -1;
+    else if(degrees == 270)
+        degreesResult = 0;
+    else if(degrees == 360)
+        degreesResult = 1;
+    else
+        degreesResult = cos(degrees*M_PI/180.0);
 
     return degreesResult;
 }
 
-double MathUtil::tangentInDegrees(double degrees)
+double MathUtil::tangentInDegrees(double angle)
 {
-    double degreesResult = tan(degrees*M_PI/180);
+    double degreesResult = 0;
+
+    double degrees = angle;
+
+    if(angle > 360 || angle < 0)
+        wrapDegrees0To360(angle);
+
+    if(degrees == 0 || mod(degrees, 360) == 0)
+        degreesResult = 0;
+    else if(degrees == 90 || mod(degrees, 360) == 90)
+        throw DomainException("Domain Error");
+    else if(degrees == 180 || mod(degrees, 360) == 180)
+        degreesResult = 0;
+    else if(degrees == 270 || mod(degrees, 360) == 270)
+        throw DomainException("Domain Error");
+    else if(degrees == 360 || mod(degrees, 360) == 0)
+        degreesResult = 0;
+    else if(degrees == -90 || mod(degrees, 360) == -90)
+        throw DomainException("Domain Error");
+    else if(degrees == -180 || mod(degrees, 360) == -180)
+        degreesResult = 0;
+    else if(degrees == -270 || mod(degrees, 360) == -270)
+        throw DomainException("Domain Error");
+    else
+        degreesResult = tan(degrees*M_PI/180.0);
 
     return degreesResult;
 }
 
-double MathUtil::sineInRadians(double radianValue)
+double MathUtil::sineInRadians(double angle)
 {
-    double radianResult = sin(radianValue);
+    double radianResult = 0;
+    double radians = angle;
+
+    if(radians > 2*M_PI || radians < 0)
+        radians = wrapRadians0To2PI(angle);
+
+    if(radians == 0)
+        radianResult = 0;
+    else if(radians == M_PI/2)
+        radianResult = 1;
+    else if(radians == M_PI)
+        radianResult = 0;
+    else if(radians == 3*M_PI/2)
+        radianResult = -1;
+    else if(radians == 2*M_PI)
+        radianResult = 0;
+    else
+        radianResult = sin(radians);
 
     return radianResult;
 }
 
-double MathUtil::cosineInRadians(double radianValue)
+double MathUtil::cosineInRadians(double angle)
 {
-    double radianResult = cos(radianValue);
+    double radianResult = 0;
+    double radians = angle;
+
+    if(radians > 2*M_PI || radians < 0)
+        radians = wrapRadians0To2PI(angle);
+
+    if(radians == 0)
+        radianResult = 1;
+    else if(radians == M_PI/2)
+        radianResult = 0;
+    else if(radians == M_PI)
+        radianResult = -1;
+    else if(radians == 3*M_PI/2)
+        radianResult = 0;
+    else if(radians == 2*M_PI)
+        radianResult = 1;
+    else
+        radianResult = cos(radians);
 
     return radianResult;
 }
@@ -181,4 +273,20 @@ double MathUtil::exponent(double value)
 double MathUtil::abs(double value)
 {
     return std::abs(value);
+}
+
+double MathUtil::wrapDegrees0To360(double degrees)
+{
+    double angle = fmod(degrees, 360);
+
+    if(angle < 0)
+        angle+=360;
+
+    return angle;
+}
+
+double MathUtil::wrapRadians0To2PI(double radians)
+{
+    double twoPI = 2.0*M_PI;
+    return radians - twoPI*floor(radians/twoPI);
 }

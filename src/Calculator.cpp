@@ -1,13 +1,15 @@
 #include "../include/Calculator.h"
 #include "../include/CalculatorException.h"
 #include <iostream>
+#include <cmath>
 
 Calculator::Calculator() : pEvaluator(mBank)
 {
     output = 0;
     calcState = RUNNINGSTATE;
-    angleMode = MathUtil::DEGREES;
+    angleMode = MathUtil::RADIANS;
     pEvaluator.setAngleMode(angleMode);
+    mBank.storeValueIntoVar("PI", M_PI);
 }
 
 Calculator::~Calculator()
