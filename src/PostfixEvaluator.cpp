@@ -122,7 +122,7 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
                 else if(currentTokenStr == "%")
                     result = mUtil.percent(operand);
                 else
-                    std::cout << "Error: no unary operator: " << currentTokenStr << " found.\n\n";
+                    throw CalculatorException("Calculator Error: invalid unary operator: " + std::string(currentTokenStr));
 
                 operandStack.push(result);
             }
@@ -192,23 +192,137 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
                 operandStack.pop();
 
                 if(currentTokenStr == "sin" && angleMode == MathUtil::RADIANS)
-                    result = mUtil.sineInRadians(operand);
+                {
+                    try
+                    {
+                        result = mUtil.sineInRadians(operand);
+                    }
+                    catch(DomainException& e)
+                    {
+                        throw CalculatorException(e.what());
+                    }
+                }
                 else if(currentTokenStr == "cos" && angleMode == MathUtil::RADIANS)
-                    result = mUtil.cosineInRadians(operand);
+                {
+                    try
+                    {
+                        result = mUtil.cosineInRadians(operand);
+                    }
+                    catch(DomainException& e)
+                    {
+                        throw CalculatorException(e.what());
+                    }
+                }
                 else if(currentTokenStr == "tan" && angleMode == MathUtil::RADIANS)
-                    result = mUtil.tangentInRadians(operand);
+                {
+                    try
+                    {
+                        result = mUtil.tangentInRadians(operand);
+                    }
+                    catch(DomainException& e)
+                    {
+                        throw CalculatorException(e.what());
+                    }
+                }
                 else if(currentTokenStr == "sin" && angleMode == MathUtil::DEGREES)
-                    result = mUtil.sineInDegrees(operand);
+                {
+                    try
+                    {
+                        result = mUtil.sineInDegrees(operand);
+                    }
+                    catch(DomainException& e)
+                    {
+                        throw CalculatorException(e.what());
+                    }
+                }
                 else if(currentTokenStr == "cos" && angleMode == MathUtil::DEGREES)
-                    result = mUtil.cosineInDegrees(operand);
+                {
+                    try
+                    {
+                        result = mUtil.cosineInDegrees(operand);
+                    }
+                    catch(DomainException& e)
+                    {
+                        throw CalculatorException(e.what());
+                    }
+                }
                 else if(currentTokenStr == "tan" && angleMode == MathUtil::DEGREES)
-                    result = mUtil.tangentInDegrees(operand);
-                else if(currentTokenStr == "asin")
-                    result = mUtil.asine(operand);
-                else if(currentTokenStr == "acos")
-                    result = mUtil.acosine(operand);
-                else if(currentTokenStr == "atan")
-                    result = mUtil.atangent(operand);
+                {
+                    try
+                    {
+                        result = mUtil.tangentInDegrees(operand);
+                    }
+                    catch(DomainException& e)
+                    {
+                        throw CalculatorException(e.what());
+                    }
+                }
+                else if(currentTokenStr == "asin" && angleMode == MathUtil::DEGREES)
+                {
+                    try
+                    {
+                        result = mUtil.asineInDegrees(operand);
+                    }
+                    catch(DomainException& e)
+                    {
+                        throw CalculatorException(e.what());
+                    }
+                }
+                else if(currentTokenStr == "acos" && angleMode == MathUtil::DEGREES)
+                {
+                    try
+                    {
+                        result = mUtil.acosineInDegrees(operand);
+                    }
+                    catch(DomainException& e)
+                    {
+                        throw CalculatorException(e.what());
+                    }
+                }
+                else if(currentTokenStr == "atan" && angleMode == MathUtil::DEGREES)
+                {
+                    try
+                    {
+                        result = mUtil.atangentInDegrees(operand);
+                    }
+                    catch(DomainException& e)
+                    {
+                        throw CalculatorException(e.what());
+                    }
+                }
+                else if(currentTokenStr == "asin" && angleMode == MathUtil::RADIANS)
+                {
+                    try
+                    {
+                        result = mUtil.asineInRadians(operand);
+                    }
+                    catch(DomainException& e)
+                    {
+                        throw CalculatorException(e.what());
+                    }
+                }
+                else if(currentTokenStr == "acos" && angleMode == MathUtil::RADIANS)
+                {
+                    try
+                    {
+                        result = mUtil.acosineInRadians(operand);
+                    }
+                    catch(DomainException& e)
+                    {
+                        throw CalculatorException(e.what());
+                    }
+                }
+                else if(currentTokenStr == "atan" && angleMode == MathUtil::RADIANS)
+                {
+                    try
+                    {
+                        result = mUtil.atangentInRadians(operand);
+                    }
+                    catch(DomainException& e)
+                    {
+                        throw CalculatorException(e.what());
+                    }
+                }
                 else if(currentTokenStr == "log")
                 {
                     try

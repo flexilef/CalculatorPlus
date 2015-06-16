@@ -138,28 +138,21 @@ double MathUtil::cosineInDegrees(double angle)
 double MathUtil::tangentInDegrees(double angle)
 {
     double degreesResult = 0;
-
     double degrees = angle;
 
-    if(angle > 360 || angle < 0)
+    if(degrees > 360 || degrees < 0)
         wrapDegrees0To360(angle);
 
-    if(degrees == 0 || mod(degrees, 360) == 0)
+    if(degrees == 0)
         degreesResult = 0;
-    else if(degrees == 90 || mod(degrees, 360) == 90)
-        throw DomainException("Domain Error");
-    else if(degrees == 180 || mod(degrees, 360) == 180)
+    else if(degrees == 90)
+        throw DomainException("Domain Error: argument = 90");
+    else if(degrees == 180)
         degreesResult = 0;
-    else if(degrees == 270 || mod(degrees, 360) == 270)
-        throw DomainException("Domain Error");
-    else if(degrees == 360 || mod(degrees, 360) == 0)
+    else if(degrees == 270)
+        throw DomainException("Domain Error: argument = 270");
+    else if(degrees == 360)
         degreesResult = 0;
-    else if(degrees == -90 || mod(degrees, 360) == -90)
-        throw DomainException("Domain Error");
-    else if(degrees == -180 || mod(degrees, 360) == -180)
-        degreesResult = 0;
-    else if(degrees == -270 || mod(degrees, 360) == -270)
-        throw DomainException("Domain Error");
     else
         degreesResult = tan(degrees*M_PI/180.0);
 
@@ -181,7 +174,7 @@ double MathUtil::sineInRadians(double angle)
     else if(radians == M_PI)
         radianResult = 0;
     else if(radians == 3*M_PI/2)
-        radianResult = -1;
+        radianResult = -2;
     else if(radians == 2*M_PI)
         radianResult = 0;
     else
@@ -214,32 +207,76 @@ double MathUtil::cosineInRadians(double angle)
     return radianResult;
 }
 
-double MathUtil::tangentInRadians(double radianValue)
+double MathUtil::tangentInRadians(double angle)
 {
-    double radianResult = tan(radianValue);
+    double radianResult = 0;
+    double radians = angle;
+
+    if(radians > 2*M_PI || radians < 0)
+        radians = wrapRadians0To2PI(angle);
+
+    if(radians == 0)
+        radianResult = 0;
+    else if(radians == M_PI/2)
+        throw DomainException("Domain Error: argument = PI/2");
+    else if(radians == M_PI)
+        radianResult = 0;
+    else if(radians == 3*M_PI/2)
+        throw DomainException("Domain Error: argument = 3PI/2");
+    else if(radians == 2*M_PI)
+        radianResult = 0;
+    else
+        radianResult = tan(radians);
 
     return radianResult;
 }
 
-double MathUtil::asine(double radianValue)
+double MathUtil::asineInRadians(double value)
 {
-    double radianResult =  asin(radianValue);
+    if(value < -1 || value > 1)
+        throw(DomainException("Domain Error: argument > 1 or argument < -1"));
 
-    return radianResult;
+    return asin(value);
 }
 
-double MathUtil::acosine(double radianValue)
+double MathUtil::acosineInRadians(double value)
 {
-    double radianResult =  acos(radianValue);
+    if(value < -1 || value > 1)
+        throw(DomainException("Domain Error: argument > 1 or argument < -1"));
 
-    return radianResult;
+    return acos(value);
 }
 
-double MathUtil::atangent(double radianValue)
+double MathUtil::atangentInRadians(double value)
 {
-    double radianResult =  atan(radianValue);
+    if(value < -1 || value > 1)
+        throw(DomainException("Domain Error: argument > 1 or argument < -1"));
 
-    return radianResult;
+    return atan(value);
+}
+
+double MathUtil::asineInDegrees(double value)
+{
+    if(value < -1 || value > 1)
+        throw(DomainException("Domain Error: argument > 1 or argument < -1"));
+
+    return asin(value)*180.0/M_PI;
+}
+
+double MathUtil::acosineInDegrees(double value)
+{
+    if(value < -1 || value > 1)
+        throw(DomainException("Domain Error: argument > 1 or argument < -1"));
+
+    return acos(value)*180.0/M_PI;
+}
+
+double MathUtil::atangentInDegrees(double value)
+{
+    if(value < -1 || value > 1)
+        throw(DomainException("Domain Error: argument > 1 or argument < -1"));
+
+    return atan(value)*180.0/M_PI;
 }
 
 //basic functions

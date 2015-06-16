@@ -76,8 +76,10 @@ int CalculatorUtil::getPrecedence(const std::string &op)
     return -1;
 }
 
+//TODO: write a better one
 bool CalculatorUtil::almostEqual(double a, double b, int ulp)
 {
-    return std::abs(a - b) < std::numeric_limits<double>::epsilon()*std::abs(a + b)*ulp ||
-           std::abs(a - b) < std::numeric_limits<double>::min();
+    //return std::abs(a - b) < std::numeric_limits<double>::epsilon()*std::abs(a + b)*ulp ||
+    //       std::abs(a - b) < std::numeric_limits<double>::min();
+    return (std::abs(a-b)/b) < .005 || std::abs(a-b) < .000001;
 }

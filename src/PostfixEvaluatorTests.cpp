@@ -9,6 +9,7 @@ PostfixEvaluatorTests::PostfixEvaluatorTests() : evaluator(theBank)
     theBank.storeValueIntoVar("b", 2);
     theBank.storeValueIntoVar("cd", 3);
     theBank.storeValueIntoVar("abc", 123);
+    evaluator.setAngleMode(MathUtil::DEGREES);
 }
 
 PostfixEvaluatorTests::~PostfixEvaluatorTests()
@@ -139,12 +140,12 @@ void PostfixEvaluatorTests::evaluate_basicFunctions_returnResult()
 
 void PostfixEvaluatorTests::evaluate_trigFunctions_returnResult()
 {
-    checkResult("30 sin", -0.98803162409286178999, "basic functions: sin");
-    checkResult("30 cos", 0.15425144988758405072, "basic functions: cos");
-    checkResult("30 tan", -6.4053311966462757849, "basic functions: tan");
-    checkResult(".5 asin", 0.52359877559829887308, "basic functions: asin");
-    checkResult(".5 acos", 1.04719755119659774615, "basic functions: acos");
-    checkResult("30 atan", 1.53747533091664942208, "basic functions: atan");
+    checkResult("30 sin", 0.5, "basic functions: sin: degrees");
+    checkResult("30 cos", 0.8660254, "basic functions: cos: degrees");
+    checkResult("30 tan", 0.5773502, "basic functions: tan: degrees");
+    checkResult(".5 asin", 30, "basic functions: asin: degrees");
+    checkResult(".5 acos", 60, "basic functions: acos: degrees");
+    checkResult(".5 atan", 26.565051, "basic functions: atan: degrees");
 }
 
 void PostfixEvaluatorTests::evaluate_assignmentOperator_checkAsignment()
@@ -167,9 +168,10 @@ void PostfixEvaluatorTests::evaluate_errors_returnError()
 void PostfixEvaluatorTests::checkResult(const std::string &postfix, double answer, const std::string &error)
 {
     totalTestsRun++;
+
     double result = evaluator.evaluatePostfix(postfix);
 
-    if(!CalculatorUtil::almostEqual(result, answer, 9)) //4 works for most cases. 9 for mod operator decimal...
+    if(!CalculatorUtil::almostEqual(result, answer, 22)) //4 works for most cases. 9 for mod operator decimal...
     {
         totalTestsFailed++;
         std::cout << "Error found: " << error << "\n";

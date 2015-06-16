@@ -35,9 +35,12 @@ public:
     double sineInDegrees(double);
     double cosineInDegrees(double);
     double tangentInDegrees(double);
-    double asine(double);
-    double acosine(double);
-    double atangent(double);
+    double asineInRadians(double);
+    double acosineInRadians(double);
+    double atangentInRadians(double);
+    double asineInDegrees(double);
+    double acosineInDegrees(double);
+    double atangentInDegrees(double);
 
     //basic functions
     double log(double);

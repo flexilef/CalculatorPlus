@@ -7,7 +7,7 @@ Calculator::Calculator() : pEvaluator(mBank)
 {
     output = 0;
     calcState = RUNNINGSTATE;
-    angleMode = MathUtil::RADIANS;
+    angleMode = MathUtil::DEGREES;
     pEvaluator.setAngleMode(angleMode);
     mBank.storeValueIntoVar("PI", M_PI);
 }
