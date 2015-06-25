@@ -1,7 +1,12 @@
-#include "../include/Calculator.h"
-#include "../include/CalculatorException.h"
 #include <iostream>
 #include <cmath>
+
+#include "../include/Calculator.h"
+#include "../include/CalculatorException.h"
+#include "../include/DomainException.h"
+#include "../include/SyntaxException.h"
+#include "../include/MathException.h"
+#include "../include/DivideByZeroException.h"
 
 Calculator::Calculator() : pEvaluator(mBank)
 {
@@ -43,17 +48,22 @@ double Calculator::getOutput()
 
 double Calculator::calculate()
 {
-    std::string postfix = ipConverter.convertToPostfix(input);
     double result = 0;
 
     try
     {
+        std::string postfix = ipConverter.convertToPostfix(input);
         result = pEvaluator.evaluatePostfix(postfix);
     }
-    catch (CalculatorException e)
+    catch(CalculatorException& e)
     {
         calcState = ERRORSTATE;
         errorMessage = e.what();
+    }
+    catch(...)
+    {
+        calcState = ERRORSTATE;
+        errorMessage = "Unknown error";
     }
 
     output = result;

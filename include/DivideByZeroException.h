@@ -4,12 +4,14 @@
 #include <stdexcept>
 #include <string>
 
-class DivideByZeroException : public std::domain_error
+#include "../include/MathException.h"
+
+class DivideByZeroException : public MathException
 {
 public:
     /** Default constructor */
     DivideByZeroException(const std::string& Message = "")
-        : domain_error(Message.c_str())
+        : MathException(Message)
     {
     }
 private:

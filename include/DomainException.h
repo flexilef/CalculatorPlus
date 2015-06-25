@@ -4,12 +4,14 @@
 #include <stdexcept>
 #include <string>
 
-class DomainException : public std::domain_error
+#include "../include/MathException.h"
+
+class DomainException : public MathException
 {
     public:
         /** Default constructor */
         DomainException(const std::string& Message = "")
-        : domain_error(Message.c_str())
+        : MathException(Message)
         {}
     protected:
     private:

@@ -4,12 +4,14 @@
 #include <stdexcept>
 #include <string>
 
-class SyntaxException : public std::runtime_error
+#include "../include/MathException.h"
+
+class SyntaxException : public MathException
 {
     public:
         /** Default constructor */
         SyntaxException(const std::string& Message = "")
-        : runtime_error(Message.c_str())
+        : MathException(Message)
         {}
     protected:
     private:

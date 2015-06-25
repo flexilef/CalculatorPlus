@@ -23,10 +23,10 @@ long long MathUtil::factorial(int n)
 {
     if(n<0)
     {
-        throw DomainException("Domain Error: negative operand");
+        throw DomainException("Domain Error: !: negative operand");
     }
     else if(n>20)
-        throw DomainException("Domain Error: operand > 20");
+        throw DomainException("Domain Error: !: operand > 20");
 
     return (n == 1 || n == 0) ? 1 : factorial(n - 1) * n;
 }
@@ -55,7 +55,7 @@ double MathUtil::multiply(double left, double right)
 double MathUtil::divide(double left, double right)
 {
     if(right == 0)
-        throw DivideByZeroException("Divide By 0 Error");
+        throw DivideByZeroException("Divide By Zero Error");
     return left / right;
 }
 
@@ -63,21 +63,21 @@ double MathUtil::power(double left, double right)
 {
     if(left == 0 && right == 0)
     {
-        throw DomainException("Domain Error: x and y are 0");
+        throw DomainException("Domain Error: ^: x and y are 0");
     }
     //if right is not integer and left is negative
-    else if((right - floor(right) != 0) && left <0)
-    {
-        throw DomainException("Domain Error: non-integer and negative operands");
-    }
+    //else if((right - floor(right) != 0) && left <0)
+    //{
+    //    throw DomainException("power: negative base and non-integer exponent");
+    //}
 
     return pow(left, right);
 }
 
 double MathUtil::scientificNotation(double mantissa, double exponent)
 {
-    if(exponent - floor(exponent) != 0)
-        throw SyntaxException("Syntax Error: invalid exponent");
+    if(!isInteger(exponent))
+        throw SyntaxException("Syntax Error: E: exponent is not integer");
     return mantissa*(pow(10, exponent));
 }
 
@@ -146,11 +146,11 @@ double MathUtil::tangentInDegrees(double angle)
     if(degrees == 0)
         degreesResult = 0;
     else if(degrees == 90)
-        throw DomainException("Domain Error: argument = 90");
+        throw DomainException("Domain Error: tan(): argument = 90");
     else if(degrees == 180)
         degreesResult = 0;
     else if(degrees == 270)
-        throw DomainException("Domain Error: argument = 270");
+        throw DomainException("Domain Error: tan(): argument = 270");
     else if(degrees == 360)
         degreesResult = 0;
     else
@@ -218,11 +218,11 @@ double MathUtil::tangentInRadians(double angle)
     if(radians == 0)
         radianResult = 0;
     else if(radians == M_PI/2)
-        throw DomainException("Domain Error: argument = PI/2");
+        throw DomainException("Domain Error: tan(): argument = PI/2");
     else if(radians == M_PI)
         radianResult = 0;
     else if(radians == 3*M_PI/2)
-        throw DomainException("Domain Error: argument = 3PI/2");
+        throw DomainException("Domain Error: tan(): argument = 3PI/2");
     else if(radians == 2*M_PI)
         radianResult = 0;
     else
@@ -234,7 +234,7 @@ double MathUtil::tangentInRadians(double angle)
 double MathUtil::asineInRadians(double value)
 {
     if(value < -1 || value > 1)
-        throw(DomainException("Domain Error: argument > 1 or argument < -1"));
+        throw(DomainException("Domain Error: asin(): argument > 1 or argument < -1"));
 
     return asin(value);
 }
@@ -242,7 +242,7 @@ double MathUtil::asineInRadians(double value)
 double MathUtil::acosineInRadians(double value)
 {
     if(value < -1 || value > 1)
-        throw(DomainException("Domain Error: argument > 1 or argument < -1"));
+        throw(DomainException("Domain Error: acos(): argument > 1 or argument < -1"));
 
     return acos(value);
 }
@@ -250,7 +250,7 @@ double MathUtil::acosineInRadians(double value)
 double MathUtil::atangentInRadians(double value)
 {
     if(value < -1 || value > 1)
-        throw(DomainException("Domain Error: argument > 1 or argument < -1"));
+        throw(DomainException("Domain Error: atan(): argument > 1 or argument < -1"));
 
     return atan(value);
 }
@@ -258,7 +258,7 @@ double MathUtil::atangentInRadians(double value)
 double MathUtil::asineInDegrees(double value)
 {
     if(value < -1 || value > 1)
-        throw(DomainException("Domain Error: argument > 1 or argument < -1"));
+        throw(DomainException("Domain Error: asin(): argument > 1 or argument < -1"));
 
     return asin(value)*180.0/M_PI;
 }
@@ -266,7 +266,7 @@ double MathUtil::asineInDegrees(double value)
 double MathUtil::acosineInDegrees(double value)
 {
     if(value < -1 || value > 1)
-        throw(DomainException("Domain Error: argument > 1 or argument < -1"));
+        throw(DomainException("Domain Error: acos(): argument > 1 or argument < -1"));
 
     return acos(value)*180.0/M_PI;
 }
@@ -274,7 +274,7 @@ double MathUtil::acosineInDegrees(double value)
 double MathUtil::atangentInDegrees(double value)
 {
     if(value < -1 || value > 1)
-        throw(DomainException("Domain Error: argument > 1 or argument < -1"));
+        throw(DomainException("Domain Error: atan(): argument > 1 or argument < -1"));
 
     return atan(value)*180.0/M_PI;
 }
@@ -283,7 +283,7 @@ double MathUtil::atangentInDegrees(double value)
 double MathUtil::log(double value)
 {
     if(value <= 0)
-        throw DomainException("Domain Error: argument is 0 or negative");
+        throw DomainException("Domain Error: log(): argument is 0 or negative");
 
     return log10(value);
 }
@@ -291,14 +291,14 @@ double MathUtil::log(double value)
 double MathUtil::ln(double value)
 {
     if(value <= 0)
-        throw DomainException("Domain Error: argument is 0 or negative");
+        throw DomainException("Domain Error: ln(): argument is 0 or negative");
     return std::log(value);
 }
 
 double MathUtil::squareRoot(double value)
 {
     if(value < 0)
-        throw DomainException("Domain Error: argument is negative");
+        throw DomainException("Domain Error: sqrt(): argument is negative");
     return sqrt(value);
 }
 
@@ -326,4 +326,12 @@ double MathUtil::wrapRadians0To2PI(double radians)
 {
     double twoPI = 2.0*M_PI;
     return radians - twoPI*floor(radians/twoPI);
+}
+
+bool MathUtil::isInteger(double value)
+{
+    if(value - floor(value) != 0)
+        return false;
+
+    return true;
 }

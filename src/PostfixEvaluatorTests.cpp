@@ -171,7 +171,7 @@ void PostfixEvaluatorTests::checkResult(const std::string &postfix, double answe
 
     double result = evaluator.evaluatePostfix(postfix);
 
-    if(!CalculatorUtil::almostEqual(result, answer, 22)) //4 works for most cases. 9 for mod operator decimal...
+    if(!CalculatorUtil::almostEqual(result, answer, 9)) //4 works for most cases. 9 for mod operator decimal...
     {
         totalTestsFailed++;
         std::cout << "Error found: " << error << "\n";

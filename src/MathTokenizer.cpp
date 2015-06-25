@@ -1,6 +1,8 @@
-#include "../include/MathTokenizer.h"
-#include "CalculatorUtil.cpp"
 #include <iostream>
+
+#include "../include/MathTokenizer.h"
+#include "../include/CalculatorException.h"
+#include "CalculatorUtil.cpp"
 
 MathTokenizer::MathTokenizer()
 {
@@ -157,6 +159,8 @@ void MathTokenizer::tokenize()
                 functionStr = "";
             }
         }
+        else
+            throw CalculatorException("Syntax Error: invalid character: " + currentCharacter);
     }
 
     //reached end of input. Handle the last token
@@ -180,7 +184,7 @@ void MathTokenizer::tokenize()
 
 void MathTokenizer::setInput(const std::string &str)
 {
-    clear();    //don't forget to reset everything
+    clear();
     input = str;
     tokenize();
 }

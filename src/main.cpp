@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cstdlib>
+#include <cmath>
 #include "../include/InfixToPostfixConverter.h"
 #include "../include/PostfixEvaluator.h"
 #include "../include/MathTokenizer.h"
@@ -8,9 +10,8 @@
 #include "../include/Calculator.h"
 #include "../include/MathUtil.h"
 #include "../include/UnitTest.h"
+#include "../include/CalculatorException.h"
 
-#include <cstdlib>
-#include <cmath>
 using namespace std;
 std::string removeExtraWhiteSpace(std::string);
 
@@ -35,6 +36,24 @@ int main()
 
     Calculator calc;
 
+    MemoryBank m;
+    InfixToPostfixConverter i;
+    PostfixEvaluator p(m);
+
+/*
+    try
+    {
+        string str = i.convertToPostfix("1*2+");
+        double ans = p.evaluatePostfix(str);
+
+        cout << "STR: " << str << "\n";
+        cout << "ANS: " << ans << "\n";
+    }
+    catch(CalculatorException& e)
+    {
+        cout << e.what();
+    }
+*/
     while(true)
     {
         calc.getUserInput();

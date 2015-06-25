@@ -52,6 +52,7 @@ public:
     //helper functions
     double wrapDegrees0To360(double);
     double wrapRadians0To2PI(double);
+    bool isInteger(double);
 };
 
 #endif // MATHUTIL_H
