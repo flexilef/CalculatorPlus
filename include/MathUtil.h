@@ -14,6 +14,8 @@ public:
     MathUtil();
     ~MathUtil();
 
+    static const double PI = 3.14159265358979323846;
+
     //unary operators
     double unaryNegation(double);
     long long factorial(int);

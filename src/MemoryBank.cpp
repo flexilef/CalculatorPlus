@@ -1,6 +1,5 @@
 #include "../include/MemoryBank.h"
 #include <iostream>
-#include <cassert>
 
 MemoryBank::MemoryBank()
 {

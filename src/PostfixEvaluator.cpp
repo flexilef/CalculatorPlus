@@ -49,7 +49,13 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
 
         if(currentToken.tokenType == Token::NUMBER)
         {
-            double number = atof(currentTokenStr.c_str());
+            double number = 0;
+
+            if(currentTokenStr.find("..") != std::string::npos)
+                throw CalculatorException("Syntax Error: invalid number: '" + currentTokenStr + "'");
+            else
+                number = atof(currentTokenStr.c_str());
+
             operandStack.push(number);
         }
         else if(currentToken.tokenType == Token::VARIABLE)
@@ -73,8 +79,12 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
             {
                 if(currentTokenStr == "=")
                 {
+                    if(variableStack.empty())
+                    {
+                        throw CalculatorException("Syntax Error: assignment error");
+                    }
                     //case 1: new var and number. ie. a=1
-                    if(!mBank.hasVariable(variableStack.top()) && variableStack.size() == 1)
+                    else if(!mBank.hasVariable(variableStack.top()) && variableStack.size() == 1)
                     {
                         double operand = 0;
                         std::string var;
@@ -145,6 +155,12 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
                         while(!variableStack.empty())
                         {
                             var = variableStack.top();
+
+                            //handles a=1+f errors where f is not assigned anything
+                            if(!mBank.hasVariable(var) && variableStack.size() > 1)
+                                throw CalculatorException("Syntax Error: assignment error: '" + std::string(var)
+                                                          + "' is not assigned");
+
                             variableStack.pop();
                         }
                         while(!operandStack.empty())

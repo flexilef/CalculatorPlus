@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cmath>
 
 #include "../include/Calculator.h"
 #include "../include/CalculatorException.h"
@@ -14,7 +13,7 @@ Calculator::Calculator() : pEvaluator(mBank)
     calcState = RUNNINGSTATE;
     angleMode = MathUtil::DEGREES;
     pEvaluator.setAngleMode(angleMode);
-    mBank.storeValueIntoVar("PI", M_PI);
+    mBank.storeValueIntoVar("PI", MathUtil::PI);
 }
 
 Calculator::~Calculator()
