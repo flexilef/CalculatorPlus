@@ -106,7 +106,7 @@ double MathUtil::sineInDegrees(double angle)
     else if(degrees == 360)
         degreesResult = 0;
     else
-        degreesResult = sin(degrees*MathUtil::PI/180.0);
+        degreesResult = sin(degrees*MathUtil::PI()/180.0);
 
     return degreesResult;
 }
@@ -130,7 +130,7 @@ double MathUtil::cosineInDegrees(double angle)
     else if(degrees == 360)
         degreesResult = 1;
     else
-        degreesResult = cos(degrees*MathUtil::PI/180.0);
+        degreesResult = cos(degrees*MathUtil::PI()/180.0);
 
     return degreesResult;
 }
@@ -154,7 +154,7 @@ double MathUtil::tangentInDegrees(double angle)
     else if(degrees == 360)
         degreesResult = 0;
     else
-        degreesResult = tan(degrees*MathUtil::PI/180.0);
+        degreesResult = tan(degrees*MathUtil::PI()/180.0);
 
     return degreesResult;
 }
@@ -164,18 +164,18 @@ double MathUtil::sineInRadians(double angle)
     double radianResult = 0;
     double radians = angle;
 
-    if(radians > 2*MathUtil::PI || radians < 0)
+    if(radians > 2*MathUtil::PI() || radians < 0)
         radians = wrapRadians0To2PI(angle);
 
     if(radians == 0)
         radianResult = 0;
-    else if(radians == MathUtil::PI/2)
+    else if(radians == MathUtil::PI()/2)
         radianResult = 1;
-    else if(radians == MathUtil::PI)
+    else if(radians == MathUtil::PI())
         radianResult = 0;
-    else if(radians == 3*MathUtil::PI/2)
+    else if(radians == 3*MathUtil::PI()/2)
         radianResult = -2;
-    else if(radians == 2*MathUtil::PI)
+    else if(radians == 2*MathUtil::PI())
         radianResult = 0;
     else
         radianResult = sin(radians);
@@ -188,18 +188,18 @@ double MathUtil::cosineInRadians(double angle)
     double radianResult = 0;
     double radians = angle;
 
-    if(radians > 2*MathUtil::PI || radians < 0)
+    if(radians > 2*MathUtil::PI() || radians < 0)
         radians = wrapRadians0To2PI(angle);
 
     if(radians == 0)
         radianResult = 1;
-    else if(radians == MathUtil::PI/2)
+    else if(radians == MathUtil::PI()/2)
         radianResult = 0;
-    else if(radians == MathUtil::PI)
+    else if(radians == MathUtil::PI())
         radianResult = -1;
-    else if(radians == 3*MathUtil::PI/2)
+    else if(radians == 3*MathUtil::PI()/2)
         radianResult = 0;
-    else if(radians == 2*MathUtil::PI)
+    else if(radians == 2*MathUtil::PI())
         radianResult = 1;
     else
         radianResult = cos(radians);
@@ -212,18 +212,18 @@ double MathUtil::tangentInRadians(double angle)
     double radianResult = 0;
     double radians = angle;
 
-    if(radians > 2*MathUtil::PI || radians < 0)
+    if(radians > 2*MathUtil::PI() || radians < 0)
         radians = wrapRadians0To2PI(angle);
 
     if(radians == 0)
         radianResult = 0;
-    else if(radians == MathUtil::PI/2)
+    else if(radians == MathUtil::PI()/2)
         throw DomainException("Domain Error: tan(): argument = PI/2");
-    else if(radians == MathUtil::PI)
+    else if(radians == MathUtil::PI())
         radianResult = 0;
-    else if(radians == 3*MathUtil::PI/2)
+    else if(radians == 3*MathUtil::PI()/2)
         throw DomainException("Domain Error: tan(): argument = 3PI/2");
-    else if(radians == 2*MathUtil::PI)
+    else if(radians == 2*MathUtil::PI())
         radianResult = 0;
     else
         radianResult = tan(radians);
@@ -260,7 +260,7 @@ double MathUtil::asineInDegrees(double value)
     if(value < -1 || value > 1)
         throw(DomainException("Domain Error: asin(): argument > 1 or argument < -1"));
 
-    return asin(value)*180.0/MathUtil::PI;
+    return asin(value)*180.0/MathUtil::PI();
 }
 
 double MathUtil::acosineInDegrees(double value)
@@ -268,7 +268,7 @@ double MathUtil::acosineInDegrees(double value)
     if(value < -1 || value > 1)
         throw(DomainException("Domain Error: acos(): argument > 1 or argument < -1"));
 
-    return acos(value)*180.0/MathUtil::PI;
+    return acos(value)*180.0/MathUtil::PI();
 }
 
 double MathUtil::atangentInDegrees(double value)
@@ -276,7 +276,7 @@ double MathUtil::atangentInDegrees(double value)
     if(value < -1 || value > 1)
         throw(DomainException("Domain Error: atan(): argument > 1 or argument < -1"));
 
-    return atan(value)*180.0/MathUtil::PI;
+    return atan(value)*180.0/MathUtil::PI();
 }
 
 //basic functions
@@ -324,7 +324,7 @@ double MathUtil::wrapDegrees0To360(double degrees)
 
 double MathUtil::wrapRadians0To2PI(double radians)
 {
-    double twoPI = 2.0*MathUtil::PI;
+    double twoPI = 2.0*MathUtil::PI();
     return radians - twoPI*floor(radians/twoPI);
 }
 

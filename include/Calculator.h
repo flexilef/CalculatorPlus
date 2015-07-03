@@ -21,7 +21,7 @@ public:
     /** Default destructor */
     virtual ~Calculator();
 
-    double calculate();
+    void calculate();
     void getUserInput();
     std::string getInput();
     void setInput(const std::string&);

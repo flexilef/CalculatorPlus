@@ -18,11 +18,22 @@ public:
 
     void setRadiansMode();
     void setDegreesMode();
+    void copyLineEdit();
+    void copyTextBrowser();
+    void pasteLineEdit();
+    void clearLineEdit();
+    void clearTextBrowser();
+    void selectAllLineEdit();
+    void selectAllTextBrowser();
+    bool focusOnLineEdit();
+    bool focusOnTextBroswer();
 
 private:
     QLineEdit *lineEdit;
     QTextBrowser *textBrowser;
     Calculator calc;
+
+protected:
 
 public slots:
     void handleLineEdit();

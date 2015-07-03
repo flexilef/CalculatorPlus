@@ -12,6 +12,8 @@ CalculatorGUI::CalculatorGUI(QWidget *parent) : QWidget(parent)
     layout->addWidget(textBrowser);
     layout->addWidget(lineEdit);
     setLayout(layout);
+
+    lineEdit->installEventFilter(this);
 }
 
 CalculatorGUI::~CalculatorGUI()
@@ -53,4 +55,55 @@ void CalculatorGUI::setRadiansMode()
 void CalculatorGUI::setDegreesMode()
 {
     calc.setAngleMode(MathUtil::DEGREES);
+}
+
+void CalculatorGUI::copyLineEdit()
+{
+    lineEdit->copy();
+}
+
+void CalculatorGUI::pasteLineEdit()
+{
+    lineEdit->paste();
+}
+
+void CalculatorGUI::copyTextBrowser()
+{
+    textBrowser->copy();
+}
+
+void CalculatorGUI::clearLineEdit()
+{
+    lineEdit->clear();
+}
+
+void CalculatorGUI::clearTextBrowser()
+{
+    textBrowser->clear();
+}
+
+void CalculatorGUI::selectAllLineEdit()
+{
+    lineEdit->selectAll();
+}
+
+void CalculatorGUI::selectAllTextBrowser()
+{
+    textBrowser->selectAll();
+}
+
+bool CalculatorGUI::focusOnLineEdit()
+{
+    if(lineEdit->hasFocus())
+        return true;
+
+    return false;
+}
+
+bool CalculatorGUI::focusOnTextBroswer()
+{
+    if(textBrowser->hasFocus())
+        return true;
+
+    return false;
 }

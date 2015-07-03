@@ -94,32 +94,34 @@ void MainWindow::createMenus()
 
 void MainWindow::newAction()
 {
-    //replace this with actual code
-    QMessageBox::information(this, "title", "new");
+    cgui->clearTextBrowser();
 }
 
 void MainWindow::copyAction()
 {
-    //replace this with actual code
-    QMessageBox::information(this, "title", "copy");
+    if(cgui->focusOnLineEdit())
+        cgui->copyLineEdit();
+    else if(cgui->focusOnTextBroswer())
+        cgui->copyTextBrowser();
 }
 
 void MainWindow::pasteAction()
 {
-    //replace this with actual code
-    QMessageBox::information(this, "title", "paste");
+    if(cgui->focusOnLineEdit())
+        cgui->pasteLineEdit();
 }
 
 void MainWindow::selectAllAction()
 {
-    //replace this with actual code
-    QMessageBox::information(this, "title", "select all");
+    if(cgui->focusOnLineEdit())
+        cgui->selectAllLineEdit();
+    else if(cgui->focusOnTextBroswer())
+        cgui->selectAllTextBrowser();
 }
 
 void MainWindow::clearAction()
 {
-    //replace this with actual code
-    QMessageBox::information(this, "title", "clear");
+    cgui->clearLineEdit();
 }
 
 void MainWindow::radiansAction()

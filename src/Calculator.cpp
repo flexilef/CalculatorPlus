@@ -13,7 +13,7 @@ Calculator::Calculator() : pEvaluator(mBank)
     calcState = RUNNINGSTATE;
     angleMode = MathUtil::DEGREES;
     pEvaluator.setAngleMode(angleMode);
-    mBank.storeValueIntoVar("PI", MathUtil::PI);
+    mBank.storeValueIntoVar("PI", MathUtil::PI());
 }
 
 Calculator::~Calculator()
@@ -45,7 +45,7 @@ double Calculator::getOutput()
     return output;
 }
 
-double Calculator::calculate()
+void Calculator::calculate()
 {
     double result = 0;
 
