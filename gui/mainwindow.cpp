@@ -124,14 +124,12 @@ void MainWindow::clearAction()
 
 void MainWindow::radiansAction()
 {
-    //replace this with actual code
-    QMessageBox::information(this, "title", "radians");
+    cgui->setRadiansMode();
 }
 
 void MainWindow::degreesAction()
 {
-    //replace this with actual code
-    QMessageBox::information(this, "title", "degrees");
+    cgui->setDegreesMode();
 }
 
 void MainWindow::helpAction()

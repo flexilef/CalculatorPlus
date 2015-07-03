@@ -22,7 +22,35 @@ CalculatorGUI::~CalculatorGUI()
 
 void CalculatorGUI::handleLineEdit()
 {
-    QString str = lineEdit->text();
-    textBrowser->append(str + "\n");
+    QString input = lineEdit->text();
+    QString output;
+    double result = 0;
+
+    calc.setInput(input.toStdString());
+    calc.calculate();
+
+    if(calc.getCalculatorState() == Calculator::ERRORSTATE)
+    {
+        output = QString::fromStdString(calc.getErrorMessage());
+        calc.setCalculatorState(Calculator::RUNNINGSTATE);
+    }
+    else
+    {
+        result = calc.getOutput();
+        output = QString::number(result);
+    }
+
+    textBrowser->append(input + "\n = " + output + "\n");
+
     lineEdit->clear();
+}
+
+void CalculatorGUI::setRadiansMode()
+{
+    calc.setAngleMode(MathUtil::RADIANS);
+}
+
+void CalculatorGUI::setDegreesMode()
+{
+    calc.setAngleMode(MathUtil::DEGREES);
 }

@@ -6,6 +6,8 @@
 #include <QTextBrowser>
 #include <QVBoxLayout>
 
+#include "include/Calculator.h"
+
 class CalculatorGUI : public QWidget
 {
     Q_OBJECT
@@ -14,9 +16,13 @@ public:
     CalculatorGUI(QWidget *parent = 0);
     ~CalculatorGUI();
 
+    void setRadiansMode();
+    void setDegreesMode();
+
 private:
     QLineEdit *lineEdit;
     QTextBrowser *textBrowser;
+    Calculator calc;
 
 public slots:
     void handleLineEdit();
