@@ -12,12 +12,9 @@
 #include "../include/UnitTest.h"
 #include "../include/CalculatorException.h"
 
-using namespace std;
-std::string removeExtraWhiteSpace(std::string);
-
 int main()
 {
-    cout << "Hello world!" << endl << endl;
+    std::cout << "Hello world!\n\n";
 
     InfixToPostfixConverterTests testIP;
     PostfixEvaluatorTests testPE;
@@ -31,63 +28,23 @@ int main()
     for(int i = 0; i < 3; i++)
     {
         tests[i]->runTests();
-        cout << "\n";
+        std::cout << "\n";
     }
 
     Calculator calc;
 
-    MemoryBank m;
-    InfixToPostfixConverter i;
-    PostfixEvaluator p(m);
-
-/*
-    try
-    {
-        string str = i.convertToPostfix("1*2+");
-        double ans = p.evaluatePostfix(str);
-
-        cout << "STR: " << str << "\n";
-        cout << "ANS: " << ans << "\n";
-    }
-    catch(CalculatorException& e)
-    {
-        cout << e.what();
-    }
-*/
     while(true)
     {
         calc.getUserInput();
         calc.calculate();
         if(calc.getCalculatorState() == Calculator::ERRORSTATE)
         {
-            cout << calc.getErrorMessage() << "\n";
+            std::cout << calc.getErrorMessage() << "\n";
             calc.setCalculatorState(Calculator::RUNNINGSTATE);
         }
         else
-            cout << "answer: " << calc.getOutput() << "\n";
+            std::cout << "answer: " << calc.getOutput() << "\n";
     }
 
     return 0;
-}
-
-std::string removeExtraWhiteSpace(std::string str)
-{
-    std::string output;
-    int length = str.length();
-
-    for(int i = 0; i < length; i++)
-    {
-        if(str.substr(i, 1) != " ")
-        {
-            output+=str.substr(i, 1);
-        }
-        else
-        {
-            //if the last char in output is not a space then add one
-            if(output.substr(output.length()-1, 1) != " ")
-                output+=" ";
-        }
-    }
-
-    return output;
 }

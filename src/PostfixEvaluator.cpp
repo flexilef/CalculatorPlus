@@ -35,14 +35,12 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
 
 
     std::stack<double> operandStack;
+    std::stack<std::string> variableStack;
     Token currentToken;
     std::string currentTokenStr;
 
     int arity = -1;
     double result = 0;
-
-    std::string newVariable;
-    std::string existingVariable;
 
     while(tokenizer.hasNext())
     {
@@ -60,10 +58,12 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
             {
                 double variableValue = mBank.getValueFromVar(currentTokenStr);
                 operandStack.push(variableValue);
-                existingVariable = currentTokenStr;
+                variableStack.push(currentTokenStr);
             }
             else
-                newVariable = currentTokenStr;
+            {
+                variableStack.push(currentTokenStr);
+            }
         }
         else if(currentToken.tokenType == Token::OPERATOR)
         {
@@ -74,37 +74,88 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
                 if(currentTokenStr == "=")
                 {
                     //case 1: new var and number. ie. a=1
-                    if(newVariable != "" && existingVariable == "")
+                    if(!mBank.hasVariable(variableStack.top()) && variableStack.size() == 1)
                     {
-                        double operand = operandStack.top();
-                        operandStack.pop();
+                        double operand = 0;
+                        std::string var;
+
+                        if(!variableStack.empty())
+                        {
+                            var = variableStack.top();
+                            variableStack.pop();
+                        }
+                        else
+                            throw CalculatorException("Syntax Error: assignment error, missing variable");
+
+                        if(!operandStack.empty())
+                        {
+                            operand = operandStack.top();
+                            operandStack.pop();
+                        }
+                        else
+                            throw CalculatorException("Syntax Error: assignment error, missing operand");
+
                         result = operand;
-                        assignment(newVariable, operand);
+                        assignment(var, operand);
                         operandStack.push(result);
                     }
-                    //case 2: existing var and new num. ie. a=1... a=2
-                    else if(newVariable == "" && existingVariable != "")
+                    //case 2: old var and number. ie. a=1... a=2
+                    else if(mBank.hasVariable(variableStack.top()) && variableStack.size() == 1)
                     {
-                        double operand = operandStack.top();
-                        operandStack.pop();
-                        operandStack.pop();
+                        std::string var;
+                        double operand = 0;
+
+                        if(!variableStack.empty())
+                        {
+                            var = variableStack.top();
+                            variableStack.pop();
+                        }
+                        else
+                            throw CalculatorException("Syntax Error: assignment error, missing variable");
+
+                        if(!operandStack.empty())
+                        {
+                            operand = operandStack.top();
+                            operandStack.pop();
+                        }
+                        else
+                            throw CalculatorException("Syntax Error: assignment error, missing operand");
+
+                        if(!operandStack.empty())
+                            operandStack.pop();//pop the original value of the existing variable
+                        else
+                            throw CalculatorException("Syntax Error: assignment error, missing operand");
+
                         result = operand;
-                        assignment(existingVariable, operand);
+                        assignment(var, operand);
                         operandStack.push(result);
                     }
-                    //case 3: existing var and new var. ie. b=a where a=1 and b = new
-                    else if(newVariable != "" && existingVariable != "")
+                    //case 3: new var and old var. ie. b=a where a=1 and b = new
+                    //        old var and old var. ie. a=b where a=1 and b=2
+                    else if(variableStack.size() >= 2)
                     {
-                        double operand = operandStack.top();
-                        operandStack.pop();
+                        double operand = 0;
+                        std::string var;
+
+                        if(!operandStack.empty())
+                            operand = operandStack.top();
+                        else
+                            throw CalculatorException("Syntax Error: assignment error, missing operand");
+
+                        while(!variableStack.empty())
+                        {
+                            var = variableStack.top();
+                            variableStack.pop();
+                        }
+                        while(!operandStack.empty())
+                        {
+                            operandStack.pop();
+                        }
+
+                        assignment(var, operand);
                         result = operand;
-                        assignment(newVariable, operand);
                         operandStack.push(result);
                     }
-                    //case 4: existing var and existing var. ie. a=b. *WIll NOT BE HANDLED for now*
-                    //we can handle this with pointers.....
-                    //else
-                        //throw CalculatorException("Syntax Error: cannot assign an existing variable with another");
                 }
             }
             else if(arity == 1)

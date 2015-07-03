@@ -23,7 +23,7 @@ void PostfixEvaluatorTests::runTests()
     evaluate_binaryOperators_returnResult();
     evaluate_basicFunctions_returnResult();
     evaluate_trigFunctions_returnResult();
-    evaluate_assignmentOperator_checkAsignment();
+    evaluate_assignmentOperator_checkAssignment();
     evaluate_constants_returnResult();
     evaluate_errors_returnError();
 
@@ -148,9 +148,73 @@ void PostfixEvaluatorTests::evaluate_trigFunctions_returnResult()
     checkResult(".5 atan", 26.565051, "basic functions: atan: degrees");
 }
 
-void PostfixEvaluatorTests::evaluate_assignmentOperator_checkAsignment()
+void PostfixEvaluatorTests::evaluate_assignmentOperator_checkAssignment()
 {
+    ///test 1
+    MemoryBank mb;
+    PostfixEvaluator pe(mb);
 
+    totalTestsRun++;
+    pe.evaluatePostfix("x 1 =");
+    //std::cout << theBank.getValueFromVar("z");
+
+    if(mb.getValueFromVar("x") != 1)
+    {
+        std::cout << "Error found: new var, number" << "\n";
+        totalTestsFailed++;
+    }
+    mb.clearMemory();
+
+    ///test 2
+    totalTestsRun++;
+    pe.evaluatePostfix("x 1 =");
+    pe.evaluatePostfix("x 2 =");
+    if(mb.getValueFromVar("x") != 2)
+    {
+        std::cout << "Error found: old var, number" << "\n";
+        totalTestsFailed++;
+    }
+    mb.clearMemory();
+
+    ///test 3
+    totalTestsRun++;
+    pe.evaluatePostfix("x 1 =");
+    pe.evaluatePostfix("y x =");
+    if(mb.getValueFromVar("y") != 1)
+    {
+        std::cout << "Error found: new var, old var" << "\n";
+        totalTestsFailed++;
+    }
+    mb.clearMemory();
+
+    ///test 4
+    totalTestsRun++;
+    pe.evaluatePostfix("x 1 =");
+    pe.evaluatePostfix("y 2 =");
+    pe.evaluatePostfix("y x =");
+    if(mb.getValueFromVar("y") != 1)
+    {
+        std::cout << "Error found: old var, old var" << "\n";
+        totalTestsFailed++;
+    }
+    mb.clearMemory();
+
+    ///test 5: a=b=c not supported...
+    /*totalTestsRun++;
+    pe.evaluatePostfix("x 1 =");
+    pe.evaluatePostfix("y 2 =");
+    pe.evaluatePostfix("z 3 =");
+    pe.evaluatePostfix("x y = z =");
+
+    if(mb.getValueFromVar("x") != 3 ||
+            mb.getValueFromVar("y") != 3 ||
+            mb.getValueFromVar("z") != 3)
+    {
+        std::cout << "Error found: multiple variable reassignment: 3" << "\n";
+        totalTestsFailed++;
+    }
+    mb.clearMemory();
+    */
 }
 
 void PostfixEvaluatorTests::evaluate_constants_returnResult()

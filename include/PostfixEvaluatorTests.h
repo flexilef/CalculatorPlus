@@ -25,7 +25,7 @@ class PostfixEvaluatorTests : public UnitTest
         void evaluate_binaryOperators_returnResult();
         void evaluate_basicFunctions_returnResult();
         void evaluate_trigFunctions_returnResult();
-        void evaluate_assignmentOperator_checkAsignment();
+        void evaluate_assignmentOperator_checkAssignment();
         void evaluate_constants_returnResult();
         void evaluate_errors_returnError();//overflow/underflow/div by zero etc...
 
