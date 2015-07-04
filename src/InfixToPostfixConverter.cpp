@@ -1,10 +1,12 @@
 #include "../include/InfixToPostfixConverter.h"
 #include "../include/CalculatorUtil.h"
 #include "../include/MathTokenizer.h"
+#include "../include/CalculatorException.h"
 
 #include <cctype>
 #include <stack>
 #include <cstdlib>
+#include <iostream>
 
 InfixToPostfixConverter::InfixToPostfixConverter()
 {
@@ -19,8 +21,15 @@ InfixToPostfixConverter::~InfixToPostfixConverter()
 
 std::string InfixToPostfixConverter::convertToPostfix(const std::string &infix)
 {
-    input = infix;
-    convert();
+    if(isInfix(infix))
+    {
+        input = infix;
+        convert();
+    }
+    else
+    {
+        throw CalculatorException("Syntax Error: not an infix expression");
+    }
 
     return output;
 }
@@ -33,6 +42,7 @@ void InfixToPostfixConverter::convert()
     std::string topOperator;
     std::string currentTokenStr;
     std::string lastTokenStr;
+    Token currentToken;
     int tokenIndex = 0;
 
     tokenizer.setInput(input);
@@ -40,7 +50,7 @@ void InfixToPostfixConverter::convert()
     while(tokenizer.hasNext())
     {
         bool done = false;
-        Token currentToken = tokenizer.getNextToken();
+        currentToken = tokenizer.getNextToken();
         currentTokenStr = currentToken.getString();
 
         if(currentToken.tokenType == Token::NUMBER)
@@ -59,7 +69,6 @@ void InfixToPostfixConverter::convert()
             postfix+=currentTokenStr;
             postfix+=" ";
             lastTokenStr = currentTokenStr;
-
         }
         else if(currentToken.tokenType == Token::OPERATOR)
         {
@@ -125,4 +134,30 @@ void InfixToPostfixConverter::convert()
     }
 
     output = postfix;
+}
+
+bool InfixToPostfixConverter::isInfix(const std::string str)
+{
+    MathTokenizer tk(str);
+    Token lastToken = tk.getNextToken();
+    Token currentToken = tk.getNextToken();
+
+    while(tk.hasNext())
+    {
+        if(currentToken.tokenType == Token::NUMBER &&
+                lastToken.tokenType == Token::NUMBER)
+        {
+            return false;
+        }
+        else if(currentToken.tokenType == Token::VARIABLE &&
+                lastToken.tokenType == Token::VARIABLE)
+        {
+            return false;
+        }
+
+        lastToken = currentToken;
+        currentToken = tk.getNextToken();
+    }
+
+    return true;
 }

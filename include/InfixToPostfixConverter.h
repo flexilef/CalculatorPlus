@@ -15,6 +15,7 @@ public:
 
 private:
     void convert();
+    bool isInfix(const std::string);
 };
 
 #endif // INFIXTOPOSTFIXCONVERTER_H
