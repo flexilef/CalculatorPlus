@@ -13,6 +13,7 @@ class Token
             VARIABLE,
             OPERATOR,
             FUNCTION,
+            COMMAND,
         };
 
         Type tokenType;

@@ -21,7 +21,7 @@ InfixToPostfixConverter::~InfixToPostfixConverter()
 
 std::string InfixToPostfixConverter::convertToPostfix(const std::string &infix)
 {
-    if(isInfix(infix))
+    if(CalculatorUtil::isInfix(infix))
     {
         input = infix;
         convert();
@@ -134,30 +134,4 @@ void InfixToPostfixConverter::convert()
     }
 
     output = postfix;
-}
-
-bool InfixToPostfixConverter::isInfix(const std::string str)
-{
-    MathTokenizer tk(str);
-    Token lastToken = tk.getNextToken();
-    Token currentToken = tk.getNextToken();
-
-    while(tk.hasNext())
-    {
-        if(currentToken.tokenType == Token::NUMBER &&
-                lastToken.tokenType == Token::NUMBER)
-        {
-            return false;
-        }
-        else if(currentToken.tokenType == Token::VARIABLE &&
-                lastToken.tokenType == Token::VARIABLE)
-        {
-            return false;
-        }
-
-        lastToken = currentToken;
-        currentToken = tk.getNextToken();
-    }
-
-    return true;
 }

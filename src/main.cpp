@@ -37,13 +37,21 @@ int main()
     {
         calc.getUserInput();
         calc.calculate();
+
         if(calc.getCalculatorState() == Calculator::ERRORSTATE)
         {
             std::cout << calc.getErrorMessage() << "\n";
-            calc.setCalculatorState(Calculator::RUNNINGSTATE);
+            calc.setCalculatorState(Calculator::DEFAULTSTATE);
+        }
+        else if(calc.getCalculatorState() == Calculator::COMMANDSTATE)
+        {
+            calc.runCommand(calc.getInput());
+            calc.setCalculatorState(Calculator::DEFAULTSTATE);
         }
         else
+        {
             std::cout << "answer: " << calc.getOutput() << "\n";
+        }
     }
 
     return 0;

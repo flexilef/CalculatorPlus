@@ -12,7 +12,8 @@ public:
 
     enum CalculatorState
     {
-        RUNNINGSTATE = 0,
+        DEFAULTSTATE = 0,
+        COMMANDSTATE,
         ERRORSTATE,
     };
 
@@ -30,9 +31,13 @@ public:
     void setCalculatorState(CalculatorState);
     CalculatorState getCalculatorState();
     void setAngleMode(MathUtil::AngleMode);
+    void runCommand(const std::string&);
 
 protected:
 private:
+    void checkInput();
+    bool isCommand(const std::string&);
+
     std::string input;
     double output;
 

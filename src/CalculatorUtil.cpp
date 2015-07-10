@@ -83,3 +83,36 @@ bool CalculatorUtil::almostEqual(double a, double b, int ulp)
     //       std::abs(a - b) < std::numeric_limits<double>::min();
     return (std::abs(a-b)/b) < .005 || std::abs(a-b) < .000001;
 }
+
+bool CalculatorUtil::isInfix(const std::string &str)
+{
+    MathTokenizer tk(str);
+    Token lastToken = tk.getNextToken();
+    Token currentToken = tk.getNextToken();
+
+    while(tk.hasNext())
+    {
+        if(currentToken.tokenType == Token::NUMBER &&
+                lastToken.tokenType == Token::NUMBER)
+        {
+            return false;
+        }
+        else if(currentToken.tokenType == Token::VARIABLE &&
+                lastToken.tokenType == Token::VARIABLE)
+        {
+            return false;
+        }
+        else if(currentToken.tokenType == Token::OPERATOR &&
+                lastToken.tokenType == Token::OPERATOR)
+        {
+            if(getArity(lastToken.getString()) > 1 &&
+               getArity(currentToken.getString()) > 1)
+                return false;
+        }
+
+        lastToken = currentToken;
+        currentToken = tk.getNextToken();
+    }
+
+    return true;
+}

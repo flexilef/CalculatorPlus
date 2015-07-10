@@ -33,7 +33,6 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
     MathTokenizer tokenizer;
     tokenizer.setInput(postfix);
 
-
     std::stack<double> operandStack;
     std::stack<std::string> variableStack;
     Token currentToken;

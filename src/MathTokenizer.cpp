@@ -159,6 +159,8 @@ void MathTokenizer::tokenize()
                 functionStr = "";
             }
         }
+        else if(currentCharacter == "?")
+            tokens.push_back(Token(currentCharacter, Token::COMMAND));
         else
             throw CalculatorException("Syntax Error: invalid character: " + currentCharacter);
     }

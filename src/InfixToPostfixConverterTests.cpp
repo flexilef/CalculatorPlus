@@ -31,32 +31,32 @@ void InfixToPostfixConverterTests::convertToPostfix_binaryOperators_returnPostfi
     checkPostfix("12+34", "12 34 +", "binary operator: addition: multiple digit");
     checkPostfix("1.2+34.56", "1.2 34.56 +", "binary operator: addition: decimal point");
     checkPostfix("a+bc", "a bc +", "binary operator: addition: variable");
-    checkPostfix("-1+-2", "1 ~ 2 ~ +", "binary operator: addition: negative");
-    checkPostfix("-a+-bc", "a ~ bc ~ +", "binary operator: addition: negative variable");
+    checkPostfix("-1+(-2)", "1 ~ 2 ~ +", "binary operator: addition: negative");
+    checkPostfix("-a+(-bc)", "a ~ bc ~ +", "binary operator: addition: negative variable");
 
     //subtraction
     checkPostfix("1-2", "1 2 -", "binary operator: subtraction: single digit");
     checkPostfix("12-34", "12 34 -", "binary operator: subtraction: multiple digit");
     checkPostfix("1.2-34.56", "1.2 34.56 -", "binary operator: subtraction: decimal point");
     checkPostfix("a-bc", "a bc -", "binary operator: subtraction: variable");
-    checkPostfix("-1--2", "1 ~ 2 ~ -", "binary operator: subtraction: negative");
-    checkPostfix("-a--bc", "a ~ bc ~ -", "binary operator: subtraction: negative variable");
+    checkPostfix("-1-(-2)", "1 ~ 2 ~ -", "binary operator: subtraction: negative");
+    checkPostfix("-a-(-bc)", "a ~ bc ~ -", "binary operator: subtraction: negative variable");
 
     //multiplication
     checkPostfix("1*2", "1 2 *", "binary operator: multiplication: single digit");
     checkPostfix("12*34", "12 34 *", "binary operator: multiplication: multiple digit");
     checkPostfix("1.2*34.56", "1.2 34.56 *", "binary operator: multiplication: decimal point");
     checkPostfix("a*bc", "a bc *", "binary operator: multiplication: variable");
-    checkPostfix("-1*-2", "1 ~ 2 ~ *", "binary operator: multiplication: negative");
-    checkPostfix("-a*-bc", "a ~ bc ~ *", "binary operator: multiplication: negative variable");
+    checkPostfix("-1*(-2)", "1 ~ 2 ~ *", "binary operator: multiplication: negative");
+    checkPostfix("-a*(-bc)", "a ~ bc ~ *", "binary operator: multiplication: negative variable");
 
     //division
     checkPostfix("1/2", "1 2 /", "binary operator: division: single digit");
     checkPostfix("12/34", "12 34 /", "binary operator: division: multiple digit");
     checkPostfix("1.2/34.56", "1.2 34.56 /", "binary operator: division: decimal point");
     checkPostfix("a/bc", "a bc /", "binary operator: division: variable");
-    checkPostfix("-1/-2", "1 ~ 2 ~ /", "binary operator: division: negative");
-    checkPostfix("-a/-bc", "a ~ bc ~ /", "binary operator: division: negative variable");
+    checkPostfix("-1/(-2)", "1 ~ 2 ~ /", "binary operator: division: negative");
+    checkPostfix("-a/(-bc)", "a ~ bc ~ /", "binary operator: division: negative variable");
 
     //power
     checkPostfix("1^2", "1 2 ^", "binary operator: power: single digit");
@@ -64,9 +64,9 @@ void InfixToPostfixConverterTests::convertToPostfix_binaryOperators_returnPostfi
     checkPostfix("1.2^34.56", "1.2 34.56 ^", "binary operator: power: decimal point");
     checkPostfix("a^bc", "a bc ^", "binary operator: power: variable");
     checkPostfix("-1^2", "1 2 ^ ~", "binary operator: power: negative base");
-    checkPostfix("1^-2", "1 2 ~ ^", "binary operator: power: negative exponent");
-    checkPostfix("-1^-2", "1 2 ~ ^ ~", "binary operator: power: negative exponent and base");
-    checkPostfix("-a^-bc", "a bc ~ ^ ~", "binary operator: power: negative variable");
+    checkPostfix("1^(-2)", "1 2 ~ ^", "binary operator: power: negative exponent");
+    checkPostfix("-1^(-2)", "1 2 ~ ^ ~", "binary operator: power: negative exponent and base");
+    checkPostfix("-a^(-bc)", "a bc ~ ^ ~", "binary operator: power: negative variable");
     checkPostfix("1^2^3", "1 2 ^ 3 ^", "binary operator: power: associativity");
 
     //mod
@@ -74,7 +74,7 @@ void InfixToPostfixConverterTests::convertToPostfix_binaryOperators_returnPostfi
     checkPostfix("12mod34", "12 34 mod", "binary operator: mod: multiple digit");
     checkPostfix("1.2mod34.56", "1.2 34.56 mod", "binary operator: mod: decimal point");
     checkPostfix("(a)mod(bc)", "a bc mod", "binary operator: mod: variable");
-    checkPostfix("-1mod-2", "1 ~ 2 ~ mod", "binary operator: mod: negative: will be fixed when tokenizer is fixed.");
+    checkPostfix("-1mod(-2)", "1 ~ 2 ~ mod", "binary operator: mod: negative: will be fixed when tokenizer is fixed.");
     checkPostfix("(-a)mod(-bc)", "a ~ bc ~ mod", "binary operator: mod: negative variable");
 
     //assignment
@@ -93,7 +93,7 @@ void InfixToPostfixConverterTests::convertToPostfix_binaryOperators_returnPostfi
     checkPostfix("12E34", "12 34 E", "binary operator: E: multiple digit");
     //checkPostfix("1.2E34.56", "1.2 34.56 E", "binary operator: E: decimal point");//no such thing remove?
     checkPostfix("-1E2", "1 ~ 2 E", "binary operator: E: negative coefficient");
-    checkPostfix("1E-2", "1 2 ~ E", "binary operator: E: negative exponent");
+    checkPostfix("1E(-2)", "1 2 ~ E", "binary operator: E: negative exponent");
     checkPostfix("(a)E5", "a 5 E", "binary operator: E: coefficient variable 2");
     checkPostfix("5E(a)", "5 a E", "binary operator: E: exponent variable");
     checkPostfix("(-a)E5", "a ~ 5 E", "binary operator: E: negative coefficient variable");
@@ -112,8 +112,8 @@ void InfixToPostfixConverterTests::convertToPostfix_unaryOperators_returnPostfix
     checkPostfix("-1.2", "1.2 ~","unary operator: negation: decimal point");
     checkPostfix("-a", "a ~","unary operator: negation: variable");
     checkPostfix("-abc", "abc ~","unary operator: negation: multiple variable");
-    checkPostfix("--1", "1 ~ ~","unary operator: negation: double negative");
-    checkPostfix("--abc", "abc ~ ~","unary operator: negation: double negative variable");
+    checkPostfix("-(-1)", "1 ~ ~","unary operator: negation: double negative");
+    checkPostfix("-(-abc)", "abc ~ ~","unary operator: negation: double negative variable");
 
     //factorial
     checkPostfix("1!", "1 !","unary operator: factorial: single digit");
