@@ -18,6 +18,7 @@ public:
     void setInput(const std::string&);
     void clear();
     void dumpTokens();
+    int convertTokenIndexToInputIndex(int);
 
 protected:
 

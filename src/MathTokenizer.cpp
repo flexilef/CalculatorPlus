@@ -63,6 +63,14 @@ void MathTokenizer::tokenize()
         }
         else if(isalpha(input[index]))// && !CalculatorUtil::isOperator(currentCharacter))
         {
+            if(!numberStr.empty())
+            {
+                //std::cout << "NUM1 ";
+                tokens.push_back(Token(numberStr, Token::NUMBER));
+
+                numberStr = "";
+            }
+
             //could be either one of these three
             operatorStr+=currentCharacter;
             functionStr+=currentCharacter;
@@ -71,13 +79,6 @@ void MathTokenizer::tokenize()
             //handle multiple-charactered operators and functions
             if(CalculatorUtil::isOperator(operatorStr))
             {
-                if(!numberStr.empty())
-                {
-                    //std::cout << "NUM1 ";
-                    tokens.push_back(Token(numberStr, Token::NUMBER));
-                    numberStr = "";
-                }
-
                 //std::cout << "OP1 ";
                 tokens.push_back(Token(operatorStr, Token::OPERATOR));
 
@@ -88,14 +89,6 @@ void MathTokenizer::tokenize()
             }
             else if(CalculatorUtil::isFunction(functionStr))
             {
-
-                //Note that later on, if you want to implement auto multiplication such as
-                //5cos(30) = 5*cos(30), just do...
-                //if(!numberStr.empty())
-                //{
-                //   tokens.push_back(Token("*", Token::OPERATOR));
-                //}
-
                 //std::cout << "FUNC1 ";
                 tokens.push_back(Token(functionStr, Token::FUNCTION));
 
@@ -133,6 +126,7 @@ void MathTokenizer::tokenize()
             {
                 //std::cout << "NUM2 ";
                 tokens.push_back(Token(numberStr, Token::NUMBER));
+
                 numberStr = "";
             }
 
@@ -146,6 +140,7 @@ void MathTokenizer::tokenize()
             {
                 //std::cout << "NUM3 ";
                 tokens.push_back(Token(numberStr, Token::NUMBER));
+
                 numberStr = "";
             }
 
@@ -153,14 +148,11 @@ void MathTokenizer::tokenize()
             {
                 //std::cout << "VAR2 ";
                 tokens.push_back(Token(variableStr, Token::VARIABLE));
-
                 variableStr = "";
                 operatorStr = "";
                 functionStr = "";
             }
         }
-        else if(currentCharacter == "?")
-            tokens.push_back(Token(currentCharacter, Token::COMMAND));
         else
             throw CalculatorException("Syntax Error: invalid character: " + currentCharacter);
     }
@@ -180,8 +172,27 @@ void MathTokenizer::tokenize()
     {
         //std::cout << "NUM4 ";
         tokens.push_back(Token(numberStr, Token::NUMBER));
+
         numberStr = "";
     }
+}
+
+int MathTokenizer::convertTokenIndexToInputIndex(int tIndex)
+{
+    int inputIndex = 0;
+
+    for(int i = 0; i<=tIndex; i++)
+    {
+        inputIndex+=tokens[i].getString().length();
+    }
+
+    if(tIndex == 0)
+        inputIndex = 0;
+    else
+        //get the index at the beginning of the token string
+        inputIndex-=tokens[tIndex].getString().length();
+
+    return inputIndex;
 }
 
 void MathTokenizer::setInput(const std::string &str)

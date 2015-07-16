@@ -43,15 +43,8 @@ int main()
             std::cout << calc.getErrorMessage() << "\n";
             calc.setCalculatorState(Calculator::DEFAULTSTATE);
         }
-        else if(calc.getCalculatorState() == Calculator::COMMANDSTATE)
-        {
-            calc.runCommand(calc.getInput());
-            calc.setCalculatorState(Calculator::DEFAULTSTATE);
-        }
         else
-        {
             std::cout << "answer: " << calc.getOutput() << "\n";
-        }
     }
 
     return 0;
