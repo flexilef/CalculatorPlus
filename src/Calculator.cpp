@@ -31,34 +31,15 @@ void Calculator::getUserInput()
     setInput(str);
 }
 
-std::string Calculator::getInput()
-{
-    return input;
-}
-
-void Calculator::setInput(const std::string& str)
-{
-    input = str;
-}
-
-double Calculator::getOutput()
-{
-    return output;
-}
-
 void Calculator::calculate()
 {
-    double result = 0;
-
     try
     {
         applyAutoMultiplication();
         checkInput();
-        if(calcState == DEFAULTSTATE)
-        {
-            std::string postfix = ipConverter.convertToPostfix(input);
-            result = pEvaluator.evaluatePostfix(postfix);
-        }
+
+        std::string postfix = ipConverter.convertToPostfix(input);
+        output = pEvaluator.evaluatePostfix(postfix);
     }
     catch(CalculatorException& e)
     {
@@ -70,11 +51,21 @@ void Calculator::calculate()
         calcState = ERRORSTATE;
         errorMessage = "Unknown error";
     }
-
-    output = result;
 }
 
 void Calculator::checkInput()
+{
+    checkAssignment();
+    checkInfix();
+}
+
+void Calculator::checkInfix()
+{
+    if(!CalculatorUtil::isInfix(input))
+        throw CalculatorException("Syntax Error: not an infix expression");
+}
+
+void Calculator::checkAssignment()
 {
     bool isAssignmentCheck = false;
     MathTokenizer tk(input);
@@ -108,37 +99,13 @@ void Calculator::checkInput()
 
         while(tk.hasNext())
         {
-            if(tk.getNextToken().tokenType != Token::VARIABLE)
+            currentToken = tk.getNextToken();
+            if(currentToken.tokenType != Token::VARIABLE)
                 throw CalculatorException("Syntax Error: invalid variable for assignment");
-
+            else if(currentToken.tokenType == Token::VARIABLE &&
+                    currentToken.getString() == "PI")
+                throw CalculatorException("Syntax Error: cannot reassign constants");
         }
-    }
-
-    //infix check
-    if(!CalculatorUtil::isInfix(input))
-        throw CalculatorException("Syntax Error: not an infix expression");
-
-    //variable follows numbers check
-    tk.setInput(input);
-    Token tokenFirst = tk.getNextToken();
-    Token tokenSecond = tk.getNextToken();
-
-    if(tokenFirst.tokenType == Token::VARIABLE ||
-            tokenSecond.tokenType == Token::NUMBER)
-    {
-        throw CalculatorException("Syntax Error: variable cannot follow a number");
-    }
-
-    while(tk.hasNext())
-    {
-        if(tokenFirst.tokenType == Token::VARIABLE &&
-                tokenSecond.tokenType == Token::NUMBER)
-        {
-            throw CalculatorException("Syntax Error: variable cannot follow a number");
-        }
-
-        tokenFirst = tokenSecond;
-        tokenSecond = tk.getNextToken();
     }
 }
 
@@ -173,6 +140,36 @@ void Calculator::applyAutoMultiplication()
                 indicesToInsertMultiplication.push_back(index);
             }
         }
+        else if(lastToken.tokenType == Token::VARIABLE)
+        {
+            if(currentToken.tokenType == Token::NUMBER ||
+                    currentToken.tokenType == Token::FUNCTION)
+            {
+                index = tk.convertTokenIndexToInputIndex(tokenIndexOfCurrentToken);
+                indicesToInsertMultiplication.push_back(index);
+            }
+            else if(currentToken.tokenType == Token::OPERATOR &&
+                    currentToken.getString() == "(")
+            {
+                index = tk.convertTokenIndexToInputIndex(tokenIndexOfCurrentToken);
+                indicesToInsertMultiplication.push_back(index);
+            }
+        }
+        else if(lastToken.tokenType == Token::OPERATOR &&
+                lastToken.getString() == ")")
+        {
+            if(currentToken.tokenType == Token::OPERATOR &&
+                    currentToken.getString() == "(")
+            {
+                index = tk.convertTokenIndexToInputIndex(tokenIndexOfCurrentToken);
+                indicesToInsertMultiplication.push_back(index);
+            }
+            else if(currentToken.tokenType == Token::FUNCTION)
+            {
+                index = tk.convertTokenIndexToInputIndex(tokenIndexOfCurrentToken);
+                indicesToInsertMultiplication.push_back(index);
+            }
+        }
     }
 
     //insert the multiplication signs
@@ -185,10 +182,26 @@ void Calculator::applyAutoMultiplication()
     }
 }
 
+std::string Calculator::getInput()
+{
+    return input;
+}
+
+void Calculator::setInput(const std::string& str)
+{
+    input = str;
+}
+
+double Calculator::getOutput()
+{
+    return output;
+}
+
 void Calculator::setCalculatorState(CalculatorState state)
 {
     calcState = state;
 }
+
 Calculator::CalculatorState Calculator::getCalculatorState()
 {
     return calcState;

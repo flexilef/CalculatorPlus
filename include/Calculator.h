@@ -34,10 +34,12 @@ public:
 protected:
 private:
     void checkInput();
+    void checkAssignment();
+    void checkInfix();
     void applyAutoMultiplication();
+
     std::string input;
     double output;
-
     std::string errorMessage;
     CalculatorState calcState;
     MathUtil::AngleMode angleMode;
@@ -45,6 +47,8 @@ private:
     MemoryBank mBank;
     InfixToPostfixConverter ipConverter;
     PostfixEvaluator pEvaluator;
+
+    friend class CalculatorTests;
 };
 
 #endif // CALCULATOR_H

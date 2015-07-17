@@ -25,7 +25,6 @@ void PostfixEvaluatorTests::runTests()
     evaluate_trigFunctions_returnResult();
     evaluate_assignmentOperator_checkAssignment();
     evaluate_constants_returnResult();
-    evaluate_errors_returnError();
 
     std::cout << "PostfixEvaluatorTests: Tests run    : " << totalTestsRun << "\n";
     std::cout << "PostfixEvaluatorTests: Tests failed : " << totalTestsFailed << "\n";
@@ -223,10 +222,6 @@ void PostfixEvaluatorTests::evaluate_constants_returnResult()
     checkResult("123", 123, "constants: multiple digit");
     checkResult("b", 2, "constants: single variable");
     checkResult("abc", 123, "constants: multiple variable");
-}
-
-void PostfixEvaluatorTests::evaluate_errors_returnError()
-{
 }
 
 void PostfixEvaluatorTests::checkResult(const std::string &postfix, double answer, const std::string &error)
