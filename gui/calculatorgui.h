@@ -32,9 +32,11 @@ private:
     QLineEdit *lineEdit;
     QTextBrowser *textBrowser;
     Calculator calc;
+    std::vector<QString> history;
+    int historyIndex;
 
 protected:
-
+    bool eventFilter(QObject *, QEvent *);
 public slots:
     void handleLineEdit();
 };

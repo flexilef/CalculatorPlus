@@ -1,7 +1,11 @@
 #include "calculatorgui.h"
+#include <QEvent>
+#include <QKeyEvent>
 
 CalculatorGUI::CalculatorGUI(QWidget *parent) : QWidget(parent)
 {
+    historyIndex = 0;
+
     lineEdit = new QLineEdit(this);
     textBrowser = new QTextBrowser(this);
 
@@ -22,19 +26,46 @@ CalculatorGUI::~CalculatorGUI()
     delete textBrowser;
 }
 
+bool CalculatorGUI::eventFilter(QObject *object, QEvent *event)
+{
+    if(object == lineEdit)
+    {
+        if(event->type() == QEvent::KeyPress)
+        {
+            QKeyEvent *ke = static_cast<QKeyEvent *>(event);
+            if(ke->key() == Qt::Key_Up)
+            {
+                if(!history.empty() && historyIndex>0)
+                    lineEdit->setText(history[--historyIndex]);
+                return true;
+            }
+            else if(ke->key() == Qt::Key_Down)
+            {
+                if(!history.empty() && historyIndex<history.size()-1)
+                    lineEdit->setText(history[++historyIndex]);
+                return true;
+            }
+        }
+        return false;
+    }
+    return CalculatorGUI::eventFilter(object, event);
+}
+
 void CalculatorGUI::handleLineEdit()
 {
     QString input = lineEdit->text();
     QString output;
     double result = 0;
 
+    history.push_back(input);
+    historyIndex++;
     calc.setInput(input.toStdString());
     calc.calculate();
 
     if(calc.getCalculatorState() == Calculator::ERRORSTATE)
     {
         output = QString::fromStdString(calc.getErrorMessage());
-        calc.setCalculatorState(Calculator::RUNNINGSTATE);
+        calc.setCalculatorState(Calculator::DEFAULTSTATE);
     }
     else
     {
