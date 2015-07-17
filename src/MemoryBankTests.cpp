@@ -29,14 +29,6 @@ void MemoryBankTests::MemoryBank_functions_canStoreAndRetrieveVariables()
     }
     totalTestsRun++;
 
-    if(theBank.storeValueIntoVar("abc1", 123))
-    {
-        totalTestsFailed++;
-
-        std::cout << "error: storeValueIntoVar: stored illegal var name: \"abc1\"\n";
-    }
-    totalTestsRun++;
-
     if(theBank.storeValueIntoVar(" ", 999))
     {
         totalTestsFailed++;

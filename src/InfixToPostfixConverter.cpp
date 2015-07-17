@@ -21,15 +21,8 @@ InfixToPostfixConverter::~InfixToPostfixConverter()
 
 std::string InfixToPostfixConverter::convertToPostfix(const std::string &infix)
 {
-    if(CalculatorUtil::isInfix(infix))
-    {
-        input = infix;
-        convert();
-    }
-    else
-    {
-        throw CalculatorException("Syntax Error: not an infix expression");
-    }
+    input = infix;
+    convert();
 
     return output;
 }

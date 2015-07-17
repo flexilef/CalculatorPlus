@@ -40,6 +40,7 @@ private:
 
     std::string input;
     double output;
+    double lastAnswer;
     std::string errorMessage;
     CalculatorState calcState;
     MathUtil::AngleMode angleMode;

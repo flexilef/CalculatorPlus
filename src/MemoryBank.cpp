@@ -23,23 +23,13 @@ double MemoryBank::getValueFromVar(std::string variable)
 
 bool MemoryBank::storeValueIntoVar(std::string variable, double value)
 {
-    bool isBadVarName = false;
-
-    for(int i = 0; i < variable.length(); i++)
-    {
-        if(!isalpha(variable[i]))
-            isBadVarName = true;
-    }
-
-    if(!isBadVarName)
-    {
-        variableToNumberMap[variable] = value;
-    }
-    else
+    if(variable.empty() ||
+       variable.find_first_not_of(' ') == std::string::npos)
         return false;
 
+    variableToNumberMap[variable] = value;
+
     return true;
-    //std::cout << "error: MemoryBank: illegal variable name: \"" << variable << "\" \n";
 }
 
 bool MemoryBank::hasVariable(std::string variable)

@@ -99,18 +99,6 @@ void MathTokenizer::tokenize()
         }
         else if(CalculatorUtil::isOperator(currentCharacter))
         {
-            /**
-            *Note that later on, if you want to implement variable names that accept both
-            *alpha and numerical values, just check...
-            *if(!numberStr.empty() && !variableStr.empty())
-            *{
-            *   tokens.push_back(Token(variableStr, Token::VARIABLE));
-            *}
-            *take note however that the if statement that checks if currentChar is a number
-            *must also do...
-            *variableStr+=currentCharacter;
-            */
-
             //handle any tokens found before the single operator is found
             if(!variableStr.empty())
             {

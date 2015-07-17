@@ -12,10 +12,12 @@
 Calculator::Calculator() : pEvaluator(mBank)
 {
     output = 0;
+    lastAnswer = 0;
     calcState = DEFAULTSTATE;
     angleMode = MathUtil::DEGREES;
     pEvaluator.setAngleMode(angleMode);
     mBank.storeValueIntoVar("PI", MathUtil::PI());
+    mBank.storeValueIntoVar("ans", lastAnswer);
 }
 
 Calculator::~Calculator()
@@ -51,6 +53,9 @@ void Calculator::calculate()
         calcState = ERRORSTATE;
         errorMessage = "Unknown error";
     }
+
+    lastAnswer = output;
+    mBank.storeValueIntoVar("ans", lastAnswer);
 }
 
 void Calculator::checkInput()
@@ -62,7 +67,7 @@ void Calculator::checkInput()
 void Calculator::checkInfix()
 {
     if(!CalculatorUtil::isInfix(input))
-        throw CalculatorException("Syntax Error: not an infix expression");
+        throw CalculatorException("Syntax Error: '" + input + "' is not an infix expression");
 }
 
 void Calculator::checkAssignment()
@@ -101,10 +106,13 @@ void Calculator::checkAssignment()
         {
             currentToken = tk.getNextToken();
             if(currentToken.tokenType != Token::VARIABLE)
-                throw CalculatorException("Syntax Error: invalid variable for assignment");
-            else if(currentToken.tokenType == Token::VARIABLE &&
-                    currentToken.getString() == "PI")
-                throw CalculatorException("Syntax Error: cannot reassign constants");
+                throw CalculatorException("Syntax Error: illegal variable name");
+            else if(currentToken.tokenType == Token::VARIABLE)
+            {
+                if(currentToken.getString() == "PI" ||
+                        currentToken.getString() == "ans")
+                    throw CalculatorException("Syntax Error: cannot reassign: '" + currentToken.getString() + "'");
+            }
         }
     }
 }
