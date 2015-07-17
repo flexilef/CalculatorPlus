@@ -2,7 +2,7 @@
 #define INFIXTOPOSTFIXCONVERTERTESTS_H
 
 #include <vector>
-#include "../include/InfixToPostfixConverter.h"
+#include "../../include/core/InfixToPostfixConverter.h"
 #include "../include/UnitTest.h"
 
 class InfixToPostfixConverterTests : public UnitTest

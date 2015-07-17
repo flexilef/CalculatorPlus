@@ -1,12 +1,13 @@
-#include "../include/InfixToPostfixConverter.h"
-#include "../include/CalculatorUtil.h"
-#include "../include/MathTokenizer.h"
-#include "../include/CalculatorException.h"
-
-#include <cctype>
+//#include <cctype>
 #include <stack>
 #include <cstdlib>
 #include <iostream>
+
+#include "../../include/core/InfixToPostfixConverter.h"
+#include "../../include/core/CalculatorUtil.h"
+
+#include "../../include/core/MathTokenizer.h"
+#include "../../include/core/CalculatorException.h"
 
 InfixToPostfixConverter::InfixToPostfixConverter()
 {

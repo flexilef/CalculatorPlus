@@ -1,7 +1,8 @@
-#include "../include/PostfixEvaluatorTests.h"
-#include "../include/CalculatorUtil.h"
 #include <cmath>
 #include <iostream>
+
+#include "../include/PostfixEvaluatorTests.h"
+#include "../../include/core/CalculatorUtil.h"
 
 PostfixEvaluatorTests::PostfixEvaluatorTests() : evaluator(theBank)
 {

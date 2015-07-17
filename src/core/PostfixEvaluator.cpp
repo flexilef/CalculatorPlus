@@ -1,15 +1,17 @@
-#include "../include/PostfixEvaluator.h"
-#include "../include/CalculatorUtil.h"
-#include "../include/MathTokenizer.h"
-
-#include "../include/CalculatorException.h"
-#include "../include/DomainException.h"
-#include "../include/SyntaxException.h"
-#include "../include/DivideByZeroException.h"
-
 #include <cstdlib>
 #include <iostream>
 #include <stack>
+
+#include "../../include/core/PostfixEvaluator.h"
+#include "../../include/core/CalculatorUtil.h"
+#include "../../include/core/MathTokenizer.h"
+
+#include "../../include/core/CalculatorException.h"
+#include "../../include/core/DomainException.h"
+#include "../../include/core/SyntaxException.h"
+#include "../../include/core/DivideByZeroException.h"
+
+
 
 PostfixEvaluator::PostfixEvaluator(MemoryBank& mbref) : mBank(mbref)
 {

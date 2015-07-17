@@ -1,7 +1,7 @@
 #ifndef POSTFIXEVALUATORTESTS_H
 #define POSTFIXEVALUATORTESTS_H
 
-#include "../include/PostfixEvaluator.h"
+#include "../../include/core/PostfixEvaluator.h"
 #include "../include/UnitTest.h"
 
 class PostfixEvaluatorTests : public UnitTest

@@ -1,5 +1,6 @@
-#include "../include/MemoryBank.h"
 #include <iostream>
+
+#include "../../include/core/MemoryBank.h"
 
 MemoryBank::MemoryBank()
 {

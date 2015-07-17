@@ -1,7 +1,7 @@
 #ifndef CALCULATORTESTS_H
 #define CALCULATORTESTS_H
 
-#include "../include/Calculator.h"
+#include "../../include/core/Calculator.h"
 #include "../include/UnitTest.h"
 
 class CalculatorTests : public UnitTest

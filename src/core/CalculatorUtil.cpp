@@ -1,8 +1,12 @@
-#include "../include/CalculatorUtil.h"
 #include <cmath>
 #include <limits>
 
-bool CalculatorUtil::isNumber(const std::string &str)
+#include "../../include/core/CalculatorUtil.h"
+#include "../../include/core/MathTokenizer.h"
+
+namespace CalculatorUtil
+{
+bool isNumber(const std::string &str)
 {
     if(isdigit(str[0]) || str == ".")
         return true;
@@ -10,7 +14,7 @@ bool CalculatorUtil::isNumber(const std::string &str)
     return false;
 }
 
-bool CalculatorUtil::isOperator(const std::string &str)
+bool isOperator(const std::string &str)
 {
     const int LENGTH = 20;
     std::string operators[LENGTH] = {"(", ")", "+", "-", "*", "/", "^", "~", "E", "!", "%", "mod", "="};
@@ -27,7 +31,7 @@ bool CalculatorUtil::isOperator(const std::string &str)
     return false;
 }
 
-bool CalculatorUtil::isFunction(const std::string &str)
+bool isFunction(const std::string &str)
 {
     const int LENGTH = 20;
     std::string functions[LENGTH] = {"abs", "acos", "asin", "atan", "cbrt", "cos", "exp", "ln", "log", "sin", "sqrt", "tan"};
@@ -44,7 +48,7 @@ bool CalculatorUtil::isFunction(const std::string &str)
     return false;
 }
 
-int CalculatorUtil::getArity(const std::string &op)
+int getArity(const std::string &op)
 {
     if(op == "+" || op == "-" || op == "*" || op == "/" || op == "^" || op == "E" || op == "mod")
         return 2;
@@ -56,7 +60,7 @@ int CalculatorUtil::getArity(const std::string &op)
     return -1;
 }
 
-int CalculatorUtil::getPrecedence(const std::string &op)
+int getPrecedence(const std::string &op)
 {
     if(op == "(" || op == ")")
         return 0;
@@ -77,14 +81,14 @@ int CalculatorUtil::getPrecedence(const std::string &op)
 }
 
 //TODO: write a better one
-bool CalculatorUtil::almostEqual(double a, double b, int ulp)
+bool almostEqual(double a, double b, int ulp)
 {
     //return std::abs(a - b) < std::numeric_limits<double>::epsilon()*std::abs(a + b)*ulp ||
     //       std::abs(a - b) < std::numeric_limits<double>::min();
     return (std::abs(a-b)/b) < .005 || std::abs(a-b) < .000001;
 }
 
-bool CalculatorUtil::isInfix(const std::string &str)
+bool isInfix(const std::string &str)
 {
     MathTokenizer tk(str);
     Token lastToken = tk.getNextToken();
@@ -106,7 +110,7 @@ bool CalculatorUtil::isInfix(const std::string &str)
                 lastToken.tokenType == Token::OPERATOR)
         {
             if(getArity(lastToken.getString()) > 1 &&
-               getArity(currentToken.getString()) > 1)
+                    getArity(currentToken.getString()) > 1)
                 return false;
         }
 
@@ -115,4 +119,5 @@ bool CalculatorUtil::isInfix(const std::string &str)
     }
 
     return true;
+}
 }

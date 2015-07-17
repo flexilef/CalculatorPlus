@@ -1,13 +1,13 @@
 #include <iostream>
 
-#include "../include/Calculator.h"
-#include "../include/MathTokenizer.h"
-#include "../include/CalculatorUtil.h"
-#include "../include/CalculatorException.h"
-#include "../include/DomainException.h"
-#include "../include/SyntaxException.h"
-#include "../include/MathException.h"
-#include "../include/DivideByZeroException.h"
+#include "../../include/core/Calculator.h"
+#include "../../include/core/MathTokenizer.h"
+
+#include "../../include/core/CalculatorException.h"
+#include "../../include/core/DomainException.h"
+#include "../../include/core/SyntaxException.h"
+#include "../../include/core/MathException.h"
+#include "../../include/core/DivideByZeroException.h"
 
 Calculator::Calculator() : pEvaluator(mBank)
 {

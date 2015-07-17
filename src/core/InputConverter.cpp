@@ -1,4 +1,4 @@
-#include "../include/InputConverter.h"
+#include "../../include/core/InputConverter.h"
 
 InputConverter::InputConverter()
 {

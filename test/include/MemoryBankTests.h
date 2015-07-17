@@ -1,7 +1,7 @@
 #ifndef MEMORYBANKTESTS_H
 #define MEMORYBANKTESTS_H
 
-#include "../include/MemoryBank.h"
+#include "../../include/core/MemoryBank.h"
 #include "../include/UnitTest.h"
 
 class MemoryBankTests : public UnitTest

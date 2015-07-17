@@ -1,8 +1,9 @@
 #include <iostream>
 
-#include "../include/MathTokenizer.h"
-#include "../include/CalculatorException.h"
-#include "CalculatorUtil.cpp"
+#include "../../include/core/MathTokenizer.h"
+#include "../../include/core/CalculatorUtil.h"
+
+#include "../../include/core/CalculatorException.h"
 
 MathTokenizer::MathTokenizer()
 {

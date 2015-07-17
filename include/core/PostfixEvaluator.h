@@ -1,8 +1,8 @@
 #ifndef POSTFIXEVALUATOR_H
 #define POSTFIXEVALUATOR_H
 
-#include "../include/MemoryBank.h"
-#include "../include/MathUtil.h"
+#include "MemoryBank.h"
+#include "MathUtil.h"
 
 class PostfixEvaluator
 {

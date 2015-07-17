@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include <string>
 
-#include "../include/MathException.h"
+#include "MathException.h"
 
 class SyntaxException : public MathException
 {

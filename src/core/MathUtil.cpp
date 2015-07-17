@@ -1,8 +1,10 @@
-#include "../include/MathUtil.h"
-#include "../include/DivideByZeroException.h"
-#include "../include/DomainException.h"
-#include "../include/SyntaxException.h"
 #include <cmath>
+
+#include "../../include/core/MathUtil.h"
+
+#include "../../include/core/DivideByZeroException.h"
+#include "../../include/core/DomainException.h"
+#include "../../include/core/SyntaxException.h"
 
 MathUtil::MathUtil()
 {

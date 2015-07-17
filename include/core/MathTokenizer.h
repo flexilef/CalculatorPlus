@@ -2,6 +2,7 @@
 #define MATHTOKENIZER_H
 
 #include <vector>
+
 #include "Token.h"
 
 class MathTokenizer

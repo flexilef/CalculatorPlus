@@ -1,10 +1,11 @@
 #ifndef CALCULATOR_H
 #define CALCULATOR_H
 
-#include "../include/MemoryBank.h"
-#include "../include/PostfixEvaluator.h"
-#include "../include/MathUtil.h"
-#include "../include/InfixToPostfixConverter.h"
+#include "MemoryBank.h"
+#include "PostfixEvaluator.h"
+#include "MathUtil.h"
+#include "InfixToPostfixConverter.h"
+#include "CalculatorUtil.h"
 
 class Calculator
 {
