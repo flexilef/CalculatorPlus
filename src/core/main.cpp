@@ -1,6 +1,8 @@
 #include <iostream>
 
 #include "../../include/core/Calculator.h"
+#include "../../include/core/InfixToPostfixConverter.h"
+#include "../../include/core/MathTokenizer.h"
 
 int main()
 {

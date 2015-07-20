@@ -72,15 +72,22 @@ void InfixToPostfixConverter::convert()
             }
             else if(currentTokenStr == ")")
             {
-                topOperator = operatorStack.top();
-                operatorStack.pop();
+                if(!operatorStack.empty())
+                {
+                    topOperator = operatorStack.top();
+                    operatorStack.pop();
+                }
 
                 while(topOperator != "(")
                 {
                     postfix+=topOperator;
                     postfix+=" ";
-                    topOperator = operatorStack.top();
-                    operatorStack.pop();
+
+                    if(!operatorStack.empty())
+                    {
+                        topOperator = operatorStack.top();
+                        operatorStack.pop();
+                    }
                 }
             }
             else

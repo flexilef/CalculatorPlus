@@ -196,7 +196,7 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
                     else if(currentTokenStr == "%")
                         result = mUtil.percent(operand);
                     else
-                        throw CalculatorException("PostfixEvaluator: evaluate(): invalid unary operator: " + std::string(currentTokenStr));
+                        throw CalculatorException("Syntax Error: invalid unary operator: '" + std::string(currentTokenStr) + "'");
                 }
                 catch(MathException& e)
                 {
@@ -244,7 +244,7 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
                     else if(currentTokenStr == "mod")
                         result = mUtil.mod(operand1, operand2);
                     else
-                        throw CalculatorException("PostfixEvaluator: evaluate(): no binary operator: " + std::string(currentTokenStr));
+                        throw CalculatorException("Syntax Error: invalid binary operator: '" + std::string(currentTokenStr) + "'");
                 }
                 catch(MathException& e)
                 {
@@ -311,7 +311,7 @@ double PostfixEvaluator::evaluate(const std::string& postfix)
                     else if(currentTokenStr == "abs")
                         result = mUtil.abs(operand);
                     else
-                        throw CalculatorException("PostfixEvaluator: evaluate(): invalid function: " + std::string(currentTokenStr));
+                        throw CalculatorException("Syntax Error: invalid function: '" + std::string(currentTokenStr) + "'");
                 }
                 catch(MathException& e)
                 {

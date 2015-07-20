@@ -68,14 +68,14 @@ int getPrecedence(const std::string &op)
         return 5;
     else if(op == "+" || op == "-")
         return 10;
-    else if(op == "*" || op == "/")
+    else if(op == "*" || op == "/" || op == "mod")
         return 20;
-    else if(op == "^")
-        return 60;
-    else if(op == "~" || op == "E" || op == "!")
+    else if(op == "~" || op == "E" || op == "!" || "%")
         return 40;
     else if(CalculatorUtil::isFunction(op))
         return 50;
+    else if(op == "^")
+        return 60;
 
     return -1;
 }
