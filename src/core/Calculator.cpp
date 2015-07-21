@@ -25,13 +25,14 @@ Calculator::~Calculator()
     //dtor
 }
 
-void Calculator::getUserInput()
+/*void Calculator::getUserInput()
 {
     std::string str;
     std::cout << "Enter: ";
     std::getline(std::cin, str);
     setInput(str);
 }
+*/
 
 void Calculator::calculate()
 {
@@ -187,6 +188,28 @@ void Calculator::applyAutoMultiplication()
         index = indicesToInsertMultiplication[i];
         //+i offsets the added "*" sign to the input
         input.insert(index+i, "*");
+    }
+}
+
+const std::vector<std::string>& Calculator::getVariables()
+{
+    return mBank.getListOfVariables();
+}
+
+double Calculator::getValueFromVariable(const std::string& variable)
+{
+    return mBank.getValueFromVar(variable);
+}
+
+void Calculator::clearMemory()
+{
+    std::vector<std::string> variables = mBank.getListOfVariables();
+    int length = variables.size();
+
+    for(int i = 0; i<length; i++)
+    {
+        if(variables[i] != "PI" && variables[i] != "ans")
+            mBank.removeVariable(variables[i]);
     }
 }
 

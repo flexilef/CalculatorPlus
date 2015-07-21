@@ -5,7 +5,9 @@
 #include <QAction>
 #include <QActionGroup>
 #include <QMenu>
+#include <QLabel>
 #include "calculatorgui.h"
+#include "aboutdialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -19,13 +21,18 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    friend class calculatorgui;
+
 private:
+
     void createActions();
     void createMenus();
 
     Ui::MainWindow *ui;
     CalculatorGUI *cgui;
+    AboutDialog *aDialog;
 
+    QLabel *angleModeMessage;
     QMenu *fileMenu;
     QMenu *editMenu;
     QMenu *helpMenu;
@@ -51,6 +58,11 @@ private slots:
     void aboutAction();
     void radiansAction();
     void degreesAction();
+
+    //slots from calculatorgui
+    void setStatusBarText(const QString&);
+    void checkRadiansAction();
+    void checkDegreesAction();
 };
 
 #endif // MAINWINDOW_H

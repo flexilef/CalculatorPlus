@@ -23,14 +23,18 @@ public:
     virtual ~Calculator();
 
     void calculate();
-    void getUserInput();
+    void setCalculatorState(CalculatorState);
+    CalculatorState getCalculatorState();
+    std::string getErrorMessage();
+    void setAngleMode(MathUtil::AngleMode);
     std::string getInput();
     void setInput(const std::string&);
     double getOutput();
-    std::string getErrorMessage();
-    void setCalculatorState(CalculatorState);
-    CalculatorState getCalculatorState();
-    void setAngleMode(MathUtil::AngleMode);
+    //void getUserInput();
+
+    const std::vector<std::string>& getVariables();
+    double getValueFromVariable(const std::string&);
+    void clearMemory();
 
 protected:
 private:
@@ -50,7 +54,7 @@ private:
     InfixToPostfixConverter ipConverter;
     PostfixEvaluator pEvaluator;
 
-    friend class CalculatorTests;
+    //friend class CalculatorTests;
 };
 
 #endif // CALCULATOR_H

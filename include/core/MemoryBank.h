@@ -2,6 +2,7 @@
 #define MEMORYBANK_H
 
 #include <string>
+#include <vector>
 #include <map>
 
 class MemoryBank
@@ -12,13 +13,17 @@ class MemoryBank
         /** Default destructor */
         virtual ~MemoryBank();
 
-        double getValueFromVar(std::string);
-        bool storeValueIntoVar(std::string, double);
-        bool hasVariable(std::string);
+        double getValueFromVar(const std::string&);
+        bool storeValueIntoVar(const std::string&, double);
+        const std::vector<std::string>& getListOfVariables();
+        bool hasVariable(const std::string&);
+        bool isEmpty();
         void clearMemory();
+        void removeVariable(const std::string&);
     protected:
     private:
         std::map<std::string, double> variableToNumberMap;
+        std::vector<std::string> variables;
 };
 
 #endif // MEMORYBANK_H

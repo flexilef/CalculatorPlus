@@ -1,6 +1,8 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
 #include <QMessageBox>
+#include <QLabel>
+
+#include "include/gui/mainwindow.h"
+#include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -11,6 +13,14 @@ MainWindow::MainWindow(QWidget *parent) :
     cgui = new CalculatorGUI(this);
     setCentralWidget(cgui);
 
+    connect(cgui, SIGNAL(statusBarEvent(QString)), this, SLOT(setStatusBarText(QString)));
+    connect(cgui, SIGNAL(checkDegreesEvent()), this, SLOT(checkDegreesAction()));
+    connect(cgui, SIGNAL(checkRadiansEvent()), this, SLOT(checkRadiansAction()));
+
+    angleModeMessage = new QLabel(this);
+    angleModeMessage->setText("Mode: degrees");
+    ui->statusBar->addWidget(angleModeMessage);
+
     createActions();
     createMenus();
 }
@@ -19,6 +29,21 @@ MainWindow::~MainWindow()
 {
     delete cgui;
     delete ui;
+}
+
+void MainWindow::setStatusBarText(const QString& message)
+{
+    angleModeMessage->setText(message);
+}
+
+void MainWindow::checkDegreesAction()
+{
+    degreesAct->setChecked(true);
+}
+
+void MainWindow::checkRadiansAction()
+{
+    radiansAct->setChecked(true);
 }
 
 void MainWindow::createActions()
@@ -53,7 +78,7 @@ void MainWindow::createActions()
     helpAct->setStatusTip("View Help");
     connect(helpAct, SIGNAL(triggered()), this, SLOT(helpAction()));
 
-    aboutAct = new QAction("&About", this);
+    aboutAct = new QAction("&About ST Calculator", this);
     connect(aboutAct, SIGNAL(triggered()), this, SLOT(aboutAction()));
 
     radiansAct = new QAction("&Radians", this);
@@ -127,11 +152,13 @@ void MainWindow::clearAction()
 void MainWindow::radiansAction()
 {
     cgui->setRadiansMode();
+    angleModeMessage->setText("Mode: radians");
 }
 
 void MainWindow::degreesAction()
 {
     cgui->setDegreesMode();
+    angleModeMessage->setText("Mode: degrees");
 }
 
 void MainWindow::helpAction()
@@ -142,6 +169,6 @@ void MainWindow::helpAction()
 
 void MainWindow::aboutAction()
 {
-    //replace this with actual code
-    QMessageBox::information(this, "title", "about");
+    aDialog = new AboutDialog(this);
+    aDialog->show();
 }

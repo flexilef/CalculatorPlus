@@ -1,6 +1,8 @@
-#include "calculatorgui.h"
 #include <QEvent>
 #include <QKeyEvent>
+#include <QDebug>
+
+#include "include/gui/calculatorgui.h"
 
 CalculatorGUI::CalculatorGUI(QWidget *parent) : QWidget(parent)
 {
@@ -59,23 +61,85 @@ void CalculatorGUI::handleLineEdit()
 
     history.push_back(input);
     historyIndex++;
-    calc.setInput(input.toStdString());
-    calc.calculate();
 
-    if(calc.getCalculatorState() == Calculator::ERRORSTATE)
+    if(isCommand(input))
     {
-        output = QString::fromStdString(calc.getErrorMessage());
-        calc.setCalculatorState(Calculator::DEFAULTSTATE);
+        runCommand(input);
     }
     else
     {
-        result = calc.getOutput();
-        output = QString::number(result);
+        calc.setInput(input.toStdString());
+        calc.calculate();
+
+        if(calc.getCalculatorState() == Calculator::ERRORSTATE)
+        {
+            output = QString::fromStdString(calc.getErrorMessage());
+            calc.setCalculatorState(Calculator::DEFAULTSTATE);
+        }
+        else
+        {
+            result = calc.getOutput();
+            output = QString::number(result);
+        }
+        textBrowser->append(input + "\n = " + output + "\n");
     }
 
-    textBrowser->append(input + "\n = " + output + "\n");
-
     lineEdit->clear();
+}
+
+bool CalculatorGUI::isCommand(const QString &command)
+{
+    if(command == "?radians")
+        return true;
+    else if(command == "?degrees")
+        return true;
+    else if(command == "?memory")
+        return true;
+    else if(command == "?clearmemory")
+        return true;
+
+    return false;
+}
+
+void CalculatorGUI::runCommand(const QString &command)
+{
+    textBrowser->append(command);
+
+    if(command == "?radians")
+    {
+        calc.setAngleMode(MathUtil::RADIANS);
+        textBrowser->append("Radians Mode");
+        emit statusBarEvent("Mode: radians");
+        emit checkRadiansEvent();
+    }
+    else if(command == "?degrees")
+    {
+        calc.setAngleMode(MathUtil::DEGREES);
+        textBrowser->append("Degrees Mode");
+        emit statusBarEvent("Mode: degrees");
+        emit checkDegreesEvent();
+    }
+    else if(command == "?memory")
+    {
+        std::vector<std::string> vars = calc.getVariables();
+        int length = vars.size();
+
+        textBrowser->append("Variables = Values");
+
+        for(int i=0; i<length; i++)
+        {
+            textBrowser->append(QString::fromStdString(vars[i]) + " = " +
+                                QString::number(calc.getValueFromVariable(vars[i])));
+        }
+    }
+    else if(command == "?clearmemory")
+    {
+        calc.clearMemory();
+        textBrowser->append("Memory cleared");
+
+    }
+
+    textBrowser->append("");
 }
 
 void CalculatorGUI::setRadiansMode()
