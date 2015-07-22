@@ -98,6 +98,8 @@ bool CalculatorGUI::isCommand(const QString &command)
         return true;
     else if(command == "?clearmemory")
         return true;
+    else if(command == "?commands")
+        return true;
 
     return false;
 }
@@ -138,6 +140,15 @@ void CalculatorGUI::runCommand(const QString &command)
         calc.clearMemory();
         textBrowser->append("Memory cleared");
 
+    }
+    else if(command == "?commands")
+    {
+        textBrowser->append("List of Commands \n"
+                            "?commands - lists commands \n"
+                            "?radians - switches to radians mode \n"
+                            "?degrees - switches to degrees mode \n"
+                            "?memory - lists stored variables \n"
+                            "?clearmemory - clears stored variables");
     }
 
     textBrowser->append("");

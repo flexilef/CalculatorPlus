@@ -162,8 +162,8 @@ void MainWindow::degreesAction()
 
 void MainWindow::helpAction()
 {
-    //replace this with actual code
-    QMessageBox::information(this, "title", "help");
+    QMessageBox::
+    QMessageBox::information(this, "Help", "\nRead help.txt");
 }
 
 void MainWindow::aboutAction()
