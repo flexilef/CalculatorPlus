@@ -82,6 +82,7 @@ void CalculatorGUI::handleLineEdit()
             output = QString::number(result);
         }
         textBrowser->append(input + "\n = " + output + "\n");
+        historyIndex = history.size();
     }
 
     lineEdit->clear();

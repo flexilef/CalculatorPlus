@@ -70,12 +70,16 @@ int getPrecedence(const std::string &op)
         return 10;
     else if(op == "*" || op == "/" || op == "mod")
         return 20;
+    else if(op == "^")
+        return 60;
     else if(op == "~" || op == "E" || op == "!" || "%")
         return 40;
     else if(CalculatorUtil::isFunction(op))
         return 50;
-    else if(op == "^")
-        return 60;
+    //uncomment the following and delete the same code above if you want -2^2 = (-2)^2
+    //otherwise it's -(2^2)
+    //else if(op == "^")
+    //    return 60;
 
     return -1;
 }

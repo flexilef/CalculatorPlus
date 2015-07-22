@@ -66,7 +66,7 @@ void MathTokenizer::tokenize()
         {
             if(!numberStr.empty())
             {
-                //std::cout << "NUM1 ";
+                //std::cout << "NUM1: " << numberStr;
                 tokens.push_back(Token(numberStr, Token::NUMBER));
 
                 numberStr = "";
@@ -143,7 +143,7 @@ void MathTokenizer::tokenize()
             }
         }
         else
-            throw CalculatorException("Syntax Error: invalid character: " + currentCharacter);
+            throw CalculatorException("Syntax Error: invalid character: '" + currentCharacter + "'");
     }
 
     //reached end of input. Handle the last token

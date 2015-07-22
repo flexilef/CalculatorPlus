@@ -68,6 +68,7 @@ void CalculatorTests::applyAutoMultiplication_Misc()
 {
     checkResult("1+2(2+3)", "1+2*(2+3)", "Auto Multiplication: expression, paren expression");
     checkResult("(1+2)(2+3)", "(1+2)*(2+3)", "Auto Multiplication: paren expression, paren expression");
+    checkResult("1.11e+6", "1.11*e+6", "Auto Multiplication: number, variable");
 }
 
 void CalculatorTests::checkResult(const std::string& before, const std::string& after, const std::string& error)

@@ -2,15 +2,26 @@
 
 #include "../../include/core/Calculator.h"
 #include "../../include/core/InfixToPostfixConverter.h"
+#include "../../include/core/PostfixEvaluator.h"
+#include "../../include/core/MemoryBank.h"
 #include "../../include/core/MathTokenizer.h"
 
 int main()
 {
     Calculator calc;
 
+    //std::string testStr = "";
+    //MemoryBank mb;
+    //MathTokenizer tk(testStr);
+    //InfixToPostfixConverter in;
+    //PostfixEvaluator pe(mb);
+
     while(true)
     {
-        calc.getUserInput();
+        std::string str;
+        std::cout << "Enter: ";
+        std::getline(std::cin, str);
+        calc.setInput(str);
         calc.calculate();
 
         if(calc.getCalculatorState() == Calculator::ERRORSTATE)

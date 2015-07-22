@@ -64,14 +64,9 @@ double MathUtil::divide(double left, double right)
 double MathUtil::power(double left, double right)
 {
     if(left == 0 && right == 0)
-    {
         throw DomainException("Domain Error: ^: x and y are 0");
-    }
-    //if right is not integer and left is negative
-    //else if((right - floor(right) != 0) && left <0)
-    //{
-    //    throw DomainException("power: negative base and non-integer exponent");
-    //}
+    else if(left < 0 && !isInteger(right))
+        throw DomainException("Domain Error: ^: base < 0 and exponent is not an integer");
 
     return pow(left, right);
 }

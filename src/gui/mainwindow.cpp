@@ -78,7 +78,8 @@ void MainWindow::createActions()
     helpAct->setStatusTip("View Help");
     connect(helpAct, SIGNAL(triggered()), this, SLOT(helpAction()));
 
-    aboutAct = new QAction("&About ST Calculator", this);
+    aboutAct = new QAction("&About Calculator+", this);
+    aboutAct->setStatusTip("Read about Calculator+");
     connect(aboutAct, SIGNAL(triggered()), this, SLOT(aboutAction()));
 
     radiansAct = new QAction("&Radians", this);
@@ -106,7 +107,6 @@ void MainWindow::createMenus()
     editMenu->addAction(pasteAct);
     editMenu->addAction(selectAllAct);
     editMenu->addAction(clearAct);
-    //editMenu->addSeparator();
 
     settingsMenu = menuBar()->addMenu("&Settings");
     settingsMenu->addActions(angleActGroup->actions());
@@ -114,7 +114,6 @@ void MainWindow::createMenus()
     helpMenu = menuBar()->addMenu("&Help");
     helpMenu->addAction(helpAct);
     helpMenu->addAction(aboutAct);
-    //helpMenu->addSeparator();
 }
 
 void MainWindow::newAction()

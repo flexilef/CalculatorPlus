@@ -7,7 +7,7 @@
 AboutDialog::AboutDialog(QWidget *parent)
     : QDialog(parent)
 {
-    setWindowTitle("About ST Calculator");
+    setWindowTitle("About Calculator+");
 
     const int LENGTH = 180;
     const int HEIGHT = 200;
@@ -16,20 +16,20 @@ AboutDialog::AboutDialog(QWidget *parent)
     setFixedSize(LENGTH, HEIGHT);
 
     image = new QLabel(this);
-    image->setPixmap(QPixmap(":/images/graphics/STCalculator.png"));
+    image->setPixmap(QPixmap(":/images/graphics/Board-icon 64.png"));
 
     QFont font1("Verdana", 12, QFont::Bold);
     QFont font2("Verdana", 12);
 
     title = new QLabel(this);
-    title->setText("ST Calculator");
+    title->setText("Calculator+");
     title->setFont(font1);
 
     version = new QLabel(this);
     version->setText("v1.0.0.0");
 
     body = new QLabel(this);
-    body->setText("Scientific Text Calculator - \n"
+    body->setText("Calculator+ - \n"
                   "A button-free scientific calculator. \n");
 
     copyright = new QLabel(this);

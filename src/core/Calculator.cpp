@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 
 #include "../../include/core/Calculator.h"
 #include "../../include/core/MathTokenizer.h"
@@ -38,6 +39,7 @@ void Calculator::calculate()
 {
     try
     {
+        removeSpaces(input);
         applyAutoMultiplication();
         checkInput();
 
@@ -189,6 +191,11 @@ void Calculator::applyAutoMultiplication()
         //+i offsets the added "*" sign to the input
         input.insert(index+i, "*");
     }
+}
+
+void Calculator::removeSpaces(std::string& str)
+{
+    str.erase(std::remove_if(str.begin(), str.end(), ::isspace), str.end());
 }
 
 const std::vector<std::string>& Calculator::getVariables()

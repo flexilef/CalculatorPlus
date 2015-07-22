@@ -30,7 +30,7 @@ std::string InfixToPostfixConverter::convertToPostfix(const std::string &infix)
 
 void InfixToPostfixConverter::convert()
 {
-    MathTokenizer tokenizer;
+    MathTokenizer tokenizer(input);
     std::stack<std::string> operatorStack;
     std::string postfix;
     std::string topOperator;
@@ -38,8 +38,6 @@ void InfixToPostfixConverter::convert()
     std::string lastTokenStr;
     Token currentToken;
     int tokenIndex = 0;
-
-    tokenizer.setInput(input);
 
     while(tokenizer.hasNext())
     {
@@ -106,9 +104,7 @@ void InfixToPostfixConverter::convert()
                 {
                     topOperator = operatorStack.top();
 
-                    if(CalculatorUtil::getPrecedence(currentTokenStr) <= CalculatorUtil::getPrecedence(topOperator)
-                            && currentTokenStr != "~" /*&& currentTokenStr != "^"*/) //this condition handles right associativity of ~ and ^.
-                        //ie. --2 -> 2 ~ ~ and 1^2^3 -> 1 2 3 ^ ^ ^. But it's a bit confusing.
+                    if(CalculatorUtil::getPrecedence(currentTokenStr) <= CalculatorUtil::getPrecedence(topOperator))
                     {
                         postfix+=topOperator;
                         postfix+=" ";

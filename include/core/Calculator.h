@@ -30,7 +30,6 @@ public:
     std::string getInput();
     void setInput(const std::string&);
     double getOutput();
-    //void getUserInput();
 
     const std::vector<std::string>& getVariables();
     double getValueFromVariable(const std::string&);
@@ -41,6 +40,7 @@ private:
     void checkInput();
     void checkAssignment();
     void checkInfix();
+    void removeSpaces(std::string&);
     void applyAutoMultiplication();
 
     std::string input;
