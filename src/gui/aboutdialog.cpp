@@ -1,69 +1,55 @@
+/*
+This file is part of Calculator+
+Copyright (C) 2015 Felix Lee
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include <QPixmap>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QFont>
 
 #include "include/gui/aboutdialog.h"
 
 AboutDialog::AboutDialog(QWidget *parent)
     : QDialog(parent)
 {
-    const int LENGTH = 230;//180
-    const int HEIGHT = 200;//200
     setWindowTitle("About Calculator+");
-    setFixedSize(LENGTH, HEIGHT);
+    setFixedSize(345, 300);
 
-    QFont font1("Cambria", 14, QFont::Bold);
-    QFont font2("Cambria", 11);
+    QString message;
+    QLabel* body;
 
-    image = new QLabel(this);
-    image->setPixmap(QPixmap(":/images/graphics/Board-icon 64.png"));
-    image->setAlignment(Qt::AlignCenter);
+    message += "<p align=Center>";
+    message += "<br><img src=\":/images/graphics/blackboard96.png\"><br>";
+    message += "<b>Calculator+ v1.0.0.0</b>"
+               "<br>Calculator+ is a simple-to-use, button-free, scientific calculator.</br>"
+               "<br>Copyright (C) 2015 Felix Lee</br></p>"
 
-    title = new QLabel(this);
-    title->setText("Calculator+");
-    title->setFont(font1);
-    title->setAlignment(Qt::AlignCenter);
+               "<p align=Center>This program is free software: you can redistribute it and/or modify</br>"
+               "<br>it under the terms of the GNU General Public License as published by</br>"
+               "<br>the Free Software Foundation, either version 3 of the License, or</br>"
+               "<br>(at your option) any later version.</br></p>"
 
-    version = new QLabel(this);
-    version->setText("v1.0.0.0");
-    version->setFont(font2);
-    version->setAlignment(Qt::AlignCenter);
-
-    QVBoxLayout *layout = new QVBoxLayout(this);
-    QHBoxLayout *layout1 = new QHBoxLayout();
-    QVBoxLayout *layout2 = new QVBoxLayout();
-
-    layout2->addWidget(title);
-    layout2->addWidget(version);
-    layout1->addWidget(image);
-    layout1->addLayout(layout2);
+               "<p align=Center>This program is distributed in the hope that it will be useful,"
+               "<br>but WITHOUT ANY WARRANTY; without even the implied warranty of</br>"
+               "<br>MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the</br>"
+               "<br>GNU General Public License for more details.</br></p>";
 
     body = new QLabel(this);
-    body->setText("Calculator+ \n"
-                  "button-free scientific calculator\n");
-    body->setFont(font2);
-    body->setAlignment(Qt::AlignCenter);
-
-    copyright = new QLabel(this);
-    copyright->setText("Copyright (C) 2015 Felix Lee");
-    copyright->setFont(font2);
-    copyright->setAlignment(Qt::AlignCenter);
-
-    QVBoxLayout *layout3 = new QVBoxLayout();
-    layout3->addWidget(version);
-    layout3->addWidget(body);
-    layout3->addWidget(copyright);
-
-    layout->addLayout(layout1);
-    layout->addLayout(layout3);
-
-    setLayout(layout);
+    body->setText(message);
 }
 
 AboutDialog::~AboutDialog()
 {
-    delete title;
-    delete image;
 }
 
