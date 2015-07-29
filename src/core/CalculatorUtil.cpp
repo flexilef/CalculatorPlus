@@ -88,16 +88,14 @@ int getPrecedence(const std::string &op)
         return 10;
     else if(op == "*" || op == "/" || op == "mod")
         return 20;
+    else if(op == "~" || op == "E")
+        return 30;
     else if(op == "^")
-        return 60;
-    else if(op == "~" || op == "E" || op == "!" || "%")
         return 40;
+    else if(op == "!" || op == "%")
+        return 45;
     else if(CalculatorUtil::isFunction(op))
         return 50;
-    //uncomment the following and delete the same code above if you want -2^2 = (-2)^2
-    //otherwise it's -(2^2)
-    //else if(op == "^")
-    //    return 60;
 
     return -1;
 }
@@ -107,7 +105,7 @@ bool almostEqual(double a, double b, int ulp)
 {
     //return std::abs(a - b) < std::numeric_limits<double>::epsilon()*std::abs(a + b)*ulp ||
     //       std::abs(a - b) < std::numeric_limits<double>::min();
-    return (std::abs(a-b)/b) < .005 || std::abs(a-b) < .000001;
+    return std::abs((a-b)/b) < .005 || std::abs(a-b) < .000001;
 }
 
 bool isInfix(const std::string &str)

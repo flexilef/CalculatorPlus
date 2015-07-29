@@ -20,6 +20,7 @@ class InfixToPostfixConverterTests : public UnitTest
         InfixToPostfixConverter converter;
 
         //tests
+        void convertToPostfix_Misc();
         void convertToPostfix_constants_returnPostfixExpression();
         void convertToPostfix_unaryOperators_returnPostfixExpression();
         void convertToPostfix_binaryOperators_returnPostfixExpression();

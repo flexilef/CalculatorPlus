@@ -18,6 +18,7 @@ class CalculatorTests : public UnitTest
         Calculator calc;
 
         //tests
+        void calculate_Misc();
         void applyAutoMultiplication_Number_Variable();
         void applyAutoMultiplication_Number_Function();
         void applyAutoMultiplication_Variable_Number();
@@ -27,6 +28,7 @@ class CalculatorTests : public UnitTest
 
         //helpers
         void checkResult(const std::string&, const std::string&, const std::string&);
+        void checkResult(const std::string&, double, const std::string&);
 };
 
 #endif // CALCULATORTESTS_H

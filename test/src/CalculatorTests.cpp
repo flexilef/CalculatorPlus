@@ -13,6 +13,7 @@ CalculatorTests::~CalculatorTests()
 
 void CalculatorTests::runTests()
 {
+    calculate_Misc();
     applyAutoMultiplication_Number_Variable();
     applyAutoMultiplication_Number_Function();
     applyAutoMultiplication_Variable_Number();
@@ -21,6 +22,22 @@ void CalculatorTests::runTests()
 
     std::cout << "CalculatorTests: Tests run    : " << totalTestsRun << "\n";
     std::cout << "CalculatorTests: Tests failed : " << totalTestsFailed << "\n";
+}
+
+void CalculatorTests::calculate_Misc()
+{
+    checkResult("cos(180)^3", -1, "Calculate: Misc");
+    checkResult("-cos(180)^3", 1, "Calculate: Misc");
+    checkResult("1*(-cos(180)^2)", -1, "Calculate: Misc");
+    checkResult("1/-1^2", -1, "Calculate: Misc");
+    checkResult("1*-1^2", -1, "Calculate: Misc");
+    checkResult("50%^2", .25, "Calculate: Misc: precedence of % > ^");
+    checkResult("-50%^2", -.25, "Calculate: Misc: precedence of % > ^ > ~");
+    checkResult("2^50%", 1.4142135623730950488, "Calculate: Misc: precedence of % > ^");
+    checkResult("-2^50%", -1.4142135623730950488, "Calculate: Misc: precedence of % > ^ > ~");
+    checkResult("2!^2", 4, "Calculate: Misc: precedence of ! > ^");
+    checkResult("-2!^2", -4, "Calculate: Misc: precedence of ! > ^ > ~");
+    checkResult("asin(sin(1))", 1, "Calculate: Misc");
 }
 
 void CalculatorTests::applyAutoMultiplication_Number_Variable()
@@ -85,6 +102,25 @@ void CalculatorTests::checkResult(const std::string& before, const std::string& 
         std::cout << "before    : " << before << "\n";
         std::cout << "result     : " << result << "\n";
         std::cout << "answer     : " << after << "\n";
+        std::cout << "\n";
+    }
+}
+
+void CalculatorTests::checkResult(const std::string &expression, double answer, const std::string &error)
+{
+    totalTestsRun++;
+
+    calc.setInput(expression);
+    calc.calculate();
+    double result = calc.getOutput();
+
+    if(!CalculatorUtil::almostEqual(result, answer, 4)) //4 works for most cases. 9 for mod operator decimal...
+    {
+        totalTestsFailed++;
+        std::cout << "Error found: " << error << "\n";
+        std::cout << "expression    : " << expression << "\n";
+        std::cout << "result     : " << result << "\n";
+        std::cout << "answer     : " << answer << "\n";
         std::cout << "\n";
     }
 }

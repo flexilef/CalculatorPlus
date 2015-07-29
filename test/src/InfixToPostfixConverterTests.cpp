@@ -1,4 +1,6 @@
 #include "../include/InfixToPostfixConverterTests.h"
+#include "../../include/core/CalculatorUtil.h"
+
 #include <iostream>
 
 InfixToPostfixConverterTests::InfixToPostfixConverterTests()
@@ -12,6 +14,7 @@ InfixToPostfixConverterTests::~InfixToPostfixConverterTests()
 
 void InfixToPostfixConverterTests::runTests()
 {
+    convertToPostfix_Misc();
     convertToPostfix_constants_returnPostfixExpression();
     convertToPostfix_unaryOperators_returnPostfixExpression();
     convertToPostfix_binaryOperators_returnPostfixExpression();
@@ -99,9 +102,6 @@ void InfixToPostfixConverterTests::convertToPostfix_binaryOperators_returnPostfi
     checkPostfix("(-a)E5", "a ~ 5 E", "binary operator: E: negative coefficient variable");
     checkPostfix("5E(-a)", "5 a ~ E", "binary operator: E: negative exponent variable");
     checkPostfix("(a)E(b)", "a b E", "binary operator: E: exponent and coefficient variable");
-
-    //known tests failed
-    //checkPostfix("aEb", "a b E", "binary operator: E: exponent and coefficient variable");
 }
 
 void InfixToPostfixConverterTests::convertToPostfix_unaryOperators_returnPostfixExpression()
@@ -121,7 +121,7 @@ void InfixToPostfixConverterTests::convertToPostfix_unaryOperators_returnPostfix
     checkPostfix("1.2!", "1.2 !","unary operator: factorial: decimal point");
     checkPostfix("a!", "a !","unary operator: factorial: variable");
     checkPostfix("abc!", "abc !","unary operator: factorial: multiple variable");
-    checkPostfix("-1!", "1 ~ !","unary operator: factorial: negative");
+    checkPostfix("-1!", "1 ! ~","unary operator: factorial: negative");
     checkPostfix("1!!", "1 ! !","unary operator: factorial: double factorial");
     checkPostfix("abc!!", "abc ! !","unary operator: factorial: double negative variable");
 
@@ -131,7 +131,7 @@ void InfixToPostfixConverterTests::convertToPostfix_unaryOperators_returnPostfix
     checkPostfix("1.2%", "1.2 %","unary operator: percent: decimal point");
     checkPostfix("a%", "a %","unary operator: percent: variable");
     checkPostfix("abc%", "abc %","unary operator: percent: multiple variable");
-    checkPostfix("-1%", "1 ~ %","unary operator: percent: negative");
+    checkPostfix("-1%", "1 % ~","unary operator: percent: negative");
     checkPostfix("1%%", "1 % %","unary operator: percent: double factorial");
     checkPostfix("abc%%", "abc % %","unary operator: percent: double negative variable");
 }
@@ -266,6 +266,12 @@ void InfixToPostfixConverterTests::convertToPostfix_whiteSpace_returnPostfixExpr
     //functions
     checkPostfix("sin( 30 )", "30 sin", "white space: trig functions: in argument");
     checkPostfix("cos  (30)", "30 cos", "white space: trig functions: before parenthesis");
+}
+
+void InfixToPostfixConverterTests::convertToPostfix_Misc()
+{
+    checkPostfix("cos(180)^3", "180 cos 3 ^", "Misc: function, power");
+    checkPostfix("-3!", "3 ! ~", "Misc: factorial, negation, precedence");
 }
 
 ///helpers

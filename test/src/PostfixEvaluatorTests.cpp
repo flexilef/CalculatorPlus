@@ -156,7 +156,6 @@ void PostfixEvaluatorTests::evaluate_assignmentOperator_checkAssignment()
 
     totalTestsRun++;
     pe.evaluatePostfix("x 1 =");
-    //std::cout << theBank.getValueFromVar("z");
 
     if(mb.getValueFromVar("x") != 1)
     {

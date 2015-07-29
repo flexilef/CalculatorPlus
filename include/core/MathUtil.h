@@ -39,7 +39,7 @@ public:
 
     //unary operators
     double unaryNegation(double);
-    long long factorial(int);
+    long long int factorial(int);
     double percent(double);
 
     //binary operators

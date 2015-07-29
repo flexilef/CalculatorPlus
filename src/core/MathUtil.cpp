@@ -39,8 +39,10 @@ double MathUtil::unaryNegation(double operand)
     return -1*operand;
 }
 
-long long MathUtil::factorial(int n)
+long long int MathUtil::factorial(int n)
 {
+    long long int result = 1;
+
     if(n<0)
     {
         throw DomainException("Domain Error: !: negative operand");
@@ -48,7 +50,13 @@ long long MathUtil::factorial(int n)
     else if(n>20)
         throw DomainException("Domain Error: !: operand > 20");
 
-    return (n == 1 || n == 0) ? 1 : factorial(n - 1) * n;
+    while(n>1)
+    {
+        result*=n;
+        n--;
+    }
+
+    return result;
 }
 
 double MathUtil::percent(double value)

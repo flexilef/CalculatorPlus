@@ -72,7 +72,7 @@ private:
     InfixToPostfixConverter ipConverter;
     PostfixEvaluator pEvaluator;
 
-    //friend class CalculatorTests;
+    friend class CalculatorTests;
 };
 
 #endif // CALCULATOR_H
