@@ -41,23 +41,28 @@ public:
     virtual ~Calculator();
 
     void calculate();
-    void setCalculatorState(CalculatorState);
+
     CalculatorState getCalculatorState();
+    void setCalculatorState(CalculatorState);
     std::string getErrorMessage();
     void setAngleMode(MathUtil::AngleMode);
     std::string getInput();
     void setInput(const std::string&);
     double getOutput();
 
+    //gui helpers
     const std::vector<std::string>& getVariables();
     double getValueFromVariable(const std::string&);
     void clearMemory();
 
 protected:
 private:
-    void checkInput();
-    void checkAssignment();
-    void checkInfix();
+    //helpers
+    bool checkInput();
+    bool checkParentheses();
+    bool checkInfix();
+    bool checkAssignment();
+    bool checkMisc();
     void removeSpaces(std::string&);
     void applyAutoMultiplication();
 

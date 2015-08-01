@@ -39,14 +39,14 @@ double MathUtil::unaryNegation(double operand)
     return -1*operand;
 }
 
-long long int MathUtil::factorial(int n)
+long long int MathUtil::factorial(double n)
 {
     long long int result = 1;
 
     if(n<0)
-    {
         throw DomainException("Domain Error: !: negative operand");
-    }
+    else if(!isInteger(n))
+        throw DomainException("Domain Error: !: non-integer operand");
     else if(n>20)
         throw DomainException("Domain Error: !: operand > 20");
 

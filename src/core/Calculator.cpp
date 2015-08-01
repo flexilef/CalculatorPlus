@@ -18,6 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include <iostream>
 #include <algorithm>
+#include <stack>
 
 #include "../../include/core/Calculator.h"
 #include "../../include/core/MathTokenizer.h"
@@ -44,25 +45,20 @@ Calculator::~Calculator()
     //dtor
 }
 
-/*void Calculator::getUserInput()
-{
-    std::string str;
-    std::cout << "Enter: ";
-    std::getline(std::cin, str);
-    setInput(str);
-}
-*/
-
 void Calculator::calculate()
 {
     try
     {
         removeSpaces(input);
         applyAutoMultiplication();
-        checkInput();
 
-        std::string postfix = ipConverter.convertToPostfix(input);
-        output = pEvaluator.evaluatePostfix(postfix);
+        if(checkInput())
+        {
+            std::string postfix = ipConverter.convertToPostfix(input);
+            output = pEvaluator.evaluatePostfix(postfix);
+        }
+        else
+            throw CalculatorException("Syntax Error: invalid input");
     }
     catch(CalculatorException& e)
     {
@@ -79,53 +75,115 @@ void Calculator::calculate()
     mBank.storeValueIntoVar("ans", lastAnswer);
 }
 
-void Calculator::checkInput()
+void Calculator::setCalculatorState(CalculatorState state)
 {
-    checkAssignment();
-    checkInfix();
+    calcState = state;
 }
 
-void Calculator::checkInfix()
+Calculator::CalculatorState Calculator::getCalculatorState()
+{
+    return calcState;
+}
+
+std::string Calculator::getErrorMessage()
+{
+    return errorMessage;
+}
+
+void Calculator::setAngleMode(MathUtil::AngleMode mode)
+{
+    angleMode = mode;
+    pEvaluator.setAngleMode(mode);
+}
+
+std::string Calculator::getInput()
+{
+    return input;
+}
+
+void Calculator::setInput(const std::string& str)
+{
+    input = str;
+}
+
+double Calculator::getOutput()
+{
+    return output;
+}
+
+bool Calculator::checkInput()
+{
+    if(!checkInfix() || !checkParentheses() || !checkAssignment() || !checkMisc())
+        return false;
+
+    return true;
+}
+
+bool Calculator::checkInfix()
 {
     if(!CalculatorUtil::isInfix(input))
         throw CalculatorException("Syntax Error: '" + input + "' is not an infix expression");
+
+    return true;
 }
 
-void Calculator::checkAssignment()
+bool Calculator::checkParentheses()
 {
-    bool isAssignmentCheck = false;
+    std::stack<int> parenStack;
     MathTokenizer tk(input);
     Token currentToken;
-    std::string strBeforeEqualSign;
 
-    //assignment check
     while(tk.hasNext())
     {
         currentToken = tk.getNextToken();
-        if(currentToken.getString() == "=")
-            isAssignmentCheck = true;
+
+        if(currentToken.getString() == "(")
+        {
+            parenStack.push(1);
+        }
+        else if(currentToken.getString() == ")")
+        {
+            if(parenStack.empty())
+                throw CalculatorException("Syntax Error: Missing parentheses: '('");
+            else
+                parenStack.pop();
+        }
     }
 
-    //reset
-    tk.setInput(input);
+    if(!parenStack.empty())
+        throw CalculatorException("Syntax Error: Missing parentheses: ')'");
+
+    return true;
+}
+
+bool Calculator::checkAssignment()
+{
+    MathTokenizer tk(input);
+    Token currentToken;
+    std::string strBeforeEqualSign;
+    bool isAssignmentCheck = false;
+
+    if(input.find("=") != std::string::npos)
+        isAssignmentCheck = true;
 
     if(isAssignmentCheck)
     {
-        //check assignment errors
+        //get string before equal sign
         while(tk.hasNext() && currentToken.getString() != "=")
         {
             currentToken = tk.getNextToken();
 
             if(currentToken.getString() != "=")
-                //get the string before the equal sign
                 strBeforeEqualSign += currentToken.getString();
         }
 
+        //now check if string before equal sign is legal
         tk.setInput(strBeforeEqualSign);
 
         while(tk.hasNext())
         {
             currentToken = tk.getNextToken();
+
             if(currentToken.tokenType != Token::VARIABLE)
                 throw CalculatorException("Syntax Error: illegal variable name");
             else if(currentToken.tokenType == Token::VARIABLE)
@@ -136,8 +194,27 @@ void Calculator::checkAssignment()
             }
         }
     }
+
+    return true;
 }
 
+bool Calculator::checkMisc()
+{
+    MathTokenizer tk(input);
+    Token currentToken;
+
+    while(tk.hasNext())
+    {
+        currentToken = tk.getNextToken();
+
+        if(currentToken.getString() == "~")
+            throw CalculatorException("Invalid character: ~");
+    }
+
+    return true;
+}
+
+//helpers
 void Calculator::applyAutoMultiplication()
 {
     MathTokenizer tk(input);
@@ -216,6 +293,7 @@ void Calculator::removeSpaces(std::string& str)
     str.erase(std::remove_if(str.begin(), str.end(), ::isspace), str.end());
 }
 
+//gui helpers
 const std::vector<std::string>& Calculator::getVariables()
 {
     return mBank.getListOfVariables();
@@ -236,40 +314,4 @@ void Calculator::clearMemory()
         if(variables[i] != "PI" && variables[i] != "ans")
             mBank.removeVariable(variables[i]);
     }
-}
-
-std::string Calculator::getInput()
-{
-    return input;
-}
-
-void Calculator::setInput(const std::string& str)
-{
-    input = str;
-}
-
-double Calculator::getOutput()
-{
-    return output;
-}
-
-void Calculator::setCalculatorState(CalculatorState state)
-{
-    calcState = state;
-}
-
-Calculator::CalculatorState Calculator::getCalculatorState()
-{
-    return calcState;
-}
-
-std::string Calculator::getErrorMessage()
-{
-    return errorMessage;
-}
-
-void Calculator::setAngleMode(MathUtil::AngleMode mode)
-{
-    angleMode = mode;
-    pEvaluator.setAngleMode(mode);
 }

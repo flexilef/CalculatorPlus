@@ -34,12 +34,12 @@ bool isNumber(const std::string &str)
 
 bool isOperator(const std::string &str)
 {
-    const int LENGTH = 20;
-    std::string operators[LENGTH] = {"(", ")", "+", "-", "*", "/", "^", "~", "E", "!", "%", "mod", "="};
+    std::vector<std::string> operators = {"(", ")", "+", "-", "*", "/", "^", "~", "E", "!", "%", "mod", "="};
+    int length = operators.size();
 
     if(!str.empty())
     {
-        for(int i = 0; i < LENGTH; i++)
+        for(int i = 0; i < length; i++)
         {
             if(str == operators[i])
                 return true;
@@ -51,12 +51,12 @@ bool isOperator(const std::string &str)
 
 bool isFunction(const std::string &str)
 {
-    const int LENGTH = 20;
-    std::string functions[LENGTH] = {"abs", "acos", "asin", "atan", "cbrt", "cos", "exp", "ln", "log", "sin", "sqrt", "tan"};
+    std::vector<std::string> functions = {"abs", "acos", "asin", "atan", "cbrt", "cos", "exp", "ln", "log", "sin", "sqrt", "tan"};
+    int length = functions.size();
 
     if(!str.empty())
     {
-        for(int i = 0; i < LENGTH; i++)
+        for(int i = 0; i < length; i++)
         {
             if(functions[i] == str)
                 return true;
@@ -123,6 +123,11 @@ bool isInfix(const std::string &str)
         }
         else if(currentToken.tokenType == Token::VARIABLE &&
                 lastToken.tokenType == Token::VARIABLE)
+        {
+            return false;
+        }
+        else if(currentToken.tokenType == Token::FUNCTION &&
+                lastToken.tokenType == Token::FUNCTION)
         {
             return false;
         }
