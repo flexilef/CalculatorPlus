@@ -31,7 +31,7 @@ AboutDialog::AboutDialog(QWidget *parent)
 
     message += "<p align=Center>";
     message += "<br><img src=\":/images/graphics/blackboard96.png\"><br>";
-    message += "<b>Calculator+ v1.0.0.0</b>"
+    message += "<b>Calculator+ v1.0.0</b>"
                "<br>Calculator+ is a simple-to-use, button-free, scientific calculator.</br>"
                "<br>Copyright (C) 2015 Felix Lee</br></p>"
 
